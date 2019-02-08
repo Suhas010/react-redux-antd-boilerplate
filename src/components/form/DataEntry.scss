@@ -1,0 +1,19 @@
+.question-container {
+  padding: 30px 10px;
+  .add-question {
+    display: flex;
+    position: absolute;
+    top: 60px;
+    right: 35px;
+    .card-container {
+      padding: 0px;
+      border-radius: 25px;
+      width: 40px;
+      height: 40px;
+      
+    }
+  }
+  .table {
+    padding: 2% 1%;
+  }
+}

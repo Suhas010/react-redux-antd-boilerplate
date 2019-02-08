@@ -1,0 +1,37 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "rules": {
+        "semi": "error",
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "extends": [
+            "prettier",
+            "prettier/react"
+        ],
+        "indent": [
+            "error",
+            2,
+            {
+                "ignoredNodes": [
+                    "JSXElement"
+                ]
+            }
+        ],
+        "react/jsx-indent": [
+            "error",
+            2
+        ],
+        "react/jsx-indent-props": [
+            2,
+            2
+        ]
+    }
+}

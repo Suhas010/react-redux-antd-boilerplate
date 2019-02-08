@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  flex: 1;
+  min-height: 1px;
+  overflow: hidden;
+  .content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 920px;
+    position: relative;
+    .data {
+      padding-left: 2%;
+    }
+  }
+  .sidebar {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    transition: margin-left 250ms ease-out,transform 250ms ease-out;
+    width: 244px;
+    height: 100vh;
+    .bp3-card {
+      padding: 0px;
+      .menu-container {
+        height: 100%;;
+        padding: 18px 18px;
+        text-align: center;
+        background-color: #626b63;
+        color:white;
+        .header {
+          font-size: 18px;
+          letter-spacing: 2px;
+          font-weight: 600;
+         
+        }
+        .bp3-menu {
+          margin: 0;
+          border-radius: 3px;
+          background: #626b63;
+          font-weight: 500;
+          min-width: 180px;
+          padding: 5px;
+          list-style: none;
+          text-align: left;
+          color: #ffffff;
+          .bp3-menu-item  {
+            .bp3-icon {
+              color: #ffffff;
+            }
+          }
+
+        }
+        .sub-menu {
+          display: flex;
+          flex-direction: column;
+          padding-top: 8%;
+          font-size: 14px;
+          .item {
+            padding: 5px 3px;
+            font-weight: 600;
+          }
+          // .item:hover {
+          //   background: #207fbe;
+          // }
+        }
+      }
+    }
+  }
+  .close {
+    margin-left: -244px;
+  }
+  .nav-bar {
+    display: flex;
+    width: 100%;
+    padding-left: 1%;
+  }
+  .logo {
+    width: 60%;
+    margin-left: 20%;
+    text-align: center;
+    color: white;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .nav-bar:first-child {
+    padding-top: 10px !important;
+    background-color: #207fbe;
+    height: 40px;
+    cursor: pointer;
+    span {
+      height: 2px !important;
+      margin: 0px !important;
+    }
+  }
+}
+
+.bp3-menu-item.bp3-intent-primary.bp3-active {
+  background-color: #b6bcbf38 !important;
+}

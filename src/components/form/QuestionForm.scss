@@ -1,0 +1,50 @@
+.form {
+  .form-container {
+    margin: 12px 0px;
+    overflow: hidden;
+    min-height: 300px;
+    height: 496px;
+    overflow-y: scroll;
+    padding: 15px 26px;
+    background: #eaf1f5;
+    .ant-tag-checkable-checked {
+      background-color: rgba(0, 188, 212, 0.44) !important;
+      border-color: rgb(8, 168, 212) !important;
+    }
+    .ant-tag-checkable {
+      background-color: #eaf1f5;
+      border-color: #00000061;
+    }
+    .add-form {
+      .tag-container {
+        margin: 0px 2px;
+        .tag {
+          margin: 7px 7px;
+          display: inline-block;
+          svg {
+            margin-left: 39px;
+            margin-right: -24px;
+          }
+        }
+      }
+      .options-row {
+        padding: 12px 0px;
+      }
+    }
+  }
+  .action {
+    padding: 1px 35px;
+    display: flex;
+    justify-content: center;
+  }
+}
+.header {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.caption {
+  padding: 1px 15px;
+  font-size: 10px;
+  color: #87898c;
+}

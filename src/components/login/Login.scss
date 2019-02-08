@@ -1,0 +1,13 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  margin: 14% 40%;
+  flex-direction: column;
+  .actions {
+    display: flex;
+    justify-content: center;
+    span{
+      padding: 2%;
+    }
+  }
+}
