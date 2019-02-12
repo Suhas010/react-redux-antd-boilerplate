@@ -1,0 +1,71 @@
+.target-group-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  .target-group-form {
+    width: 60%;
+    padding: 2% 2%;
+    border: solid 1px #eee;
+    border-radius: 11px;
+    .row-padding {
+      padding-top: 2%; 
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      padding: 7% 1px 0px;
+      div {
+        padding: 5px;
+      }
+    }
+  }
+  .target-group-header {
+    font-size: 18px;
+    padding-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+  .add-button {
+    position: fixed;
+    top: 17%;
+    right: 5%;
+  }
+  .target-group {
+    display: flex;
+    justify-content: space-around;
+    cursor: pointer;
+    margin: 40px 7px;
+    padding: 10px;
+    border: 1px solid #adadad;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: #e2e2e2d9 3px 6px 20px 3px;
+    .section {
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      // justify-content: center;
+      text-align: center;
+      align-items: center;
+      .data {
+        display: flex;
+        flex-flow: column;
+        div {
+          display: flex;
+          justify-content: space-between;
+          .label {
+            color: #808080d9;
+          }
+          .label::after{
+            content: ':';
+          }
+          .value {
+            color: #4e5050;
+          }
+        }
+      }
+    }
+  }
+}
