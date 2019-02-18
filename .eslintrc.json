@@ -16,6 +16,10 @@
             "prettier",
             "prettier/react"
         ],
+        "prefer-destructuring": [
+            1
+
+        ],
         "indent": [
             "error",
             2,

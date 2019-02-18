@@ -13,11 +13,11 @@ const HeaderContainer = styled.div`
     letter-spacing: 4px;
     color: white;
 `;
+
 const Header = () => (
   <HeaderContainer>
     <span>AtCOI</span>
   </HeaderContainer>
 );
-
 
 export default Header;

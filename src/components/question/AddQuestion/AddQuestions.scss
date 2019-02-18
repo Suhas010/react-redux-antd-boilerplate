@@ -1,0 +1,103 @@
+.question-container {
+  .target-group {
+    background: #8080801c;
+    justify-content: space-around;
+    display: flex;
+    border-radius: 10px;
+    padding: 7px;
+    margin: 0px 18%;
+    width: 100%;
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+    .tg-label {
+      color: #828384;
+      font-size: 14px;
+      text-align: center
+    }
+    .tg-data {
+      color: #656161;
+      font-size: 14px;
+    }
+  }
+  .add-button {
+    position: fixed;
+    display: flex;
+    right: 4%;
+    top: 16%;
+  }
+  .questions {
+    overflow-x: hidden;
+    height: 435px;
+    margin: 20px 0px;
+    .question-body {
+      padding: 0px 45px;
+      .edit-button {
+        display: flex;
+        justify-content: flex-end;
+        height: 32px;
+      }
+      .data-container {
+        display: flex;
+        .label::after {
+          content: ":"
+        }
+        .value {
+          color: #35373a;
+          font-weight: 500;
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .question-form-container {
+    margin: 2% 20%;
+    padding: 2% 2%;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    .header {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      // padding: 0% 1% 5%;
+      text-decoration: underline;
+    }
+    .form {
+      .divider {
+        padding: 30px 0px;
+        color: #8c867fa6;
+      }
+      .ant-input-affix-wrapper .ant-input-suffix {
+        right: 0px !important;
+      }
+      .remove-button {
+        background: #d1d5d8;
+        border: none;
+      }
+      .tags {
+        header {
+          display: flex;
+          top: -11%;
+          color: rgb(142, 139, 139);
+          font-size: 14px;
+          width: 192px;
+          font-weight: 500;
+          padding-bottom: 3px;
+
+        }
+      }
+
+    }
+    .action {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding-top: 5%;
+      div {
+        padding: 5px;
+      }
+    }
+  }
+}
