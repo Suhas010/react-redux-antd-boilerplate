@@ -24,7 +24,7 @@ class TargetGroup extends Component {
         title: 'Region',
         dataIndex: 'region',
         key: 'region',
-        render: region => <JSwitch checked={region} disabled />,
+        render: region => <span><JSwitch checked={region} disabled /></span>,
       },
       {
         title: 'Country',

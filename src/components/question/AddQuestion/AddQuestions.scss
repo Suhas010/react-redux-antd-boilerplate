@@ -1,32 +1,24 @@
 .question-container {
   .target-group {
     background: #8080801c;
-    margin: 1% 20%;
-    height: 140px;
+    justify-content: space-around;
+    display: flex;
     border-radius: 10px;
+    padding: 7px;
+    margin: 0px 18%;
     width: 100%;
-    .center {
-      // justify-content: center;
-      // display: flex;
-      padding: 1%;
-    }
-    .header {
+    div {
       display: flex;
-      justify-content: center;
-      font-weight: 600;
-      letter-spacing: 2px;
-      padding: 5px;
+      flex-direction: column;
     }
-    label {
-      padding: 10px;
-      color: #404346;
+    .tg-label {
+      color: #828384;
+      font-size: 14px;
+      text-align: center
     }
-    .label::after {
-      content: ':'
-    }
-    value {
-      color: #96999c;
-      font-size: 13px;
+    .tg-data {
+      color: #656161;
+      font-size: 14px;
     }
   }
   .add-button {
@@ -77,7 +69,13 @@
         padding: 30px 0px;
         color: #8c867fa6;
       }
-      
+      .ant-input-affix-wrapper .ant-input-suffix {
+        right: 0px !important;
+      }
+      .remove-button {
+        background: #d1d5d8;
+        border: none;
+      }
       .tags {
         header {
           display: flex;

@@ -66,8 +66,6 @@ class Sidebar extends Component {
             </Menu.SubMenu>
           </Menu.SubMenu>
         </Menu>
-       
-
       </Sider>
     );
   }

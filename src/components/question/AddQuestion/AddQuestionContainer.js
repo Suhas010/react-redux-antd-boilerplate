@@ -5,7 +5,7 @@ import TargetGroupModel from '../../../models/AppModel/TargetGroup';
 import AddQuestionForm from './AddQuestionForm';
 import './AddQuestions.scss';
 
-const Panel = Collapse.Panel;
+const { Panel } = Collapse;
 
 const text = (
   <p style={{ paddingLeft: 24 }}>
@@ -14,7 +14,6 @@ const text = (
     the world.
   </p>
 );
-
 class AddQuestionContainer extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +60,7 @@ class AddQuestionContainer extends Component {
 
   getAffix = addQuestion => (
     <div style={{ display: 'flex'}}>
-      <div className="bacl">
+      <div>
         <Tooltip title="Target Group">
           <Button
             onClick={this.handleBackClick}
@@ -70,42 +69,41 @@ class AddQuestionContainer extends Component {
         </Tooltip>
       </div>
       <div className="target-group">
-        <Row className="header">
-          Target Group
-        </Row>
-        <Row className="center">
-          <Col span={6} offset={6}>
-            <label>Gender</label>
-            <value>Male</value>
-          </Col>
-          <Col span={6} offset={1}>
-            <label>Age</label>
-            <value>1 to 14</value>
-          </Col>
-        </Row>
-        <Row className="center">
-          <Col span={6} offset={6}>
-            <label>Region</label>
-            <value>Yes</value>
-          </Col>
-          <Col span={3} offset={1}>
-            <label>Contry</label>
-            <value>India</value>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={6} offset={6}>
-            <label>State</label>
-            <value>Maharashtra</value>
-          </Col>
-          <Col span={3} offset={1}>
-            <label>City</label>
-            <value>Pune</value>
-          </Col>
-        </Row>
+        <div>
+          <div className="tg-label">Category</div>
+          <div className="tg-data">Media</div>
+        </div>
+        <div>
+          <div className="tg-label">Sub-Category</div>
+          <div className="tg-data">Movies</div>
+        </div>
+        <div>
+          <div className="tg-label">Gender</div>
+          <div className="tg-data">Male</div>
+        </div>
+        <div>
+          <div className="tg-label">Age</div>
+          <div className="tg-data">1 to 14</div>
+        </div>
+        <div>
+          <div className="tg-label">Region</div>
+          <div className="tg-data">Yes</div>
+        </div>
+        <div>
+          <div className="tg-label">Contry</div>
+          <div className="tg-data">India</div>
+        </div>
+        <div>
+          <div className="tg-label">State</div>
+          <div className="tg-data">Maharashtra</div>
+        </div>
+        <div>
+          <div className="tg-label">City</div>
+          <div className="tg-data">Pune</div>
+        </div>
       </div>
       {!addQuestion && (
-        <div className="bacl">
+        <div>
           <Tooltip title="Add question">
             <Button
               onClick={() => this.handleAddQuestionClick('Add')}
@@ -148,27 +146,12 @@ class AddQuestionContainer extends Component {
           <Row>
             <Col span={4}>
               <div className="data-container">
-                <div className="label">Category</div>
-                <div className="value">Select</div>
-              </div>
-            </Col>
-            <Col span={4} offset={1}>
-              <div className="data-container">
-                <div className="label">Sub-Category</div>
-                <div className="value">Sub Cate</div>
-              </div>
-            </Col>
-            <Col span={4} offset={1}>
-              <div className="data-container">
                 <div className="label">Difficulty</div>
                 <div className="value">Medium</div>
               </div>
             </Col>
           </Row>
         </div>
-      </Panel>
-      <Panel header="Hows the Josh?" key="2">
-        {text}
       </Panel>
     </>
   )

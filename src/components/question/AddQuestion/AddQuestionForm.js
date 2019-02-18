@@ -7,7 +7,6 @@ import JTextArea from '../../reusable/TextArea';
 import { CONFIG } from '../Constants';
 import JInput from '../../reusable/Input';
 import JSwitch from '../../reusable/Switch';
-import { getUUID } from '../../../utils/commonFunctions';
 
 const Option = Select.Option;
 
@@ -15,11 +14,8 @@ class AddQuestionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: 0,
-      subCategory: 1,
-      questionType: 4,
+      questionType: 1,
       question: '',
-      showOptions: true,
       diffLevel: 3,
       repeatThis: false,
       triggerDate: 2,
@@ -32,13 +28,12 @@ class AddQuestionForm extends React.Component {
   }
 
   handleTagsChange = (tags) => {
-    this.setState({
-      tags,
-    });
+    // this.setState({
+    //   tags,
+    // });
   }
 
   handleChange = (value, type) => {
-    console.log(value, type, "###");
     this.setState({
       [type]: value,
     });
@@ -55,7 +50,7 @@ class AddQuestionForm extends React.Component {
     <div className="tags">
       <header>Tags</header>
       <Select
-        mode="multiple"
+        mode="tags"
         style={{ width: '100%' }}
         placeholder="Tags Mode"
         onChange={this.handleTagsChange}
@@ -91,25 +86,27 @@ class AddQuestionForm extends React.Component {
   getOptions = () => {
     const { options } = this.state;
     return options.map((option, index) => {
-      const marginLeft = index > 0 ? index % 2 === 0 ? 0 : 10 : 0;
+      let marginLeft = index > 1 ? index % 2 === 0 ? 0 : 36 : 0;
+      if (index === 1) {
+        marginLeft = 10;
+      }
       return (
         <>
           <Col span={index >1 ? 10 : 11} style={{ marginLeft, marginTop: 5, marginBottom: 5 }}>
             <JInput
               value={option}
               onChange={e=> this.handleOptionChange(e, index)}
-              label={`Option ${index}`}
+              label={`Option ${index + 1}`}
               labelClass="label"
+              suffix={index > 1 ? (
+                <Button
+                  icon="minus"
+                  className="remove-button"
+                  onClick={() => this.handleRemoveOption(index)}
+                />
+              ) : null}
             />
           </Col>
-          {index > 1 && (
-            <Col span={1} style={{ marginTop: '4%', marginLeft: 3 }}>
-              <Button
-                icon="minus"
-                onClick={() => this.handleRemoveOption(index)}
-              />
-            </Col>
-          )}
         </>
       );
     });
@@ -146,7 +143,7 @@ class AddQuestionForm extends React.Component {
   }
 
   validateForm = () => {
-    const { category, subCategory, questionType,  question, showOptions, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
+    const { questionType,  question, showOptions, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
     if (!question.trim()) {
       showWarningNotification('Question is mandatory.');
     }
@@ -161,39 +158,14 @@ class AddQuestionForm extends React.Component {
 
   render() {
     const { handleCancelClick } = this.props;
-    const { category, subCategory, questionType,  question, showOptions, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
+    const { questionType,  question, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
     return (
       <div className="question-form-container">
         <Row className="header">
           Add Question
         </Row>
         <div className="form">
-          <Divider className="divider" dashed>Category</Divider>
-          <Row>
-            <Col span={12}>
-              <JSelect
-                onChange={e => this.handleSelectChange(e, 'category')}
-                options={CONFIG.questionTypes}
-                label="Category"
-                value={category}
-                labelClass="label"
-                style={{ width: '90%' }}
-                required
-              />
-            </Col>
-            <Col span={12}>
-              <JSelect
-                onChange={e => this.handleSelectChange(e, 'subCategory')}
-                options={CONFIG.questionTypes}
-                label="Sub Category"
-                value={subCategory}
-                labelClass="label"
-                style={{ width: '90%' }}
-                required
-              />
-            </Col>
-          </Row>
-          <Divider className="divider" dashed> Question </Divider>
+          <Divider /> 
           <Row>
             <Col span={12}>
               <JSelect
@@ -204,6 +176,16 @@ class AddQuestionForm extends React.Component {
                 value={questionType}
                 style={{ width: '90%' }}
                 required
+              />
+            </Col>
+            <Col span={11} offset={1}>
+              <JSelect
+                label="Difficulty Level"
+                labelClass="label"
+                onChange={e => this.handleSelectChange(e, 'diffLevel')}
+                value={diffLevel}
+                options={CONFIG.questionTypes}
+                style={{ width: '90%' }}
               />
             </Col>
           </Row>
@@ -225,17 +207,7 @@ class AddQuestionForm extends React.Component {
           </Row>
           <Divider dashed className="divider">Will Repeat</Divider>
           <Row>
-            <Col span={11}>
-              <JSelect
-                label="Difficulty Level"
-                labelClass="label"
-                onChange={e => this.handleSelectChange(e, 'diffLevel')}
-                value={diffLevel}
-                options={CONFIG.questionTypes}
-                style={{ width: '90%' }}
-              />
-            </Col>
-            <Col span={11} offset={1}>
+            <Col span={12}>
               <JSwitch
                 checked={repeatThis}
                 onChange={e => this.handleChange(e, 'repeatThis')}

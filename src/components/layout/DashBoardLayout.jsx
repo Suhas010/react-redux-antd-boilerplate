@@ -6,7 +6,6 @@ import './DashBoardLayout.scss';
 import MainContent from '../mainContent/MainContent';
 
 const { Header, Content } = Layout;
-
 class DashBoardLayout extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +16,7 @@ class DashBoardLayout extends Component {
 
   toggleMenu = () => {
     const { open } = this.state;
-    this.setState({ open: !open }, this.forceUpdate());
+    this.setState({ open: !open });
   }
 
   getSideBarMenu = open => (

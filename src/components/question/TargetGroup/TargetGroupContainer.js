@@ -75,19 +75,43 @@ class TargetGroupContainer extends Component {
       [type]: value,
     });
   }
-
+  
   handleSubmitClick = () => {
     console.log('FORM', this.state);
   }
 
   getTargetGroupFrom = () => {
-    const { gender, minAge, maxAge, region, country, state, city, tier, id } = this.state;
+    const { gender, minAge, maxAge, region, country, state, city, tier, id, category, subCategory } = this.state;
     return (
       <div className="target-group-form">
         <Row className="target-group-header">
           {`${id ? 'Edit' : 'Add'} Target Group`}
         </Row>
         <Row>
+          <Col span={12}>
+            <JSelect
+              onChange={e => this.handleChange(e, 'category')}
+              options={CONFIG.questionTypes}
+              label="Category"
+              value={category}
+              labelClass="label"
+              style={{ width: '100%' }}
+              required
+            />
+          </Col>
+          <Col span={11} offset={1}>
+            <JSelect
+              onChange={e => this.handleChange(e, 'subCategory')}
+              options={CONFIG.questionTypes}
+              label="Sub Category"
+              value={subCategory}
+              labelClass="label"
+              style={{ width: '100%' }}
+              required
+            />
+          </Col>
+        </Row>
+        <Row style={{ paddingTop: 10 }}>
           <Col span={8}>
             <JSelect
               label="Gender"
