@@ -58,8 +58,8 @@ class AddQuestionContainer extends Component {
     history.push('/dashboard/target-groups');
   }
 
-  getAffix = addQuestion => (
-    <div style={{ display: 'flex'}}>
+  getAddBackButtons = addQuestion => (
+    <div className="buttons">
       <div>
         <Tooltip title="Target Group">
           <Button
@@ -67,40 +67,6 @@ class AddQuestionContainer extends Component {
             icon="arrow-left"
           />
         </Tooltip>
-      </div>
-      <div className="target-group">
-        <div>
-          <div className="tg-label">Category</div>
-          <div className="tg-data">Media</div>
-        </div>
-        <div>
-          <div className="tg-label">Sub-Category</div>
-          <div className="tg-data">Movies</div>
-        </div>
-        <div>
-          <div className="tg-label">Gender</div>
-          <div className="tg-data">Male</div>
-        </div>
-        <div>
-          <div className="tg-label">Age</div>
-          <div className="tg-data">1 to 14</div>
-        </div>
-        <div>
-          <div className="tg-label">Region</div>
-          <div className="tg-data">Yes</div>
-        </div>
-        <div>
-          <div className="tg-label">Contry</div>
-          <div className="tg-data">India</div>
-        </div>
-        <div>
-          <div className="tg-label">State</div>
-          <div className="tg-data">Maharashtra</div>
-        </div>
-        <div>
-          <div className="tg-label">City</div>
-          <div className="tg-data">Pune</div>
-        </div>
       </div>
       {!addQuestion && (
         <div>
@@ -156,9 +122,46 @@ class AddQuestionContainer extends Component {
     </>
   )
 
+  getAffix = () => (
+    <div className="target-group">
+      <div>
+        <div className="tg-label">Category</div>
+        <div className="tg-data">Media</div>
+      </div>
+      <div>
+        <div className="tg-label">Sub-Category</div>
+        <div className="tg-data">Movies</div>
+      </div>
+      <div>
+        <div className="tg-label">Gender</div>
+        <div className="tg-data">Male</div>
+      </div>
+      <div>
+        <div className="tg-label">Age</div>
+        <div className="tg-data">1 to 14</div>
+      </div>
+      <div>
+        <div className="tg-label">Region</div>
+        <div className="tg-data">Yes</div>
+      </div>
+      <div>
+        <div className="tg-label">Contry</div>
+        <div className="tg-data">India</div>
+      </div>
+      <div>
+        <div className="tg-label">State</div>
+        <div className="tg-data">Maharashtra</div>
+      </div>
+      <div>
+        <div className="tg-label">City</div>
+        <div className="tg-data">Pune</div>
+      </div>
+    </div>
+  )
+
   getQuestions = () => (
-    <div className="questions">
-      <Collapse bordered={false} defaultActiveKey={['1']}>
+    <div className="questions" onScroll={() => console.log('$$  ')}>
+      <Collapse bordered={false}>
         {this.getQuestionList()}
       </Collapse>
     </div>
@@ -174,7 +177,8 @@ class AddQuestionContainer extends Component {
           this.container = node;
         }}
       >
-        {this.getAffix(addQuestion)}
+        {this.getAffix()}
+        {this.getAddBackButtons(addQuestion)}
         {addQuestion && this.getAddQuestionForm(mode)}
         {!addQuestion && this.getQuestions()}
       </div>

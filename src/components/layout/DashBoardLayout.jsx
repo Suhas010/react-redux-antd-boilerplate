@@ -27,19 +27,17 @@ class DashBoardLayout extends Component {
 
   render() {
     const { open } = this.state;
-    const { history } = this.props;
     return (
-      <Layout style={{ height: '100vh'}}>
+      <Layout style={{ height: '100vh' }}>
         {this.getSideBarMenu(open)}
         <Layout>
-          <Header style={{ background: '#fff', padding: 0, display: 'flex' }}>
+          <Header style={{ background: '#f0f2f5', height: 18, padding: 0, display: 'flex' }}>
             <Icon
               className="trigger"
               type={open ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggleMenu}
-              style={{ paddingTop: 17 }}
+              style={{ paddingTop: 10 }}
             />
-            <div className="header-logo" onClick={() => history.push('/dashboard')}>AtCOI</div>
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, flex: 'none'

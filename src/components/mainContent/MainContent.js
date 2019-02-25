@@ -6,6 +6,7 @@ import NoMatch from '../app/NoMatch';
 import TargetGroup from '../question';
 import AddQuestions from '../question/AddQuestion/AddQuestionContainer';
 import Dashboard from '../dashboard/Dashboard';
+import TargetGroupForm from '../question/TargetGroup/TargetGroupForm';
 
 function isAuthenticated() {
   if (localStorage.getItem('user')) {
@@ -23,8 +24,8 @@ function getComponent({ location, ...rest }, Component) {
   return (
     <Redirect
       to={{
-        pathname: "/",
-        state: { from: location }
+        pathname: '/',
+        state: { from: location },
       }}
     />
   );
@@ -38,7 +39,9 @@ const MainContent = () => (
   <Switch>
     <PrivateRoute exact path="/dashboard" component={Dashboard} />
     <PrivateRoute exact path="/dashboard/target-groups" component={TargetGroup} />
-    <PrivateRoute exact path="/dashboard/add-question/:id" component={AddQuestions} />
+    <PrivateRoute exact path="/dashboard/target-groups/edit/:id" component={TargetGroupForm} />
+    <PrivateRoute exact path="/dashboard/target-groups/add" component={TargetGroupForm} />
+    <PrivateRoute exact path="/dashboard/:id/add-question/" component={AddQuestions} />
     <PrivateRoute component={NoMatch} />
   </Switch>
 );

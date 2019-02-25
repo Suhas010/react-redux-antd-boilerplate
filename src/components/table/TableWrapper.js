@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Dialog } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { AgGridReact } from 'ag-grid-react';
+import { Switch, Divider } from 'antd';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
@@ -29,7 +30,6 @@ class TableWrapper extends Component {
   };
 
   renderViewButton = ({ value, data }) => {
-    console.log(data);
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div>
@@ -53,6 +53,21 @@ class TableWrapper extends Component {
       </div>
     );
   }
+
+  renderSwitch = ({ value, data}) => {
+    return <Switch checked={value} disabled />;
+  }
+
+  renderEditViewLink = ({ value, data }) => {
+    return (
+      <>
+        <a onClick={() => this.props.handleTGEditClick(value)} >Edit</a>
+        <Divider type="vertical" />
+        <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>
+      </>
+    );
+  }
+
 
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
     // console.log(oldValue, newValue);
@@ -111,7 +126,7 @@ class TableWrapper extends Component {
             colResizeDefault
             rowHeight={38}
             minHeight={300}
-            headerHeight={43}
+            headerHeight={40}
             domLayout="autoHeight"
             columnDefs={headers}
             rowData={data}
@@ -122,6 +137,8 @@ class TableWrapper extends Component {
             onFirstDataRendered={this.onFirstDataRendered}
             frameworkComponents={{
               renderViewButton: this.renderViewButton,
+              renderSwitch: this.renderSwitch,
+              renderEditViewLink: this.renderEditViewLink,
             }}
           />
         </div>

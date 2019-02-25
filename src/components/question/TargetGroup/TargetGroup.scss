@@ -4,33 +4,10 @@
   justify-content: center;
   text-align: center;
   align-items: center;
-  .target-group-form {
-    width: 60%;
-    padding: 2% 2%;
-    border: solid 1px #eee;
-    border-radius: 11px;
-    .row-padding {
-      padding-top: 2%; 
-    }
-    .actions {
-      display: flex;
-      justify-content: center;
-      padding: 7% 1px 0px;
-      div {
-        padding: 5px;
-      }
-    }
-  }
-  .target-group-header {
-    font-size: 18px;
-    padding-bottom: 30px;
-    font-weight: 600;
-    letter-spacing: 2px;
-  }
   .add-button {
     position: fixed;
-    top: 17%;
-    right: 5%;
+    top: 9%;
+    right: 3%;
   }
   .target-group {
     display: flex;
@@ -68,4 +45,28 @@
       }
     }
   }
+}
+
+.target-group-form {
+  margin: 1% 15%;
+  padding: 2% 2%;
+  border: solid 1px #eee;
+  border-radius: 11px;
+  .row-padding {
+    padding-top: 2%; 
+  }
+  .actions {
+    display: flex;
+    justify-content: center;
+    padding: 7% 1px 0px;
+    div {
+      padding: 5px;
+    }
+  }
+}
+.target-group-header {
+  font-size: 18px;
+  padding-bottom: 30px;
+  font-weight: 600;
+  letter-spacing: 2px;
 }

@@ -1,12 +1,16 @@
 .question-container {
   .target-group {
-    background: #8080801c;
+    position: fixed;
+    width: 56%;
+    top: 2px;
+    background: #ffffff;
     justify-content: space-around;
     display: flex;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 7px;
-    margin: 0px 18%;
-    width: 100%;
+    z-index: 10000;
+    margin: 0px 16%;
+    box-shadow: 0px 14px 16px 0px #bfc2c7;
     div {
       display: flex;
       flex-direction: column;
@@ -20,6 +24,10 @@
       color: #656161;
       font-size: 14px;
     }
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
   }
   .add-button {
     position: fixed;
