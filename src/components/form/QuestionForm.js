@@ -1,9 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { Dialog, Tooltip, TextArea, Button } from '@blueprintjs/core';
-import { Row, Col, Tag, Icon, Input } from 'antd';
+import { Row, Col } from 'antd';
 import 'antd/dist/antd.css';
-// import { Select } from '@blueprintjs/select';
 import PropTypes from 'prop-types';
 import QuestionModal from '../../models/AppModel/Questions';
 import './QuestionForm.scss';
@@ -12,7 +11,7 @@ import JInput from '../reusable/Input';
 import JDatePicker from '../reusable/DatePicker';
 import JTag from '../reusable/Tag';
 
-const DATA ={
+const DATA = {
   questionCategory: [
     {
       value: 'Category 1',
@@ -205,13 +204,13 @@ class QuestionForm extends Component {
       return (
         <Col span={7} offset={(key) % 3 === 0 ? 0 : 1} key={key} style={{ display: 'flex', marginBottom: '10px' }}>
           <JInput
-            label={`Option ${key+1}`}
+            label={`Option ${key + 1}`}
             value={option}
-            placeholder={`option ${key+1}`}
+            placeholder={`option ${key + 1}`}
             onChange={({ target }) => this.handleOptionValueChange(target, key)}
           />
           {key > 1 && (
-            <Tooltip content={`Remove Option ${key+1}`}>
+            <Tooltip content={`Remove Option ${key + 1}`}>
               <Button
                 icon="minus"
                 style={{ margin: '17px 6px' }}

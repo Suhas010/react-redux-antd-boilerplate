@@ -1,5 +1,6 @@
+import { getUUID } from '../../utils/commonFunctions';
 
-export const CONFIG =  {
+export const CONFIG = {
   genders: [
     { value: 0, name: 'All' },
     { value: 1, name: 'Male' },
@@ -54,4 +55,21 @@ export const TG = [
     city: 'Pune',
     tire: 1,
   },
+];
+
+export const TG_DATA = [
+  { id: getUUID(), gender: 'Male', minimum_age: 2, maximum_age: 14, region: false, country: 'India', state: 'Maharashtra', city: 'Pune', tier: 'Two'},
+  { id: getUUID(), gender: 'Female', minimum_age: 2, maximum_age: 12, region: true, country: 'India', state: 'Maharashtra', city: 'Pune', tier: 'Two'}
+];
+
+export const TG_HEADER = [
+  { headerName: 'Gender', field: 'gender', sortable: true, editable: true },
+  { headerName: 'Min Age', field: 'minimum_age', sortable: true, editable: true, width: 140 },
+  { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
+  { headerName: 'Region', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
+  { headerName: 'Country', field: 'country', sortable: true, editable: true },
+  { headerName: 'State', field: 'state', sortable: true, editable: true },
+  { headerName: 'City', field: 'city', sortable: true, editable: true },
+  { headerName: 'Tier', field: 'tier', sortable: true, editable: true },
+  { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditViewLink', width: 300 },
 ];
