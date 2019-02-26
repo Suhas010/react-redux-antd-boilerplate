@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { Empty } from 'antd';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
+import { getTargetGroups } from '../../../actions/appActions/TargetGroupAction';
 import { TG } from '../Constants';
 import JLoader from '../../reusable/Loader';
 import TargetGroup from './TargetGroup';
@@ -19,9 +20,9 @@ class TargetGroupContainer extends Component {
   }
 
   componentWillMount() {
-    // getTargetGroups().then((data => {
-    //   console.log(data);
-    // }));
+    getTargetGroups().then((data => {
+      console.log(data);
+    }));
     TargetGroupModel.saveAll(TG.map(item => new TargetGroupModel(item)));
   }
 

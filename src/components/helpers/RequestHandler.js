@@ -10,10 +10,12 @@ export default class RequestHandler {
   static getHeader(type, data = {}, isFile = false) {
     const header = {
       method: type,
-      credentials: 'same-origin',
+      // mode: 'cors',
+      // credentials: 'same-origin',
       headers: {
-        Accept: 'application/api.multifit.com; version=1',
-        Authorization: getItem('authtoken'),
+        Accept: 'application/vnd.questionbank.v1',
+        // 'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
       },
     };
     if (!isFile) {

@@ -2,26 +2,28 @@
   .target-group {
     position: fixed;
     width: 56%;
-    top: 2px;
-    background: #ffffff;
+    top: 15px;
+    background: #001529cf;
     justify-content: space-around;
     display: flex;
     border-radius: 12px;
     padding: 7px;
     z-index: 10000;
     margin: 0px 16%;
-    box-shadow: 0px 14px 16px 0px #bfc2c7;
+    box-shadow: 0px 14px 16px 0px #c7c7c7a6;
     div {
       display: flex;
       flex-direction: column;
     }
     .tg-label {
-      color: #828384;
+      color: #ffffff;
       font-size: 14px;
+      font-weight: 400;
       text-align: center
     }
     .tg-data {
-      color: #656161;
+      color: #ffffff;
+      font-weight: 700;
       font-size: 14px;
     }
   }
