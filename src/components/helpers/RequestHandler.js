@@ -2,6 +2,7 @@
 // import handleError from './handleError';
 import { getItem } from './localStorage';
 import handleError from './handleError';
+import { showFailureNotification } from '../reusable/Notifications';
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -32,6 +33,7 @@ export default class RequestHandler {
   }
 
   static isSuccess(response) {
+    console.log(response, "######");
     if (!(response.ok || response.status === 200 || response.status === 201)) {
       return new Error('Something went wrong.');
     }
@@ -45,6 +47,7 @@ export default class RequestHandler {
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
+          showFailureNotification();
           reject(error);
         });
     });

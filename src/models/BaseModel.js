@@ -97,9 +97,7 @@ export default class BaseModel {
     embedded.forEach((key) => {
       const currentValue = this[key];
       if (currentValue instanceof Array) {
-        this[key] = currentValue.map((val) => {
-          return save(val);
-        });
+        this[key] = currentValue.map(val => save(val));
         return;
       }
       this[key] = save(currentValue);
@@ -235,14 +233,14 @@ export default class BaseModel {
   /**
    * Used to fetch the list of all instances present in the store.
    * @param state Optional state of the redux store from which the instances is to be fetched.
-   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state 
+   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state
    * in the function.
    * @returns Array of instances.
    */
   static list(state = store.getState()) {
-    return state.models.filter((instance) => {
-      return instance && instance.resource === this.resource;
-    }).toArray();
+    return state.models.filter(
+      instance => instance && instance.resource === this.resource,
+    ).toArray();
   }
 
   /** Returns the last instance which had been stored in the redux store. */
@@ -329,8 +327,6 @@ export default class BaseModel {
    * @param instances The instances which need to be removed from the store.
    */
   static deleteAll(instances = this.list()) {
-    deleteAllInstances(instances.map((instance) => {
-      return instance.getStoreKey();
-    }));
+    deleteAllInstances(instances.map(instance => instance.getStoreKey()));
   }
 }

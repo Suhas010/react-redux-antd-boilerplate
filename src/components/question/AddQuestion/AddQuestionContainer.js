@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Affix, Collapse, Button, Tooltip, Row, Col } from 'antd';
 import QuestionModel from '../../../models/AppModel/Questions';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
 import AddQuestionForm from './AddQuestionForm';
 import './AddQuestions.scss';
+import routes from '../../../utils/routes';
 
 const { Panel } = Collapse;
 
@@ -54,8 +56,8 @@ class AddQuestionContainer extends Component {
   }
 
   handleBackClick = () => {
-    const {history} = this.props;
-    history.push('/dashboard/target-groups');
+    const { history } = this.props;
+    history.push(routes.targetGroup);
   }
 
   getAddBackButtons = addQuestion => (

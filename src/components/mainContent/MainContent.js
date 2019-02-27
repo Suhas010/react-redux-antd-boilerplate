@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   Route, Switch, Redirect,
@@ -7,9 +8,11 @@ import TargetGroup from '../question';
 import AddQuestions from '../question/AddQuestion/AddQuestionContainer';
 import Dashboard from '../dashboard/Dashboard';
 import TargetGroupForm from '../question/TargetGroup/TargetGroupForm';
+import routes from '../../utils/routes';
+import { getItem } from '../helpers/localStorage';
 
 function isAuthenticated() {
-  if (localStorage.getItem('user')) {
+  if (getItem('user')) {
     console.log('true');
     return true;
   }
@@ -37,11 +40,11 @@ function PrivateRoute({ component: Component, ...rest }) {
 
 const MainContent = () => (
   <Switch>
-    <PrivateRoute exact path="/dashboard" component={Dashboard} />
-    <PrivateRoute exact path="/dashboard/target-groups" component={TargetGroup} />
-    <PrivateRoute exact path="/dashboard/target-groups/edit/:id" component={TargetGroupForm} />
-    <PrivateRoute exact path="/dashboard/target-groups/add" component={TargetGroupForm} />
-    <PrivateRoute exact path="/dashboard/:id/add-question/" component={AddQuestions} />
+    <PrivateRoute exact path={routes.dashboard} component={Dashboard} />
+    <PrivateRoute exact path={routes.targetGroup} component={TargetGroup} />
+    <PrivateRoute exact path={routes.targetGroupAdd} component={TargetGroupForm} />
+    <PrivateRoute exact path={routes.targetGroupEdit} component={TargetGroupForm} />
+    <PrivateRoute exact path={routes.questionAdd} component={AddQuestions} />
     <PrivateRoute component={NoMatch} />
   </Switch>
 );

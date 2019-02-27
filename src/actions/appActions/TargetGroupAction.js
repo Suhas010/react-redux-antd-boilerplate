@@ -5,6 +5,6 @@ export function getTargetGroups() {
   return RequestHandler.get('/target_groups');
 }
 
-export function editTargetGroups() {
-  return RequestHandler.get('/target_groups');
+export function getTargetGroup(id) {
+  return RequestHandler.get(`/target_groups/${id}`);
 }

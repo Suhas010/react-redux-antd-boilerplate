@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Select } from 'antd';
 
-const JSelect = ({ labelClass, label, options, required, ...rest }) => (
+const JSelect = ({ labelClass, label, options, required, placeholder, error, ...rest }) => (
   <div className="labeled-input">
     <span
       className={labelClass}
@@ -10,11 +11,12 @@ const JSelect = ({ labelClass, label, options, required, ...rest }) => (
       }}
     >
       {label}
-      {required && <span style={{ color: 'red' }}>*</span>}
+      {required && <span style={{ color: 'red' }}> &nbsp;*</span>}
     </span>
-    <Select {...rest}>
-      {options.map(option => <Select.Option value={option.value} key={`${option.value}${option.name}`}>{option.name}</Select.Option>)}
+    <Select {...rest} placeholder={placeholder}>
+      {options.map(option => <Select.Option value={option.value || option.id} key={`${option.value || option.id}${option.name}`}>{option.name}</Select.Option>)}
     </Select>
+    {error && <span className="error">{error}</span>}
   </div>
 );
 
