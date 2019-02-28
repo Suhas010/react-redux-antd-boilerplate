@@ -23,7 +23,6 @@ class DashBoardLayout extends Component {
       const { difficulty_levels, question_types, genders } = data;
       const diff = JSON.stringify(difficulty_levels);
       const difff = JSON.parse(diff);
-      // console.log(difff['Easy'], data, "##")
 
       setItem('difficulty_levels', JSON.stringify(difficulty_levels));
       setItem('question_types', JSON.stringify(question_types));

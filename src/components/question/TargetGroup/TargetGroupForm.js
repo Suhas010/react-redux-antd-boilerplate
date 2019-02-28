@@ -12,30 +12,37 @@ import JSwitch from '../../reusable/Switch';
 import './TargetGroup.scss';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
 import CategoriesModel from '../../../models/AppModel/Categories';
-import { getTargetGroup } from '../../../actions/appActions/TargetGroupAction';
+import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../../actions/appActions/TargetGroupAction';
 import { getCategories, getSubCategories } from '../../../actions/appActions/AppConfigActions';
 import JLoader from '../../reusable/Loader';
 import routes from '../../../utils/routes';
-import { showWarningNotification } from '../../reusable/Notifications';
+import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
 
 const initialError = {
   minAge: '',
   maxAge: '',
   subCategory: '',
 };
+
+const MAX_AGE = 60;
+const MIN_AGE = 0;
+
 class TargetGroupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       subCategoryLoading: false,
+      submitLoading: false,
       subCategories: [],
+      subCategory: '',
       addEdit: false,
       gender: 1,
-      minAge: "",
-      maxAge: "",
-      region: false,
+      minAge: 2,
+      maxAge: 14,
+      isRegionSpecific: false,
       error: initialError,
+      id: '',
     };
   }
 
@@ -48,21 +55,48 @@ class TargetGroupForm extends Component {
     }).catch(() => {
       this.setLoading('loading', false);
     });
-    if (!match.params.id) {
+    if (!match.params.targetID) {
       return 0;
     }
     
     if (TargetGroupModel.list().length > 0) {
-      this.setEditData(TargetGroupModel.get(match.params.id).props);
+      this.setEditData(TargetGroupModel.get(match.params.targetID).props);
       return 0;
     }
-    getTargetGroup(match.params.id)
+    getTargetGroup(match.params.targetID)
       .then((payload) => {
         this.setEditData(payload.target_group);
       }).catch(() => {
         this.setLoading('loading', false);
       });
     return 0;
+  }
+
+  addTargetGroup =(payload) => {
+    console.log(payload);
+    const { history } = this.props;
+    saveTargetGroup({ target_group: payload })
+      .then((data) => {
+        console.log(data);
+        showSuccessNotification('A new target group created successfully.');
+        this.setLoading('submitLoading', false);
+        history.push(routes.targetGroup);
+      }).catch(() => {
+        this.setLoading('submitLoading', false);
+        // showWarningNotification('Seems like you are not connecnted to the internet')
+      });
+  }
+
+  updateTargetGroup = (payload) => {
+    console.log(payload);
+    updateTargetGroup({ target_group: payload })
+      .then((data) => {
+        console.log(data);
+        showSuccessNotification('Target group updated successfully.');
+        this.setLoading('submitLoading', false);
+      }).catch(() => {
+        this.setLoading('submitLoading', false);
+      });
   }
 
   getSubCategories = (id, categoryChanged = false) => {
@@ -95,6 +129,7 @@ class TargetGroupForm extends Component {
     this.getSubCategories(category_id);
     this.setState({
       gender,
+      id,
       maxAge: maximum_age,
       minAge: minimum_age,
       category: category_id,
@@ -110,7 +145,6 @@ class TargetGroupForm extends Component {
   }
 
   setError = (field, msg) => {
-    console.log("**")
     const { error } = this.state;
     error[field] = msg;
     this.setState({
@@ -119,12 +153,8 @@ class TargetGroupForm extends Component {
   }
 
   resetErrors = () => {
-    console.log("##");
-    let { error } = this.state;
-    error = { ...initialError };
-    console.log(error, initialError);
     this.setState({
-      error,
+      error: {},
     });
   }
 
@@ -132,13 +162,12 @@ class TargetGroupForm extends Component {
     const { minAge, maxAge } = this.state;
     const updatedValue = parseInt(value);
     if (type === 'minAge') {
-      if (updatedValue > maxAge || updatedValue < 0 || updatedValue > 100 || !value) {
+      if (updatedValue > maxAge || updatedValue < MIN_AGE || updatedValue > MAX_AGE || !value) {
         this.setError('minAge', 'Incorrect age.');
-        this.setError('subCategory', 'Incorrect age.');
       }
       return;
     }
-    if (updatedValue < minAge || updatedValue < 0 || updatedValue > 100 || !value) {
+    if (updatedValue < minAge || updatedValue < MIN_AGE || updatedValue > MAX_AGE || !value) {
       this.setError('maxAge', 'Incorrect age.');
     }
   }
@@ -147,29 +176,84 @@ class TargetGroupForm extends Component {
     if (type === 'category') {
       this.getSubCategories(value, true);
     }
+    if (type === 'subCategory') {
+      this.setError('subCategory', '');
+    }
     if (type === 'minAge' || type === 'maxAge') {
       this.resetErrors();
       this.validateAge(value, type);
+      value = parseInt(value);
     }
     this.setState({
       [type]: value,
     });
   };
 
+  validateForm = ({
+    maxAge, minAge,
+    subCategory,
+  }) => {
+    if (!subCategory) {
+      this.setError('subCategory', 'Please select sub-category.');
+      return false;
+    }
+    if (!minAge || !maxAge) {
+      this.setError('minAge', 'Should not be empty.');
+      this.setError('maxAge', 'Should not be empty.');
+      return false;
+    }
+    if (minAge > MAX_AGE || minAge < MIN_AGE) {
+      this.setError('minAge', 'Incorrect age.');
+      return false;
+    }
+    if (maxAge > MAX_AGE || maxAge < MIN_AGE) {
+      this.setError('maxAge', 'Incorrect age.');
+      return false;
+    }
+    if (minAge > maxAge) {
+      this.setError('minAge', 'Incorrect age.');
+      this.setError('maxAge', 'Incorrect age.');
+      return false;
+    }
+    this.resetErrors();
+    return true;
+  }
+
   handleSubmitClick = () => {
-    console.log("FORM", this.state);
+    const {
+      maxAge, minAge,
+      category, subCategory,
+      gender, isRegionSpecific, id
+    } = this.state;
+    if (!this.validateForm(this.state)) {
+      showWarningNotification('Looks like something is wrong in form.');
+      return false;
+    }
+    this.setLoading('submitLoading', true);
+    const payload = {
+      gender,
+      maximum_age: maxAge,
+      minimum_age: minAge,
+      category_id: category,
+      subcategory_id: subCategory,
+    };
+    if (id) {
+      payload.id = id;
+      this.updateTargetGroup(payload);
+      return 0;
+    }
 
-
+    this.addTargetGroup(payload);
   };
 
   handleCancel = () => {
     const { history } = this.props;
-    history.push(routes.targetGroup);
+    history.push(routes.targetGroupList);
   };
 
   getHeader = () => {
     const { match } = this.props;
-    if (match.params && match.params.id) {
+    if (match.params && match.params.targetID) {
       return 'Edit';
     }
     return 'Add';
@@ -180,19 +264,19 @@ class TargetGroupForm extends Component {
     gender,
     minAge,
     maxAge,
-    region,
+    isRegionSpecific,
     country,
     state,
     city,
     tier,
-    id,
     category,
     subCategory,
     subCategories,
     subCategoryLoading,
+    submitLoading,
   }) => {
     const { categories } = this.props;
-    console.log(error, error.minAge, "$$$$$");
+    console.log(error);
     return (
       <div className="target-group-form">
         <Row className="target-group-header">
@@ -204,6 +288,7 @@ class TargetGroupForm extends Component {
               showSearch
               onChange={e => this.handleChange(e, 'category')}
               options={categories}
+              placeholder="Select category"
               label="Category"
               value={category}
               labelClass="label"
@@ -225,7 +310,7 @@ class TargetGroupForm extends Component {
               style={{ width: '100%' }}
               required
               loading={subCategoryLoading}
-              disabled={subCategoryLoading}
+              disabled={!category ? true : subCategoryLoading}
               filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               error={error.subCategory}
             />
@@ -274,13 +359,13 @@ class TargetGroupForm extends Component {
             <JSwitch
               label="Is region specific?"
               labelClass="label"
-              value={region}
-              onChange={e => this.handleChange(e, 'region')}
+              value={isRegionSpecific}
+              onChange={e => this.handleChange(e, 'isRegionSpecific')}
               style={{ display: 'flex', marginTop: 8 }}
             />
           </Col>
         </Row>
-        {region && (
+        {isRegionSpecific && (
           <Row className="row-padding">
             <Col span={5}>
               <JSelect
@@ -328,7 +413,7 @@ class TargetGroupForm extends Component {
           <Col span={24}>
             <div className="actions">
               <div>
-                <Button onClick={this.handleSubmitClick} type="primary">
+                <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
                   {`${this.getHeader()}  Target Group`}
                 </Button>
               </div>

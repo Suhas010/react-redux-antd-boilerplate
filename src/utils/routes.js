@@ -1,9 +1,11 @@
 const routes = {
   dashboard: '/dashboard',
-  targetGroup: '/dashboard/target-groups',
-  targetGroupEdit: '/dashboard/target-groups/edit/:id',
+  targetGroupList: '/dashboard/target-groups',
+  targetGroupEdit: '/dashboard/target-groups/edit/:targetID',
   targetGroupAdd: '/dashboard/target-groups/add',
-  questionAdd: '/dashboard/:id/questions/',
+  questionList: '/dashboard/:targetID/questions',
+  questionAdd: '/dashboard/:targetID/questions/add',
+  questionEdit: '/dashboard/:targetID/questions/edit/:questionID',
 };
 
 export default routes;

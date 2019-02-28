@@ -52,6 +52,7 @@ class TargetGroupContainer extends Component {
 
   handleViewQuestionClick = (id) => {
     const { history } = this.props;
+    console.log('view q', id)
     history.push(`/dashboard/${id}/questions`);
   }
 

@@ -33,9 +33,10 @@ export default class RequestHandler {
   }
 
   static isSuccess(response) {
-    console.log(response, "######");
+    // console.log("Response", response.json());
     if (!(response.ok || response.status === 200 || response.status === 201)) {
-      return new Error('Something went wrong.');
+      showFailureNotification(handleError(response));
+      throw Error(response.statusText);
     }
     return response;
   }
@@ -47,7 +48,6 @@ export default class RequestHandler {
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
-          showFailureNotification();
           reject(error);
         });
     });
@@ -60,7 +60,6 @@ export default class RequestHandler {
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
-          console.log('@@@', error);
           reject(error);
         });
     });

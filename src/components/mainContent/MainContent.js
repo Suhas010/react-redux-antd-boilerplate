@@ -10,6 +10,7 @@ import Dashboard from '../dashboard/Dashboard';
 import TargetGroupForm from '../question/TargetGroup/TargetGroupForm';
 import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';
+import AddQuestionForm from '../question/AddQuestion/AddQuestionForm';
 
 function isAuthenticated() {
   if (getItem('user')) {
@@ -41,10 +42,12 @@ function PrivateRoute({ component: Component, ...rest }) {
 const MainContent = () => (
   <Switch>
     <PrivateRoute exact path={routes.dashboard} component={Dashboard} />
-    <PrivateRoute exact path={routes.targetGroup} component={TargetGroup} />
+    <PrivateRoute exact path={routes.targetGroupList} component={TargetGroup} />
     <PrivateRoute exact path={routes.targetGroupAdd} component={TargetGroupForm} />
     <PrivateRoute exact path={routes.targetGroupEdit} component={TargetGroupForm} />
-    <PrivateRoute exact path={routes.questionAdd} component={AddQuestions} />
+    <PrivateRoute exact path={routes.questionList} component={AddQuestions} />
+    <PrivateRoute exact path={routes.questionAdd} component={AddQuestionForm} />
+    <PrivateRoute exact path={routes.questionEdit} component={AddQuestionForm} />
     <PrivateRoute component={NoMatch} />
   </Switch>
 );
