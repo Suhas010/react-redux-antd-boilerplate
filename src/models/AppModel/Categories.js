@@ -1,6 +1,8 @@
 import BaseModel from '../BaseModel';
-export default class QuestionModel extends BaseModel {
-  static resource = 'questions';
+
+export default class CategoriesModel extends BaseModel {
+  static resource = 'categories';
+
   constructor(properties) {
     super(properties);
   }

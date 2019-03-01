@@ -1,3 +1,9 @@
+/* eslint-disable prefer-const */
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-return-assign */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/no-access-state-in-setstate */
 import React, { Component } from 'react';
 import { Tag, Icon, Input, Tooltip } from 'antd';
 
@@ -57,7 +63,7 @@ class JTag extends Component {
     const nextselectedTags = checked
       ? [...selectedTags, tag]
       : selectedTags.filter(t => t !== tag);
-      this.props.onSelect(nextselectedTags);
+    this.props.onSelect(nextselectedTags);
     // console.log('You are interested in: ', nextselectedTags);
     this.setState({ selectedTags: nextselectedTags });
   }
@@ -67,7 +73,7 @@ class JTag extends Component {
     const { totalTags, selectedTags, addNewTag, newTagValue } = this.state;
     return (
       <div>
-        {totalTags.map((tag, index) => {
+        {totalTags.map((tag) => {
           const isLongTag = tag.length > 20;
           const tagElem = (
             <span className="tag">

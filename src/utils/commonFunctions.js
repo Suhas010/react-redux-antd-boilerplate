@@ -1,11 +1,14 @@
-export function isValidEmail(email = "") {
+/* eslint-disable no-useless-escape */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-bitwise */
+export function isValidEmail(email = '') {
   if (!email) return false;
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true;
   }
   return false;
 }
-export function isValidContactNumber(contactNumber = "") {
+export function isValidContactNumber(contactNumber = '') {
   if (!contactNumber) return false;
   if (/^(\+\d{1,3}[- ]?)?\d{10}$/.test(contactNumber)) {
     return true;
@@ -25,10 +28,10 @@ export function contains(arr, item) {
 // genarate and returns unique UUID
 export function getUUID() {
   let dt = new Date().getTime();
-  const uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (dt + Math.random() * 16) % 16 | 0;
     dt = Math.floor(dt / 16);
-    return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
   return uuid;
 }

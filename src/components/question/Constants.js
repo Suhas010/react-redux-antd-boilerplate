@@ -63,7 +63,7 @@ export const TG_DATA = [
 ];
 
 export const TG_HEADER = [
-  { headerName: 'Gender', field: 'gender', sortable: true, editable: true },
+  { headerName: 'Gender', field: 'gender', sortable: true, editable: true, cellRenderer: 'renderGender' },
   { headerName: 'Min Age', field: 'minimum_age', sortable: true, editable: true, width: 140 },
   { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
   { headerName: 'Region', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },

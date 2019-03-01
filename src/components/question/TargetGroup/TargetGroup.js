@@ -7,15 +7,14 @@ import { TG_DATA, TG_HEADER } from '../Constants';
 
 class TargetGroup extends Component {
   render() {
-    const { handleAddTGButtonClick, handleTGEditClick, handleViewQuestionClick } = this.props;
+    const { data, handleAddTGButtonClick, handleTGEditClick, handleViewQuestionClick } = this.props;
     return (
       <>
-        <div className="target-group-header">Target Groups</div>
         <div className="add-button">
           <Button icon="plus" onClick={handleAddTGButtonClick} />
         </div>
         <TableWrapper
-          data={TG_DATA}
+          data={data}
           headers={TG_HEADER}
           handleTGEditClick={handleTGEditClick}
           handleViewQuestionClick={handleViewQuestionClick}

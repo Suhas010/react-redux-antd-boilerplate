@@ -7,6 +7,9 @@ import JTextArea from '../../reusable/TextArea';
 import { CONFIG } from '../Constants';
 import JInput from '../../reusable/Input';
 import JSwitch from '../../reusable/Switch';
+import routes from '../../../utils/routes';
+import TargetGroupAffix from './TargetGroupAffix';
+import './AddQuestions.scss';
 
 const Option = Select.Option;
 
@@ -153,13 +156,20 @@ class AddQuestionForm extends React.Component {
     if (!this.validateForm()) {
       return 0;
     }
-
   }
 
+  handleCancelClick = () => {
+    const { history, match } = this.props;
+    history.push(`/dashboard/${match.params.targetID}/questions`);
+  }
+
+  getAffix = () => <TargetGroupAffix />
+
   render() {
-    const { handleCancelClick } = this.props;
-    const { questionType,  question, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
+    const { questionType, question, diffLevel, repeatThis, triggerDate, count, interval, tags, date } = this.state;
     return (
+      <>
+      {this.getAffix()}
       <div className="question-form-container">
         <Row className="header">
           Add Question
@@ -273,10 +283,11 @@ class AddQuestionForm extends React.Component {
             <Button onClick={this.handleSubmit}>Submit</Button>
           </div>
           <div>
-            <Button onClick={handleCancelClick}>Cancel</Button>
+            <Button onClick={this.handleCancelClick}>Cancel</Button>
           </div>
         </div>
       </div>
+      </>
     );
   }
 }

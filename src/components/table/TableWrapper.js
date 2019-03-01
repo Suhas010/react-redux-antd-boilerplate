@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import { Button } from '@blueprintjs/core';
 import { AgGridReact } from 'ag-grid-react';
@@ -6,6 +10,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
 import QuestionForm from '../form/QuestionForm';
+import { getItem } from '../helpers/localStorage';
 
 class TableWrapper extends Component {
   constructor(props) {
@@ -29,45 +34,47 @@ class TableWrapper extends Component {
     params.api.sizeColumnsToFit();
   };
 
-  renderViewButton = ({ value, data }) => {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div>
-          <Button
-            text="View"
-            id={value}
-            icon="zoom-in"
-            intent="none"
-            onClick={() => this.handleViewClick(data.id, 'View')}
-          />
-        </div>
-        <div style={{ paddingLeft: '10px' }}>
-          <Button
-            text="Edit"
-            id={value}
-            icon="edit"
-            intent="none"
-            onClick={() => this.handleEditClick(data.id, 'Edit')}
-          />
-        </div>
+  renderViewButton = ({ value, data }) => (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div>
+        <Button
+          text="View"
+          id={value}
+          icon="zoom-in"
+          intent="none"
+          onClick={() => this.handleViewClick(data.id, 'View')}
+        />
       </div>
-    );
-  }
+      <div style={{ paddingLeft: '10px' }}>
+        <Button
+          text="Edit"
+          id={value}
+          icon="edit"
+          intent="none"
+          onClick={() => this.handleEditClick(data.id, 'Edit')}
+        />
+      </div>
+    </div>
+  );
 
-  renderSwitch = ({ value, data}) => {
-    return <Switch checked={value} disabled />;
-  }
+  renderSwitch = ({ value }) => <Switch checked={value} disabled />;
 
-  renderEditViewLink = ({ value, data }) => {
+  renderEditViewLink = ({ value }) => (
+    <>
+      <a onClick={() => this.props.handleTGEditClick(value)} >Edit</a>
+      <Divider type="vertical" />
+      <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>
+    </>
+  );
+
+  renderGender = ({ value }) => {
+    const genders = JSON.parse(getItem('genders'));
+    // console.log(Object.keys(genders))
+    // console.log(value, JSON.parse(getItem('genders')), "DDD");
     return (
-      <>
-        <a onClick={() => this.props.handleTGEditClick(value)} >Edit</a>
-        <Divider type="vertical" />
-        <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>
-      </>
+      <span>{Object.keys(genders)[value]}</span>
     );
   }
-
 
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
     // console.log(oldValue, newValue);
@@ -110,7 +117,7 @@ class TableWrapper extends Component {
       );
     }
   }
-
+  
   render = () => {
     const { data, headers } = this.props;
     return (
@@ -122,7 +129,7 @@ class TableWrapper extends Component {
             refreshCells
             animateRows
             rowDragManaged
-            enableSorting
+            
             colResizeDefault
             rowHeight={38}
             minHeight={300}
@@ -139,6 +146,7 @@ class TableWrapper extends Component {
               renderViewButton: this.renderViewButton,
               renderSwitch: this.renderSwitch,
               renderEditViewLink: this.renderEditViewLink,
+              renderGender: this.renderGender,
             }}
           />
         </div>
