@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { Empty } from 'antd';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
-import CategoriesModel from '../../../models/AppModel/Categories';
 import { getTargetGroups } from '../../../actions/appActions/TargetGroupAction';
 import JLoader from '../../reusable/Loader';
 import TargetGroup from './TargetGroup';
@@ -24,14 +23,15 @@ class TargetGroupContainer extends Component {
 
   componentWillMount() {
     this.setLoading(true);
-    try {
-      getTargetGroups().then(((data) => {
+    getTargetGroups()
+      .then(((data) => {
         TargetGroupModel.saveAll(data.target_groups.map(item => new TargetGroupModel(item)));
         this.setLoading(false);
-      }));
-    } catch (e) {
-      showFailureNotification('Something went wrong while fetching target groups.');
-    }
+      }))
+      .catch(() => {
+        this.setLoading(false);
+        showFailureNotification('Something went wrong while fetching target groups.');
+      });
   }
 
   setLoading(value) {
@@ -42,7 +42,7 @@ class TargetGroupContainer extends Component {
 
   handleTGEditClick = (id) => {
     const { history } = this.props;
-    history.push(`/dashboard/target-groups/edit/${id}`);
+    history.push(`/admin/dashboard/target-groups/edit/${id}`);
   }
 
   handleAddTGButtonClick = () => {
@@ -52,19 +52,18 @@ class TargetGroupContainer extends Component {
 
   handleViewQuestionClick = (id) => {
     const { history } = this.props;
-    console.log('view q', id)
-    history.push(`/dashboard/${id}/questions`);
+    // console.log('view q', id)
+    history.push(`/admin/dashboard/${id}/questions`);
   }
 
   getTargetGroups = () => {
-    const { targetGroup, categories } = this.props;
+    const { targetGroup } = this.props;
     if (!targetGroup) {
       return <Empty description="No target groups" />;
     }
     return (
       <TargetGroup
         data={targetGroup}
-        categories={categories}
         handleTGEditClick={this.handleTGEditClick}
         handleViewQuestionClick={this.handleViewQuestionClick}
         handleAddTGButtonClick={this.handleAddTGButtonClick}
@@ -87,14 +86,12 @@ class TargetGroupContainer extends Component {
 function mapStateToProps() {
   return {
     targetGroup: TargetGroupModel.list()[0] ? TargetGroupModel.list().map(item => item[1].props) : [],
-    categories: CategoriesModel.list()[0] ? CategoriesModel.list().map(item => item[1].props) : [],
   };
 }
 
 TargetGroupContainer.propTypes = {
   history: propTypes.object.isRequired,
   targetGroup: propTypes.array.isRequired,
-  categories: propTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps)(withRouter(TargetGroupContainer));

@@ -10,7 +10,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
 import QuestionForm from '../form/QuestionForm';
-import { getItem } from '../helpers/localStorage';
+// import { getItem } from '../helpers/localStorage';
+import { getGender } from '../../utils/commonFunctions';
 
 class TableWrapper extends Component {
   constructor(props) {
@@ -67,15 +68,10 @@ class TableWrapper extends Component {
     </>
   );
 
-  renderGender = ({ value }) => {
-    const genders = JSON.parse(getItem('genders'));
-    // console.log(Object.keys(genders))
-    // console.log(value, JSON.parse(getItem('genders')), "DDD");
-    return (
-      <span>{Object.keys(genders)[value]}</span>
-    );
-  }
-
+  renderGender = ({ value }) => <span>{getGender(value)}</span>;
+  
+  renderData = ({ value }) => <span>{value || 'NA'}</span>;
+  
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
     // console.log(oldValue, newValue);
   }
@@ -147,6 +143,7 @@ class TableWrapper extends Component {
               renderSwitch: this.renderSwitch,
               renderEditViewLink: this.renderEditViewLink,
               renderGender: this.renderGender,
+              renderData: this.renderData,
             }}
           />
         </div>

@@ -327,6 +327,8 @@ export default class BaseModel {
    * @param instances The instances which need to be removed from the store.
    */
   static deleteAll(instances = this.list()) {
-    deleteAllInstances(instances.map(instance => instance.getStoreKey()));
+    deleteAllInstances(instances.map((instance) => {
+      return instance.getStoreKey();
+    }));
   }
 }

@@ -6,6 +6,13 @@ export function getItem(key) {
   return localStorage[key];
 }
 
+export function isExist(key) {
+  if (localStorage[key]) {
+    return true;
+  }
+  return false;
+}
+
 export function setItem(key, value) {
   if (localStorage[key]) {
     showFailureNotification(`Item is already present with  key: ${key}`);

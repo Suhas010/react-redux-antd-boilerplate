@@ -16,6 +16,7 @@ import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../../act
 import { getCategories, getSubCategories } from '../../../actions/appActions/AppConfigActions';
 import JLoader from '../../reusable/Loader';
 import routes from '../../../utils/routes';
+import { getConfigFor } from '../../../utils/commonFunctions';
 import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
 
 const initialError = {
@@ -58,7 +59,7 @@ class TargetGroupForm extends Component {
     if (!match.params.targetID) {
       return 0;
     }
-    
+
     if (TargetGroupModel.list().length > 0) {
       this.setEditData(TargetGroupModel.get(match.params.targetID).props);
       return 0;
@@ -66,6 +67,7 @@ class TargetGroupForm extends Component {
     getTargetGroup(match.params.targetID)
       .then((payload) => {
         this.setEditData(payload.target_group);
+        new TargetGroupModel(payload.target_group).$save();
       }).catch(() => {
         this.setLoading('loading', false);
       });
@@ -73,11 +75,11 @@ class TargetGroupForm extends Component {
   }
 
   addTargetGroup =(payload) => {
-    console.log(payload);
+    // console.log(payload);
     const { history } = this.props;
     saveTargetGroup({ target_group: payload })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         showSuccessNotification('A new target group created successfully.');
         this.setLoading('submitLoading', false);
         history.push(routes.targetGroup);
@@ -88,10 +90,10 @@ class TargetGroupForm extends Component {
   }
 
   updateTargetGroup = (payload) => {
-    console.log(payload);
+    // console.log(payload);
     updateTargetGroup({ target_group: payload })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         showSuccessNotification('Target group updated successfully.');
         this.setLoading('submitLoading', false);
       }).catch(() => {
@@ -276,7 +278,7 @@ class TargetGroupForm extends Component {
     submitLoading,
   }) => {
     const { categories } = this.props;
-    console.log(error);
+    // console.log(error, categories);
     return (
       <div className="target-group-form">
         <Row className="target-group-header">
@@ -321,7 +323,7 @@ class TargetGroupForm extends Component {
             <JSelect
               label="Gender"
               labelClass="label"
-              options={CONFIG.genders}
+              options={getConfigFor('genders')}
               value={gender}
               onChange={e => this.handleChange(e, 'gender')}
               style={{ width: '100%' }}

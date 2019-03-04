@@ -14,7 +14,7 @@ const JSelect = ({ labelClass, label, options, required, placeholder, error, ...
       {required && <span style={{ color: 'red' }}> &nbsp;*</span>}
     </span>
     <Select {...rest} placeholder={placeholder}>
-      {options.map(option => <Select.Option value={option.value || option.id} key={`${option.value || option.id}${option.name}`}>{option.name}</Select.Option>)}
+      {options.map(option => <Select.Option value={option.value === undefined ? option.id : option.value} key={`${option.value === undefined ? option.id : option.value}${option.name}`}>{option.name}</Select.Option>)}
     </Select>
     {error && <span className="error">{error}</span>}
   </div>

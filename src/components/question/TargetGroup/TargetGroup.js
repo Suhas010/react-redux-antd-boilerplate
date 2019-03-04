@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import propTypes from 'prop-types';
 import TableWrapper from '../../table/TableWrapper';
 
-import { TG_DATA, TG_HEADER } from '../Constants';
+import { TG_HEADER } from '../Constants';
 
 class TargetGroup extends Component {
   render() {
