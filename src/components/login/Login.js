@@ -7,6 +7,7 @@ import {
   Tooltip,
 } from '@blueprintjs/core';
 import './Login.scss';
+import routes from '../../utils/routes';
 
 const initialState = {
   showPassword: false,
@@ -54,8 +55,7 @@ class Login extends React.Component {
 
   handleLoginClick = () => {
     if (this.validateForm) {
-      console.log(this.props.history);
-      this.props.history.push('dashboard');
+      this.props.history.push(routes.dashboard);
     }
   }
 

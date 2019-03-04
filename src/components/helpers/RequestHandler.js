@@ -1,10 +1,8 @@
 /* eslint-disable no-undef */
-// import handleError from './handleError';
-import { getItem } from './localStorage';
 import handleError from './handleError';
 import { showFailureNotification } from '../reusable/Notifications';
 
-const API_BASE_URL = process.env.REACT_APP_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : `${window.location.origin}/questionbank`;
 
 export default class RequestHandler {
   // returns header object

@@ -25,6 +25,7 @@
       color: #ffffff;
       font-weight: 700;
       font-size: 14px;
+      text-align: center;
     }
   }
   .buttons {
@@ -42,22 +43,23 @@
     height: 435px;
     margin: 20px 0px;
     .question-body {
-      padding: 0px 45px;
+      margin: 0px 0px;
+      padding: 8px 32px;
+      border-radius: 14px;
+      border: 1px solid #eeeeee6b;
+      // box-sha  dow: inset 2px 2px 7px 0px #847c7c2e;
       .edit-button {
-        display: flex;
-        justify-content: flex-end;
-        height: 32px;
+        position: relative;
+        display: grid;
+        justify-content: end;
       }
-      .data-container {
-        display: flex;
-        .label::after {
-          content: ":"
-        }
-        .value {
-          color: #35373a;
-          font-weight: 500;
-          padding-left: 10px;
-        }
+      .q-label {
+        font-size: 12px;
+        text-align: center
+      }
+      .q-data {
+        color: #333435;
+        text-align: center;
       }
     }
   }
@@ -79,7 +81,7 @@
   }
   .form {
     .divider {
-      padding: 30px 0px;
+      padding: 0px 0px;
       color: #8c867fa6;
     }
     .ant-input-affix-wrapper .ant-input-suffix {

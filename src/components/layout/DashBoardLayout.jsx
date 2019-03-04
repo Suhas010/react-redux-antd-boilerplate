@@ -19,17 +19,11 @@ class DashBoardLayout extends Component {
 
   componentWillMount() {
     getConfig().then((data) => {
-      clearStorage();
       const { difficulty_levels, question_types, genders } = data;
-      const diff = JSON.stringify(difficulty_levels);
-      const difff = JSON.parse(diff);
-
-      setItem('difficulty_levels', JSON.stringify(difficulty_levels));
-      setItem('question_types', JSON.stringify(question_types));
+      clearStorage();
+      setItem('difficultyLevels', JSON.stringify(difficulty_levels));
+      setItem('questionTypes', JSON.stringify(question_types));
       setItem('genders', JSON.stringify(genders));
-      setItem('data', JSON.stringify(data));
-      // console.log(JSON.parse(getItem('difficulty_levels')));
-      // console.log(Object.values(data.difficulty_levels), Object.keys(data.difficulty_levels), data.difficulty_levels, "$$$");
     }).catch((error) => {
       console.error(error);
     });

@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Collapse, Button, Tooltip, Row, Col } from 'antd';
+import { Button, Tooltip, BackTop } from 'antd';
+import { connect } from 'react-redux';
 import QuestionModel from '../../../models/AppModel/Questions';
-import TargetGroupModel from '../../../models/AppModel/TargetGroup';
-import AddQuestionForm from './AddQuestionForm';
+import { getQuestions } from '../../../actions/appActions/QuestionActions';
 import TargetGroupAffix from './TargetGroupAffix';
+import QuestionPanel from './QuestionPanel';
 import './AddQuestions.scss';
 import routes from '../../../utils/routes';
 
-const { Panel } = Collapse;
 
 class AddQuestionContainer extends Component {
   constructor(props) {
@@ -19,17 +19,24 @@ class AddQuestionContainer extends Component {
   }
 
   componentWillMount() {
-    const { match } = this.props; 
+    const { match } = this.props;
+    getQuestions(match.params.targetID)
+      .then((payload) => {
+        QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
   }
 
   handleAddQuestionClick = (mode) => {
     const { history, match } = this.props;
-    console.log(mode)
+    // console.log(mode)
     if (mode === 'Add') {
-      history.push(`/dashboard/${match.params.targetID}/questions/add`);
+      history.push(`/admin/dashboard/${match.params.targetID}/questions/add`);
       return 0;
     }
-    history.push(`/dashboard/${match.params.targetID}/questions/edit/${123}`);
+    history.push(`/admin/dashboard/${match.params.targetID}/questions/edit/${123}`);
   }
 
   handleBackClick = () => {
@@ -58,53 +65,13 @@ class AddQuestionContainer extends Component {
     </div>
   );
 
-  getQuestionList = () => (
-    <>
-      <Panel header="How's the Josh ?" key="1">
-        <div className="question-body">
-          <Row className="edit-button">
-            <Button icon="edit" onClick={() => this.handleAddQuestionClick('Edit')} />
-          </Row>
-          <Row>
-            <Col span={4}>
-              <div className="data-container">
-                <div className="label">Option 1</div>
-                <div className="value">High Sir</div>
-              </div>
-            </Col>
-            <Col span={4} offset={1}>
-              <div className="data-container">
-                <div className="label">Option 1</div>
-                <div className="value">High Sir</div>
-              </div>
-            </Col>
-            <Col span={4} offset={1}>
-              <div className="data-container">
-                <div className="label">Option 1</div>
-                <div className="value">High Sir</div>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <div className="data-container">
-                <div className="label">Difficulty</div>
-                <div className="value">Medium</div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </Panel>
-    </>
-  )
+  getQuestionList = () => <QuestionPanel {...this.props} />;
 
   getAffix = () => <TargetGroupAffix />
 
   getQuestions = () => (
     <div className="questions">
-      <Collapse bordered={false}>
-        {this.getQuestionList()}
-      </Collapse>
+      {this.getQuestionList()}  
     </div>
   )
 
@@ -115,12 +82,20 @@ class AddQuestionContainer extends Component {
       <div
         className="question-container"
       >
+        <BackTop />
         {this.getAffix()}
         {this.getAddBackButtons(addQuestion)}
-        { this.getQuestions()}
+        {this.getQuestions()}
       </div>
     );
   }
 }
 
-export default AddQuestionContainer;
+function mapStateToProps() {
+  return {
+    questions: QuestionModel.list()[0] ? QuestionModel.list().map(item => item[1].props) : [],
+  };
+}
+
+
+export default connect(mapStateToProps)(AddQuestionContainer);

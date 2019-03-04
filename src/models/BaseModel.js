@@ -7,8 +7,7 @@ import store from '../store/store';
 import { contains, isEmpty } from '../utils/commonFunctions';
 
 /**
- * Parent class for models. Exposes all the model layer functionalities to it's corresponding
- *  children.
+ * Parent class for models. Exposes all the model layer functionalities to it's corresponding children.
  * @param P type definition for the properties to be stored within the Model class.
  */
 
@@ -35,11 +34,11 @@ function generateInstanceMap(instances) {
 }
 
 /**
- * Used the validate an object to the set of rules passed in
- * @param obj The Object to be validated.
- * @param rules The set of constraint functions which need to be applied to the object properties.
- * @returns boolean representing whether or not the obj passes the rules.
- */
+* Used the validate an object to the set of rules passed in
+* @param obj The Object to be validated.
+* @param rules The set of constraint functions which need to be applied to the object properties.
+* @returns boolean representing whether or not the obj passes the rules.
+*/
 
 function validateObject(obj, rules) {
   for (const prop in rules) {
@@ -56,11 +55,9 @@ function validateObject(obj, rules) {
 
 export default class BaseModel {
   static resource;
-
+  resource;
   static constraints;
-
   static defaultProps;
-
   static embedded;
 
   /** Performs all initialization and validation related operations of the properties passed in. */
@@ -97,7 +94,9 @@ export default class BaseModel {
     embedded.forEach((key) => {
       const currentValue = this[key];
       if (currentValue instanceof Array) {
-        this[key] = currentValue.map(val => save(val));
+        this[key] = currentValue.map((val) => {
+          return save(val);
+        });
         return;
       }
       this[key] = save(currentValue);
@@ -140,20 +139,19 @@ export default class BaseModel {
    * time of initialization.
    */
   assignDefaults() {
-    const defaultProps = this.constructor;
+    const defaultProps = this.constructor.defaultProps;
     if (!defaultProps) {
-      // return;
+      return;
     }
-    // keys(defaultProps, (key) => {
-    //     if (isEmpty(this.props[key])) {
-    //         this.props[key] = defaultProps[key];
-    //     }
-    // });
+    keys(defaultProps, (key) => {
+      if (isEmpty(this.props[key])) {
+        this.props[key] = defaultProps[key];
+      }
+    });
   }
 
   /**
-   * Returns the value of the key to which the current instance needs to be assigned
-   *  to in the store.
+   * Returns the value of the key to which the current instance needs to be assigned to in the store.
    * @returns String representing the key for the current instance in the store.
    */
   getStoreKey() {
@@ -184,12 +182,11 @@ export default class BaseModel {
 
   /**
    * Used to verify whether or not the properties passed into the instance
-   * pass the specified constraints. Used at the time of initialization and while
-   *  calling save methods.
+   * pass the specified constraints. Used at the time of initialization and while calling save methods.
    * @returns boolean specifying whether or not the properties pass the constraints.
    */
   validate() {
-    const { constraints } = this.constructor;
+    const constraints = this.constructor.constraints;
 
     if (isEmpty(constraints)) {
       return true;
@@ -202,8 +199,7 @@ export default class BaseModel {
    * Used to fetch an instance from the store.
    * @param id ID of the instance to be fetched.
    * @param state Optional state of the redux store from which the instance is to be fetched.
-   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state
-   *  in the function.
+   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state in the function.
    * @returns an instance of the current model instance.
    */
   static get(id, state = store.getState()) {
@@ -233,14 +229,13 @@ export default class BaseModel {
   /**
    * Used to fetch the list of all instances present in the store.
    * @param state Optional state of the redux store from which the instances is to be fetched.
-   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state
-   * in the function.
+   * Used majorly in the mapStateToProps functions so as to avoid an unused instance of the state in the function.
    * @returns Array of instances.
    */
   static list(state = store.getState()) {
-    return state.models.filter(
-      instance => instance && instance.resource === this.resource,
-    ).toArray();
+    return state.models.filter((instance) => {
+      return instance && instance.resource === this.resource;
+    }).toArray();
   }
 
   /** Returns the last instance which had been stored in the redux store. */
@@ -255,8 +250,7 @@ export default class BaseModel {
 
   /**
    * Used to remove instances which were not created on the list page.
-   * This is so that, the list pages are not populated with inconsistent instances and the
-   *  start_id required for
+   * This is so that, the list pages are not populated with inconsistent instances and the start_id required for
    * the list request is not incorrect.
    */
   static removeStaleInstances() {
@@ -268,11 +262,10 @@ export default class BaseModel {
 
     const lastPageInstance = this.getLastPageInstance();
     /*
-     * This if block is used to handle the situation wherein instances have been fetched and
-      constructed
-     * on some page other than the list page. In such a case the list will be prepopulated with
-     * stale instances.
-     */
+       * This if block is used to handle the situation wherein instances have been fetched and constructed
+       * on some page other than the list page. In such a case the list will be prepopulated with
+       * stale instances.
+       */
     if (!lastPageInstance && !isEmpty(list)) {
       this.deleteAll();
       return;
@@ -327,6 +320,8 @@ export default class BaseModel {
    * @param instances The instances which need to be removed from the store.
    */
   static deleteAll(instances = this.list()) {
-    deleteAllInstances(instances.map(instance => instance.getStoreKey()));
+    deleteAllInstances(instances.map((instance) => {
+      return instance[1].getStoreKey();
+    }));
   }
 }

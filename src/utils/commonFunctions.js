@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-bitwise */
+import { getItem, isExist } from '../components/helpers/localStorage';
+
 export function isValidEmail(email = '') {
   if (!email) return false;
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
@@ -34,4 +36,15 @@ export function getUUID() {
     return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
   return uuid;
+}
+
+export function getGender(value) {
+  return JSON.parse(getItem('genders')).find(item => item.value === value).name;
+}
+
+export function getConfigFor(key) {
+  if (isExist(key)) {
+    return JSON.parse(getItem(key));
+  }
+  return [];
 }

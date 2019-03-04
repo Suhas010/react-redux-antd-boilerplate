@@ -67,9 +67,9 @@ export const TG_HEADER = [
   { headerName: 'Min Age', field: 'minimum_age', sortable: true, editable: true, width: 140 },
   { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
   { headerName: 'Region', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
-  { headerName: 'Country', field: 'country', sortable: true, editable: true },
-  { headerName: 'State', field: 'state', sortable: true, editable: true },
-  { headerName: 'City', field: 'city', sortable: true, editable: true },
-  { headerName: 'Tier', field: 'tier', sortable: true, editable: true },
+  { headerName: 'Country', field: 'country', sortable: true, editable: true, cellRenderer: 'renderData' },
+  { headerName: 'State', field: 'state', sortable: true, editable: true, cellRenderer: 'renderData' },
+  { headerName: 'City', field: 'city', sortable: true, editable: true, cellRenderer: 'renderData' },
+  { headerName: 'Tier', field: 'tier', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditViewLink', width: 300 },
 ];
