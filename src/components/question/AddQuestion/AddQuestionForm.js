@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 import React from 'react';
 import { Button, Row, Col, Divider, Select, DatePicker, Skeleton } from 'antd';
 import moment from 'moment';
-import { showWarningNotification } from '../../reusable/Notifications';
+import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
 import JSelect from '../../reusable/Select';
 import JTextArea from '../../reusable/TextArea';
 import { CONFIG } from '../Constants';
@@ -11,10 +14,10 @@ import JSwitch from '../../reusable/Switch';
 import TargetGroupAffix from './TargetGroupAffix';
 import './AddQuestions.scss';
 import QuestionModel from '../../../models/AppModel/Questions';
-import { getQuestion } from '../../../actions/appActions/QuestionActions';
+import { getQuestion, updateQuestion, saveQuestion } from '../../../actions/appActions/QuestionActions';
 import { getConfigFor } from '../../../utils/commonFunctions';
 
-const Option = Select.Option;
+const { Option } = Select;
 const QUESTION_TYPES = getConfigFor('questionTypes');
 const DIFF_LEVELS = getConfigFor('difficultyLevels');
 
@@ -23,6 +26,7 @@ class AddQuestionForm extends React.Component {
     super(props);
     this.state = {
       loading: true,
+      submitLoading: false,
       questionType: 0,
       question: '',
       difficultyLevel: 10,
@@ -31,8 +35,9 @@ class AddQuestionForm extends React.Component {
       count: '',
       interval: '',
       tags: [],
-      options: ['', ''],
+      options: [{ body: '' }, { body: '' }],
       date: moment(),
+      error: {},
     };
   }
 
@@ -58,14 +63,55 @@ class AddQuestionForm extends React.Component {
   }
 
   setQuestionData({
-    id, tags, body, difficulty_level, type,
+    tags, body, difficulty_level, type, options,
   }) {
+    let questionOptions = [];
+    console.log(options);
+    if (!options) {
+      questionOptions = [{ body: '' }, { body: '' }];
+    }
+    options.map(item => questionOptions.push(item));
+
     this.setState({
       tags: tags.split(','),
       question: body,
       difficultyLevel: difficulty_level,
       questionType: type,
       loading: false,
+      options: questionOptions,
+    });
+  }
+
+  updateQuestion = (payload) => {
+    const { match: { params } } = this.props;
+    updateQuestion(params.targetID, payload)
+      .then(() => {
+        this.setLoading('submitLoading', false);
+        showSuccessNotification('Question has been updated successfully.');
+      })
+      .catch((error) => {
+        this.setLoading('submitLoading', false);
+        console.log(error);
+      });
+  }
+
+  addQuestion = (payload) => {
+    const { match: { params } } = this.props;
+    saveQuestion(params.targetID, payload)
+      .then((response) => {
+        this.setLoading('submitLoading', false);
+        showSuccessNotification('A new question has been added successfully.');
+        console.log(response);
+      })
+      .catch((error) => {
+        this.setLoading('submitLoading', false);
+        console.log(error);
+      });
+  }
+
+  setLoading = (field, value) => {
+    this.setState({
+      [field]: value,
     });
   }
 
@@ -76,6 +122,9 @@ class AddQuestionForm extends React.Component {
   };
 
   handleChange = (value, type) => {
+    if (type === 'question') {
+      this.resetError();
+    }
     this.setState({
       [type]: value,
     });
@@ -104,7 +153,7 @@ class AddQuestionForm extends React.Component {
   );
 
   addOption = () => {
-    this.state.options.push('');
+    this.state.options.push({ body: '' });
     this.setState({
       options: this.state.options,
     });
@@ -120,9 +169,10 @@ class AddQuestionForm extends React.Component {
 
   handleOptionChange = ({ target }, index) => {
     const { value } = target;
-    this.state.options[index] = value;
+    // console.log(this.state.options, index, target);
+    this.state.options[index].body = value;
     this.setState({
-      options: this.state.options
+      options: this.state.options,
     });
   };
 
@@ -140,7 +190,7 @@ class AddQuestionForm extends React.Component {
             style={{ marginLeft, marginTop: 5, marginBottom: 5 }}
           >
             <JInput
-              value={option}
+              value={option.body}
               onChange={e => this.handleOptionChange(e, index)}
               label={`Option ${index + 1}`}
               labelClass="label"
@@ -163,7 +213,7 @@ class AddQuestionForm extends React.Component {
   getQuestionsOptions = () => (
     <>
       {this.getOptions()}
-      <Col span={1} style={{ marginTop: "4%", marginLeft: 6 }}>
+      <Col span={1} style={{ marginTop: '4%', marginLeft: 6 }}>
         <Button icon="plus" onClick={this.addOption} />
       </Col>
     </>
@@ -176,7 +226,7 @@ class AddQuestionForm extends React.Component {
     });
   };
 
-  disabledEndDate = endValue => {
+  disabledEndDate = (endValue) => {
     const startValue = moment();
     if (!endValue || !startValue) {
       return false;
@@ -184,11 +234,21 @@ class AddQuestionForm extends React.Component {
     return endValue.valueOf() <= startValue.valueOf();
   };
 
-  handleDateChange = value => {
+  handleDateChange = (date) => {
     this.setState({
-      date: value
+      date,
     });
   };
+
+  setError = (field, message) => {
+    const { error } = this.state;
+    error[field] = message;
+    this.setState({
+      error,
+    });
+  }
+
+  resetError = () => this.setState({ error: {} });
 
   validateForm = () => {
     const {
@@ -204,14 +264,60 @@ class AddQuestionForm extends React.Component {
       date
     } = this.state;
     if (!question.trim()) {
-      showWarningNotification("Question is mandatory.");
+      console.log("in trim")
+      this.setError('question', 'Field is mandatory.');
+      // showWarningNotification("Question is mandatory.");
+      return false;
     }
+    return true;
   };
 
   handleSubmit = () => {
     if (!this.validateForm()) {
       return 0;
     }
+    this.setLoading('submitLoading', true);
+    const {
+      questionType,
+      question,
+      showOptions,
+      difficultyLevel,
+      repeatThis,
+      triggerDate,
+      count,
+      interval,
+      options,
+      tags,
+      date
+    } = this.state;
+    let questionTags = "";
+    if (tags) {
+      tags.forEach((tag) => {
+        questionTags = questionTags.concat(`${tag},`);
+      });
+      questionTags = questionTags.slice(0, questionTags.length - 1);
+    }
+
+    const payload = {
+      body: question,
+      tags: questionTags,
+      difficulty_level: difficultyLevel,
+      type: questionType,
+      options,
+    };
+    const { match } = this.props;
+    if (repeatThis) {
+      payload.repeat_trigger_at = triggerDate;
+      payload.repeat_count = count;
+      payload.repeat_interval = interval;
+    }
+    if (match.params && match.params.questionID) {
+      payload.id = match.params.questionID;
+      this.updateQuestion({ question: payload });
+      return 0;
+    }
+    this.addQuestion({ question: payload });
+    return 0;
   };
 
   handleCancelClick = () => {
@@ -230,7 +336,7 @@ class AddQuestionForm extends React.Component {
   };
 
   getForm = ({ questionType, question, difficultyLevel, repeatThis,
-    triggerDate, count, interval, tags, date,
+    triggerDate, count, interval, tags, date, error, submitLoading,
   }) => (
     <div className="question-form-container">
       <Row className="header">
@@ -271,6 +377,7 @@ class AddQuestionForm extends React.Component {
               row={1}
               onChange={e => this.handleChange(e.target.value, 'question')}
               required
+              error={error.question}
             />
           </Col>
         </Row>
@@ -353,7 +460,13 @@ class AddQuestionForm extends React.Component {
       </div>
       <div className="action">
         <div>
-          <Button onClick={this.handleSubmit}>Submit</Button>
+          <Button
+            onClick={this.handleSubmit}
+            loading={submitLoading}
+            type="primary"
+          >
+            Submit
+          </Button>
         </div>
         <div>
           <Button onClick={this.handleCancelClick}>Cancel</Button>

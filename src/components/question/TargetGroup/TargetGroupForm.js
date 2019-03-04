@@ -74,6 +74,10 @@ class TargetGroupForm extends Component {
     return 0;
   }
 
+  componentWillUnmount() {
+    this.setState({});
+  }
+
   addTargetGroup =(payload) => {
     // console.log(payload);
     const { history } = this.props;
@@ -82,7 +86,7 @@ class TargetGroupForm extends Component {
         // console.log(data);
         showSuccessNotification('A new target group created successfully.');
         this.setLoading('submitLoading', false);
-        history.push(routes.targetGroup);
+        history.push(routes.targetGroupList);
       }).catch(() => {
         this.setLoading('submitLoading', false);
         // showWarningNotification('Seems like you are not connecnted to the internet')
@@ -244,7 +248,6 @@ class TargetGroupForm extends Component {
       this.updateTargetGroup(payload);
       return 0;
     }
-
     this.addTargetGroup(payload);
   };
 

@@ -20,15 +20,13 @@ class AddQuestionContainer extends Component {
 
   componentWillMount() {
     const { match } = this.props;
-    if (QuestionModel.list().length === 0) {
-      getQuestions(match.params.targetID)
-        .then((payload) => {
-          QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));
-        })
-        .catch((e) => {
-          // console.log(e);
-        });
-    }
+    getQuestions(match.params.targetID)
+      .then((payload) => {
+        QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
   }
 
   handleAddQuestionClick = (mode) => {

@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { Empty } from 'antd';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
+import QuestionModel from '../../../models/AppModel/Questions';
 import { getTargetGroups } from '../../../actions/appActions/TargetGroupAction';
 import JLoader from '../../reusable/Loader';
 import TargetGroup from './TargetGroup';
@@ -23,6 +24,7 @@ class TargetGroupContainer extends Component {
 
   componentWillMount() {
     this.setLoading(true);
+    QuestionModel.deleteAll();
     getTargetGroups()
       .then(((data) => {
         TargetGroupModel.saveAll(data.target_groups.map(item => new TargetGroupModel(item)));

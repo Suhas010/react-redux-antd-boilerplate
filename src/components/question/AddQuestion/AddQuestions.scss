@@ -47,7 +47,7 @@
       padding: 8px 32px;
       border-radius: 14px;
       border: 1px solid #eeeeee6b;
-      box-shadow: inset 2px 2px 7px 0px #847c7c2e;
+      // box-sha  dow: inset 2px 2px 7px 0px #847c7c2e;
       .edit-button {
         position: relative;
         display: grid;
@@ -61,17 +61,6 @@
         color: #333435;
         text-align: center;
       }
-      // .data-container {
-      //   display: flex;
-      //   .label::after {
-      //     content: ":"
-      //   }
-      //   .value {
-      //     color: #35373a;
-      //     font-weight: 500;
-      //     padding-left: 10px;
-      //   }
-      // }
     }
   }
 

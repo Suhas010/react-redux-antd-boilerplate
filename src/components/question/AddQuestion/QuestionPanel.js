@@ -8,21 +8,24 @@ const { Panel } = Collapse;
 
 class QuestionPanel extends Component {
   getQuestionOptions = options => options.map((option, index) => (
-    <Col span={6}>
+    <Col span={3}>
       <div className="q-label">{`Option ${index + 1}`}</div>
       <div className="q-data">{option.body}</div>
     </Col>
   ));
 
   getQuestionsDetails = (type, options) => {
-    if (type === 0 || type === 1) {
-      return (
-        <Row>
-          {this.getQuestionOptions(options)}
-        </Row>
-      );
-    }
-    return null;
+    const ifOptions = type === 0 || type === 1;
+    return (
+      <>
+        {ifOptions && (
+          <Row>
+            {this.getQuestionOptions(options)}
+          </Row>
+        )
+        }
+      </>
+    );
   }
 
   getQuestions = () => {
