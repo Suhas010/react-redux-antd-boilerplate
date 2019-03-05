@@ -2,12 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import {
   Button,
-  InputGroup,
-  Intent,
   Tooltip,
-} from '@blueprintjs/core';
+} from 'antd';
 import './Login.scss';
 import routes from '../../utils/routes';
+import JInput from '../reusable/Input';
 
 const initialState = {
   showPassword: false,
@@ -22,28 +21,6 @@ class Login extends React.Component {
     this.state = initialState;
   }
 
-  getLockIcon = ({ showPassword }) => (
-    <Tooltip
-      content={`${showPassword ? 'Hide' : 'Show'} Password`}
-    >
-      <Button
-        icon={showPassword ? 'unlock' : 'lock'}
-        intent={Intent.NONE}
-        onClick={this.handleLockClick}
-      />
-    </Tooltip>
-  );
-
-  getUserIcon = () => (
-    <Tooltip
-      content="User name"
-    >
-      <Button
-        icon="person"
-        intent={Intent.NONE}
-      />
-    </Tooltip>
-  );
 
   validateForm = () => {
     const { userName, password } = this.state;
@@ -67,34 +44,37 @@ class Login extends React.Component {
     const { showPassword, userName, password } = this.state;
     return (
       <div className="login-container">
-        <InputGroup
+        <JInput
           type="text"
+          label="User Name"
           placeholder="Enter user name..."
-          rightElement={this.getUserIcon()}
+          // rightElement={this.getUserIcon()}
           value={userName}
           onChange={e => this.handleValueChange(e, 'userName')}
         />
         <br />
-        <InputGroup
-          type={showPassword ? 'text' : 'password'}
+        <JInput
+          type="password"
           placeholder="Enter your password..."
-          rightElement={this.getLockIcon(this.state)}
+          label="Password"
+          // rightElement={this.getLockIcon(this.state)}
           value={password}
           onChange={e => this.handleValueChange(e, 'password')}
         />
         <br />
         <div className="actions">
           <Button
-            text="Login"
             onClick={this.handleLoginClick}
-            intent={Intent.PRIMARY}
-          />
+            type="primary"
+          >
+            Login
+          </Button>
           <span />
           <Button
-            text="Reset"
             onClick={() => this.setState(initialState)}
-            intent={Intent.NONE}
-          />
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     );

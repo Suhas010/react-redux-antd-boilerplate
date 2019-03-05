@@ -1,14 +1,11 @@
 FROM node:11.6.0-alpine
-
 WORKDIR '/app'
-
 RUN apk update && apk add yarn python g++ make && rm -rf /var/cache/apk/*
-
 COPY package.json yarn.lock /app/
 
 COPY . ./
-RUN yarn global add react-scripts
 RUN yarn install
+RUN yarn global add react-scripts
 RUN yarn run build
 
 # production environment
