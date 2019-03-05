@@ -322,7 +322,7 @@ class AddQuestionForm extends React.Component {
 
   handleCancelClick = () => {
     const { history, match } = this.props;
-    history.push(`/admin/dashboard/${match.params.targetID}/questions`);
+    history.push(`/dashboard/${match.params.targetID}/questions`);
   };
 
   getAffix = () => <TargetGroupAffix />;

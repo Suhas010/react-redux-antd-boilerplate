@@ -44,7 +44,7 @@ class TargetGroupContainer extends Component {
 
   handleTGEditClick = (id) => {
     const { history } = this.props;
-    history.push(`/admin/dashboard/target-groups/edit/${id}`);
+    history.push(`/dashboard/target-groups/edit/${id}`);
   }
 
   handleAddTGButtonClick = () => {
@@ -55,7 +55,7 @@ class TargetGroupContainer extends Component {
   handleViewQuestionClick = (id) => {
     const { history } = this.props;
     // console.log('view q', id)
-    history.push(`/admin/dashboard/${id}/questions`);
+    history.push(`/dashboard/${id}/questions`);
   }
 
   getTargetGroups = () => {

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Collapse, Row, Col, Icon, Empty, Tooltip } from 'antd';
@@ -28,19 +29,27 @@ class QuestionPanel extends Component {
     );
   }
 
+  getQuestionStatus = ({
+    updated_at, difficulty_level, status, tags,
+  }) => {
+    console.log(updated_at, difficulty_level, status, tags, "##");
+     
+  }
+
   getQuestions = () => {
     const { questions, history, match } = this.props;
     const { params } = match;
     return questions.map(({
-      id, body, type, options,
+      id, body, type, options, ...rest
     }) => (
       <Panel header={body} key={id}>
         <div className="question-body">
           <Row className="edit-button">
             <Tooltip connect="Edit Question">
-              <Icon type="edit" onClick={() => history.push(`/admin/dashboard/${params.targetID}/questions/edit/${id}`)} />
+              <Icon type="edit" onClick={() => history.push(`/dashboard/${params.targetID}/questions/edit/${id}`)} />
             </Tooltip>
           </Row>
+          {this.getQuestionStatus(rest)}
           {this.getQuestionsDetails(
             type,
             options,

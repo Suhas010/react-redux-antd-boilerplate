@@ -3,14 +3,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
-import { Button } from '@blueprintjs/core';
 import { AgGridReact } from 'ag-grid-react';
 import { Switch, Divider } from 'antd';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
-import QuestionForm from '../form/QuestionForm';
-// import { getItem } from '../helpers/localStorage';
+
 import { getGender } from '../../utils/commonFunctions';
 
 class TableWrapper extends Component {
@@ -34,29 +32,6 @@ class TableWrapper extends Component {
   onFirstDataRendered = (params) => {
     params.api.sizeColumnsToFit();
   };
-
-  renderViewButton = ({ value, data }) => (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div>
-        <Button
-          text="View"
-          id={value}
-          icon="zoom-in"
-          intent="none"
-          onClick={() => this.handleViewClick(data.id, 'View')}
-        />
-      </div>
-      <div style={{ paddingLeft: '10px' }}>
-        <Button
-          text="Edit"
-          id={value}
-          icon="edit"
-          intent="none"
-          onClick={() => this.handleEditClick(data.id, 'Edit')}
-        />
-      </div>
-    </div>
-  );
 
   renderSwitch = ({ value }) => <Switch checked={value} disabled />;
 
@@ -100,32 +75,16 @@ class TableWrapper extends Component {
     });
   }
 
-  getForm = () => {
-    const { isOpenForm, mode, id } = this.state;
-    // console.log(isOpenForm, mode, id);
-    if (isOpenForm) {
-      return (
-        <QuestionForm
-          mode={mode}
-          id={id}
-          handleClose={this.handleClose}
-        />
-      );
-    }
-  }
-  
   render = () => {
     const { data, headers } = this.props;
     return (
       <div className="table-container">
-        {this.getForm()}
         <div className="ag-theme-balham table-layout">
           <AgGridReact
             enableCellChangeFlash
             refreshCells
             animateRows
             rowDragManaged
-            
             colResizeDefault
             rowHeight={38}
             minHeight={300}
@@ -139,7 +98,6 @@ class TableWrapper extends Component {
             onGridReady={this.onGridReady}
             onFirstDataRendered={this.onFirstDataRendered}
             frameworkComponents={{
-              renderViewButton: this.renderViewButton,
               renderSwitch: this.renderSwitch,
               renderEditViewLink: this.renderEditViewLink,
               renderGender: this.renderGender,
