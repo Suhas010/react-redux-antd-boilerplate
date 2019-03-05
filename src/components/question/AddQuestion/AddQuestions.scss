@@ -53,6 +53,29 @@
         display: grid;
         justify-content: end;
       }
+      .details-container {
+        .ant-row{
+          padding-bottom: 4px;
+        }
+        .label {
+          font-size: 12px;
+          color: #656060a6 !important;
+        }
+        .status {
+          background: #ff0000b5;
+          color: #fff;
+          font-size: 13px;
+          // font-weight: 900;
+          padding: 1px 6px;
+          border-radius: 6px;
+        }
+        .diff {
+          padding-left: 13px;
+        }
+        .tags {
+          padding-bottom: 3px;
+        }
+      }
       .q-label {
         font-size: 12px;
         text-align: center

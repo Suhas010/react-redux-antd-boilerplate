@@ -1,12 +1,14 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Collapse, Row, Col, Icon, Empty, Tooltip } from 'antd';
+import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag } from 'antd';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import QuestionModel from '../../../models/AppModel/Questions';
+import { getConfigFor } from '../../../utils/commonFunctions';
 
 const { Panel } = Collapse;
-
+const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
 class QuestionPanel extends Component {
   getQuestionOptions = options => options.map((option, index) => (
     <Col span={3}>
@@ -28,12 +30,72 @@ class QuestionPanel extends Component {
       </>
     );
   }
+  
+  getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  getTags = (tags) => {
+    const tagsArray = tags.split(',');
+    return tagsArray.map(tag => <Tag color={colorArray[this.getRandomInt(0, 8)]}>{tag}</Tag>);
+  }
+
+  getDifficultyLevel = (diff) => {
+    return getConfigFor('difficultyLevels').map((item) => {
+      if (item.value === diff) return item.name;
+    });
+  }
+
+  getUpdated = (time, status, diff) => (
+    <>
+      <Row>
+        <Col span={4}>
+          <span className="label"> Status</span>
+        </Col>
+        <Col span={18}>
+          <span className="status">{status}</span>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={4}>
+          <span className="label">Difficulty Level</span>
+        </Col>
+        <Col span={18}>
+          {this.getDifficultyLevel(diff)}
+        </Col>
+      </Row>
+      <Row>
+        <Col span={4}>
+          <span className="label">Updated at</span>
+        </Col>
+        <Col span={18}>
+          <span className="value">{moment(time).from(moment())}</span>
+        </Col>
+      </Row>
+    </>
+  )
 
   getQuestionStatus = ({
     updated_at, difficulty_level, status, tags,
   }) => {
-    console.log(updated_at, difficulty_level, status, tags, "##");
-     
+    return (
+      <div className="details-container">
+        <Row>
+          <Col span={4}>
+            <span className="label">Tags</span>
+          </Col>
+          <Col span={18}>
+            <div className="tags">
+              {tags && this.getTags(tags)}
+            </div>
+          </Col>
+        </Row>
+        
+        {this.getUpdated(updated_at, status, difficulty_level)}
+      </div>
+    );
   }
 
   getQuestions = () => {
@@ -42,18 +104,33 @@ class QuestionPanel extends Component {
     return questions.map(({
       id, body, type, options, ...rest
     }) => (
-      <Panel header={body} key={id}>
+      <Panel
+        header={body}
+        key={id}
+        style={{
+          borderRadius: 4,
+          // marginBottom: 24,
+          overflow: 'hidden',
+        }}
+      >
         <div className="question-body">
           <Row className="edit-button">
             <Tooltip connect="Edit Question">
-              <Icon type="edit" onClick={() => history.push(`/dashboard/${params.targetID}/questions/edit/${id}`)} />
+              <Icon type="edit" onClick={() => history.push(`/admin/dashboard/${params.targetID}/questions/edit/${id}`)} />
             </Tooltip>
           </Row>
-          {this.getQuestionStatus(rest)}
-          {this.getQuestionsDetails(
-            type,
-            options,
-          )}
+          <Row>
+            <Col span={12} >
+              {this.getQuestionStatus(rest)}
+            </Col>
+            <Col span={12}>
+              {this.getQuestionsDetails(
+                type,
+                options,
+              )}
+            </Col>
+          </Row>
+          
         </div>
       </Panel>
     ));
