@@ -33,10 +33,10 @@ class AddQuestionContainer extends Component {
     const { history, match } = this.props;
     // console.log(mode)
     if (mode === 'Add') {
-      history.push(`/dashboard/${match.params.targetID}/questions/add`);
+      history.push(`/admin/dashboard/${match.params.targetID}/questions/add`);
       return 0;
     }
-    history.push(`/dashboard/${match.params.targetID}/questions/edit/${123}`);
+    history.push(`/admin/dashboard/${match.params.targetID}/questions/edit/${123}`);
   }
 
   handleBackClick = () => {

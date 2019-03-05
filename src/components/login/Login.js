@@ -1,84 +1,62 @@
-import React from 'react';
-import { withRouter } from 'react-router';
-import {
-  Button,
-  Tooltip,
-} from 'antd';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { Form, Icon, Input, Button, Checkbox } from "antd";
 import './Login.scss';
-import routes from '../../utils/routes';
-import JInput from '../reusable/Input';
-
-const initialState = {
-  showPassword: false,
-  small: false,
-  disabled: false,
-  userName: '',
-  password: '',
-};
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-  }
-
-
-  validateForm = () => {
-    const { userName, password } = this.state;
-    if (userName && password) {
-      return true;
-    }
-    return true;
-  }
-
-  handleLoginClick = () => {
-    if (this.validateForm) {
-      this.props.history.push(routes.dashboard);
-    }
-  }
-
-  handleValueChange = ({ target }, type) => this.setState({ [type]: target.value })
-  
-  handleLockClick = () => this.setState({ showPassword: !this.state.showPassword })
+class WrappedLogin extends React.Component {
+  handleSubmit = e => {
+    e.prevendDefault();
+    console.log(this.props);
+    // e.preventDefault();
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     console.log("Received values of form: ", values);
+    //   }
+    // });
+  };
 
   render() {
-    const { showPassword, userName, password } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const { history } = this.props;
     return (
       <div className="login-container">
-        <JInput
-          type="text"
-          label="User Name"
-          placeholder="Enter user name..."
-          // rightElement={this.getUserIcon()}
-          value={userName}
-          onChange={e => this.handleValueChange(e, 'userName')}
-        />
-        <br />
-        <JInput
-          type="password"
-          placeholder="Enter your password..."
-          label="Password"
-          // rightElement={this.getLockIcon(this.state)}
-          value={password}
-          onChange={e => this.handleValueChange(e, 'password')}
-        />
-        <br />
-        <div className="actions">
-          <Button
-            onClick={this.handleLoginClick}
-            type="primary"
-          >
-            Login
-          </Button>
-          <span />
-          <Button
-            onClick={() => this.setState(initialState)}
-          >
-            Cancel
-          </Button>
-        </div>
+        <Form className="login-form">
+          <Form.Item>
+            {getFieldDecorator("userName", {
+              rules: [{ required: true, message: "Please input your username!" }]
+            })(
+              <Input
+                prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+                placeholder="Username"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            {getFieldDecorator("password", {
+              rules: [{ required: true, message: "Please input your Password!" }]
+            })(
+              <Input
+                prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+                type="password"
+                placeholder="Password"
+              />
+            )}
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              onClick={() => history.push('/admin/dashboard')}
+              style={{ width: '100%'}}
+            >
+              Log in
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     );
   }
 }
 
+const Login = Form.create({ name: "normal_login" })(WrappedLogin);
 export default withRouter(Login);

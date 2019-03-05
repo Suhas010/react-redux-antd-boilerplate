@@ -197,6 +197,8 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       name: false,
+      minSize: 100000,
+      maxSize: 300000,
     },
     // Keep the runtime chunk seperated to enable long term caching
     // https://twitter.com/wSokra/status/969679223278505985

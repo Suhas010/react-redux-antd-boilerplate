@@ -48,7 +48,7 @@ const MainContent = () => (
     <PrivateRoute exact path={routes.questionList} component={AddQuestions} />
     <PrivateRoute exact path={routes.questionAdd} component={AddQuestionForm} />
     <PrivateRoute exact path={routes.questionEdit} component={AddQuestionForm} />
-    <PrivateRoute component={NoMatch} />
+    {/* <PrivateRoute component={NoMatch} /> */}
   </Switch>
 );
 
