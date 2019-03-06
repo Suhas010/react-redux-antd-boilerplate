@@ -9,7 +9,10 @@ const routes = {
   questionAdd: '/admin/dashboard/:targetID/questions/add',
   questionEdit: '/admin/dashboard/:targetID/questions/edit/:questionID',
 
-  moderator: '/admin/dashboard/moderator',
+  categoriesList: '/admin/dashboard/categories-list',
+  categoriesAdd: '/admin/dashboard/categories-list/add',
+  categoriesEdit: '/admin/dashboard/categories-list/:categoryID/edit',
+
 };
 
 export default routes;

@@ -3,19 +3,19 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 import React from 'react';
-import { Button, Row, Col, Divider, Select, DatePicker, Skeleton } from 'antd';
+import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon } from 'antd';
 import moment from 'moment';
-import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
+import { showSuccessNotification } from '../../reusable/Notifications';
 import JSelect from '../../reusable/Select';
 import JTextArea from '../../reusable/TextArea';
-import { CONFIG } from '../Constants';
+import { CONFIG, DEFAULT_DATE } from '../Constants';
 import JInput from '../../reusable/Input';
 import JSwitch from '../../reusable/Switch';
 import TargetGroupAffix from './TargetGroupAffix';
 import './AddQuestions.scss';
 import QuestionModel from '../../../models/AppModel/Questions';
 import { getQuestion, updateQuestion, saveQuestion } from '../../../actions/appActions/QuestionActions';
-import { getConfigFor } from '../../../utils/commonFunctions';
+import { getConfigFor, getIDOf } from '../../../utils/commonFunctions';
 
 const { Option } = Select;
 const QUESTION_TYPES = getConfigFor('questionTypes');
@@ -27,6 +27,7 @@ class AddQuestionForm extends React.Component {
     this.state = {
       loading: true,
       submitLoading: false,
+      openDatePicker: false,
       questionType: 0,
       question: '',
       difficultyLevel: 10,
@@ -48,10 +49,10 @@ class AddQuestionForm extends React.Component {
       this.setState({ loading: false });
       return;
     }
-    if (QuestionModel.list().length > 0) {
-      this.setQuestionData(QuestionModel.get(questionID).props);
-      return;
-    }
+    // if (QuestionModel.list().length > 0) {
+    //   this.setQuestionData(QuestionModel.get(questionID).props);
+    //   return;
+    // }
     getQuestion(targetID, questionID)
       .then((data) => {
         this.setQuestionData(data.question);
@@ -63,20 +64,23 @@ class AddQuestionForm extends React.Component {
   }
 
   setQuestionData({
-    tags, body, difficulty_level, type, options,
+    tags, body, difficulty_level, type, options, repeat_trigger_at, repeat_count, repeat_interval
   }) {
     let questionOptions = [];
-    console.log(options);
     if (!options) {
       questionOptions = [{ body: '' }, { body: '' }];
     }
     options.map(item => questionOptions.push(item));
-
     this.setState({
       tags: tags.split(','),
+      triggerDate: repeat_trigger_at ? 7 : 2,
+      date: moment(repeat_trigger_at),
+      count: repeat_count,
+      repeatThis: repeat_trigger_at ? true : false,
+      interval: repeat_interval,
       question: body,
-      difficultyLevel: difficulty_level,
-      questionType: type,
+      difficultyLevel: getIDOf('difficultyLevels', difficulty_level),
+      questionType: getIDOf('questionTypes', type),
       loading: false,
       options: questionOptions,
     });
@@ -88,6 +92,7 @@ class AddQuestionForm extends React.Component {
       .then(() => {
         this.setLoading('submitLoading', false);
         showSuccessNotification('Question has been updated successfully.');
+        this.handleCancelClick();
       })
       .catch((error) => {
         this.setLoading('submitLoading', false);
@@ -101,7 +106,7 @@ class AddQuestionForm extends React.Component {
       .then((response) => {
         this.setLoading('submitLoading', false);
         showSuccessNotification('A new question has been added successfully.');
-        console.log(response);
+        this.handleCancelClick();
       })
       .catch((error) => {
         this.setLoading('submitLoading', false);
@@ -169,7 +174,6 @@ class AddQuestionForm extends React.Component {
 
   handleOptionChange = ({ target }, index) => {
     const { value } = target;
-    // console.log(this.state.options, index, target);
     this.state.options[index].body = value;
     this.setState({
       options: this.state.options,
@@ -219,24 +223,30 @@ class AddQuestionForm extends React.Component {
     </>
   );
 
-  handleSelectChange = (value, type) => {
-    // console.log(value, type, QUESTION_TYPES);
+  handleDateChange = (date, ...rest) => {
+    if (!date) {
+      this.setState({
+        triggerDate: 1,
+        openDatePicker: false,
+      });
+    }
     this.setState({
-      [type]: value,
+      date,
+      openDatePicker: false,
     });
   };
 
-  disabledEndDate = (endValue) => {
-    const startValue = moment();
-    if (!endValue || !startValue) {
-      return false;
-    }
-    return endValue.valueOf() <= startValue.valueOf();
-  };
 
-  handleDateChange = (date) => {
+  handleSelectChange = (value, type) => {
+    if (type === 'triggerDate' && value === 7) {
+      this.setState({
+        date: moment(),
+        openDatePicker: true,
+      });
+    }
+    
     this.setState({
-      date,
+      [type]: value,
     });
   };
 
@@ -252,21 +262,10 @@ class AddQuestionForm extends React.Component {
 
   validateForm = () => {
     const {
-      questionType,
-      question,
-      showOptions,
-      difficultyLevel,
-      repeatThis,
-      triggerDate,
-      count,
-      interval,
-      tags,
-      date
+      question,      
     } = this.state;
     if (!question.trim()) {
-      console.log("in trim")
       this.setError('question', 'Field is mandatory.');
-      // showWarningNotification("Question is mandatory.");
       return false;
     }
     return true;
@@ -280,7 +279,6 @@ class AddQuestionForm extends React.Component {
     const {
       questionType,
       question,
-      showOptions,
       difficultyLevel,
       repeatThis,
       triggerDate,
@@ -307,9 +305,9 @@ class AddQuestionForm extends React.Component {
     };
     const { match } = this.props;
     if (repeatThis) {
-      payload.repeat_trigger_at = triggerDate;
-      payload.repeat_count = count;
-      payload.repeat_interval = interval;
+      payload.repeat_trigger_at = triggerDate === 7 ? date : DEFAULT_DATE[triggerDate].value;
+      payload.repeat_count = parseInt(count);
+      payload.repeat_interval = parseInt(interval);
     }
     if (match.params && match.params.questionID) {
       payload.id = match.params.questionID;
@@ -330,13 +328,18 @@ class AddQuestionForm extends React.Component {
   getHeader = () => {
     const { match } = this.props;
     if (match.params && match.params.questionID) {
-      return 'Edit';
+      return 'Update';
     }
     return 'Add';
   };
 
+  disabledDate = (currentDate) => {
+    // Can not select days before today and today
+    return currentDate && currentDate < moment().subtract(1, 'd').endOf('day');
+  }
+
   getForm = ({ questionType, question, difficultyLevel, repeatThis,
-    triggerDate, count, interval, tags, date, error, submitLoading,
+    triggerDate, count, interval, tags, date, error, submitLoading, openDatePicker,
   }) => (
     <div className="question-form-container">
       <Row className="header">
@@ -391,6 +394,8 @@ class AddQuestionForm extends React.Component {
           <Col span={12}>
             <JSwitch
               checked={repeatThis}
+              checkedChildren={<Icon type="check" />}
+              unCheckedChildren={<Icon type="close" />}
               onChange={e => this.handleChange(e, 'repeatThis')}
               label="Repeat this question?"
               labelClass="label"
@@ -399,16 +404,18 @@ class AddQuestionForm extends React.Component {
         </Row>
         {repeatThis && (
           <Row style={{ paddingTop: '4%' }}>
-            <Col span={7}>
-              <JSelect
-                value={triggerDate}
-                label="Trigger Date"
-                labelClass="label"
-                options={CONFIG.date}
-                onChange={e => this.handleSelectChange(e, 'triggerDate')}
-                style={{ width: '90%' }}
-              />
-            </Col>
+            {triggerDate !== 7 && (
+              <Col span={7}>
+                <JSelect
+                  value={triggerDate}
+                  label="Trigger Date"
+                  labelClass="label"
+                  options={CONFIG.date}
+                  onChange={e => this.handleSelectChange(e, 'triggerDate')}
+                  style={{ width: '90%' }}
+                />
+              </Col>
+            )}
             {triggerDate === 7 && (
               <Col span={7}>
                 <span
@@ -422,32 +429,38 @@ class AddQuestionForm extends React.Component {
                     fontWeight: '500',
                   }}
                 >
-                  Custom Date
+                  Trigger Date
                 </span>
                 <DatePicker
                   value={date}
+                  onOpenChange={() => this.setState({ openDatePicker: true })}
                   onChange={this.handleDateChange}
                   disabledDate={this.disabledDate}
+                  open={openDatePicker}
                 />
               </Col>
             )}
             <Col span={7} offset={1}>
               <JInput
-                label="Count"
+                label="Repeat Count"
                 labelClass="label"
+                type="number"
                 value={count}
+                min={0}
                 onChange={e => this.handleChange(e.target.value, 'count')}
               />
             </Col>
             <Col
               span={7}
-              offset={triggerDate === 7 ? 0 : 1}
-              style={triggerDate === 7 ? { paddingTop: '4%' } : {}}
+              offset={1}
+              // style={triggerDate === 7 ? { paddingTop: '4%' } : {}}
             >
               <JInput
-                label="Interval"
+                label="Repeat Interval"
                 labelClass="label"
                 value={interval}
+                type="number"
+                min={0}
                 onChange={e => this.handleChange(e.target.value, 'interval')}
               />
             </Col>
@@ -465,7 +478,7 @@ class AddQuestionForm extends React.Component {
             loading={submitLoading}
             type="primary"
           >
-            Submit
+            {this.getHeader()}
           </Button>
         </div>
         <div>

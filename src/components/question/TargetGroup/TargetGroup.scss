@@ -4,6 +4,13 @@
   justify-content: center;
   text-align: center;
   align-items: center;
+  .ant-skeleton {
+    margin-top: 2%;
+    .ant-skeleton-content {
+      background: white;
+      padding: 9px;
+    }
+  }
   .add-button {
     position: fixed;
     top: 9%;
@@ -71,4 +78,15 @@
   padding-bottom: 30px;
   font-weight: 600;
   letter-spacing: 2px;
+  text-align: center;
+}
+
+.target-group-form-container {
+  .ant-skeleton {
+    margin-top: 2%;
+    .ant-skeleton-content {
+      background: white;
+      padding: 9px;
+    }
+  }
 }
