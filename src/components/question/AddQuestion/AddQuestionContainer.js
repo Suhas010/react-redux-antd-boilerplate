@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Button, Tooltip, BackTop } from 'antd';
+import { Button, Tooltip, BackTop, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import QuestionModel from '../../../models/AppModel/Questions';
 import { getQuestions } from '../../../actions/appActions/QuestionActions';
@@ -15,18 +15,28 @@ class AddQuestionContainer extends Component {
     super(props);
     this.state = {
       addQuestion: false,
+      questionLoading: false,
     };
   }
 
   componentWillMount() {
     const { match } = this.props;
+    this.setLoader('questionLoading', true);
     getQuestions(match.params.targetID)
       .then((payload) => {
+        this.setLoader('questionLoading', false);
         QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));
       })
       .catch((e) => {
+        this.setLoader('questionLoading', false);
         // console.log(e);
       });
+  }
+
+  setLoader = (type, value) => {
+    this.setState({
+      [type]: value,
+    });
   }
 
   handleAddQuestionClick = (mode) => {
@@ -71,12 +81,12 @@ class AddQuestionContainer extends Component {
 
   getQuestions = () => (
     <div className="questions">
-      {this.getQuestionList()}  
+      {this.getQuestionList()}
     </div>
   )
 
   render() {
-    const { addQuestion } = this.state;
+    const { addQuestion, questionLoading } = this.state;
 
     return (
       <div
@@ -85,7 +95,8 @@ class AddQuestionContainer extends Component {
         <BackTop />
         {this.getAffix()}
         {this.getAddBackButtons(addQuestion)}
-        {this.getQuestions()}
+        {!questionLoading && this.getQuestions()}
+        {questionLoading && <Skeleton active paragraph={{ row: 4 }} />}
       </div>
     );
   }

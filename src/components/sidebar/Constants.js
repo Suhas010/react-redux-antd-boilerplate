@@ -2,12 +2,6 @@ import routes from '../../utils/routes';
 
 const NAV_MENU = [
   {
-    key: 1,
-    name: 'Dashboard',
-    path: routes.dashboard,
-    icon: 'pie-chart',
-  },
-  {
     key: 2,
     name: 'Add Questions',
     path: routes.targetGroupList,
@@ -15,9 +9,9 @@ const NAV_MENU = [
   },
   {
     key: 1,
-    name: 'Moderator',
+    name: 'Categories',
     path: routes.moderator,
-    icon: 'like',
+    icon: 'setting',
   },
 ];
 

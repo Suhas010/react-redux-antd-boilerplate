@@ -5,7 +5,6 @@ import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import QuestionModel from '../../../models/AppModel/Questions';
-import { getConfigFor } from '../../../utils/commonFunctions';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
@@ -18,7 +17,7 @@ class QuestionPanel extends Component {
   ));
 
   getQuestionsDetails = (type, options) => {
-    const ifOptions = type === 0 || type === 1;
+    const ifOptions = type === 'Select' || type === 'MultiSel';
     return (
       <>
         {ifOptions && (
@@ -42,13 +41,8 @@ class QuestionPanel extends Component {
     return tagsArray.map(tag => <Tag color={colorArray[this.getRandomInt(0, 8)]}>{tag}</Tag>);
   }
 
-  getDifficultyLevel = (diff) => {
-    return getConfigFor('difficultyLevels').map((item) => {
-      if (item.value === diff) return item.name;
-    });
-  }
 
-  getUpdated = (time, status, diff) => (
+  getUpdated = (type, time, status, diff) => (
     <>
       <Row>
         <Col span={4}>
@@ -60,10 +54,20 @@ class QuestionPanel extends Component {
       </Row>
       <Row>
         <Col span={4}>
-          <span className="label">Difficulty Level</span>
+          <span className="label">Type</span>
         </Col>
         <Col span={18}>
-          {this.getDifficultyLevel(diff)}
+          <div className="tags">
+            {type}
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={4}>
+          <span className="label">Difficulty</span>
+        </Col>
+        <Col span={18}>
+          {diff}
         </Col>
       </Row>
       <Row>
@@ -77,7 +81,7 @@ class QuestionPanel extends Component {
     </>
   )
 
-  getQuestionStatus = ({
+  getQuestionStatus = (type, {
     updated_at, difficulty_level, status, tags,
   }) => {
     return (
@@ -92,8 +96,7 @@ class QuestionPanel extends Component {
             </div>
           </Col>
         </Row>
-        
-        {this.getUpdated(updated_at, status, difficulty_level)}
+        {this.getUpdated(type, updated_at, status, difficulty_level)}
       </div>
     );
   }
@@ -109,7 +112,6 @@ class QuestionPanel extends Component {
         key={id}
         style={{
           borderRadius: 4,
-          // marginBottom: 24,
           overflow: 'hidden',
         }}
       >
@@ -121,7 +123,7 @@ class QuestionPanel extends Component {
           </Row>
           <Row>
             <Col span={12} >
-              {this.getQuestionStatus(rest)}
+              {this.getQuestionStatus(type, rest)}
             </Col>
             <Col span={12}>
               {this.getQuestionsDetails(

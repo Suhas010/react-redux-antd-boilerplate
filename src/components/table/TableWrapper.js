@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { Switch, Divider } from 'antd';
+import { Switch, Divider, Icon } from 'antd';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
@@ -33,7 +33,14 @@ class TableWrapper extends Component {
     params.api.sizeColumnsToFit();
   };
 
-  renderSwitch = ({ value }) => <Switch checked={value} disabled />;
+  renderSwitch = ({ value }) => (
+    <Switch
+      disabled
+      checked={value}
+      checkedChildren={<Icon type="check" />}
+      unCheckedChildren={<Icon type="close" />}
+    />
+  );
 
   renderEditViewLink = ({ value }) => (
     <>
@@ -43,9 +50,9 @@ class TableWrapper extends Component {
     </>
   );
 
-  renderGender = ({ value }) => <span>{getGender(value)}</span>;
+  renderGender = ({ value }) => <span>{value}</span>;
   
-  renderData = ({ value }) => <span>{value || 'NA'}</span>;
+  renderData = ({ value }) => <span>{value.name || 'NA'}</span>;
   
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
     // console.log(oldValue, newValue);

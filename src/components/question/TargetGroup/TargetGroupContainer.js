@@ -4,11 +4,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { Empty } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import TargetGroupModel from '../../../models/AppModel/TargetGroup';
 import QuestionModel from '../../../models/AppModel/Questions';
 import { getTargetGroups } from '../../../actions/appActions/TargetGroupAction';
-import JLoader from '../../reusable/Loader';
 import TargetGroup from './TargetGroup';
 import './TargetGroup.scss';
 import { showFailureNotification } from '../../reusable/Notifications';
@@ -74,11 +73,11 @@ class TargetGroupContainer extends Component {
   }
 
   render() {
-    const { loading, addEdit } = this.state;
+    const { loading } = this.state;
     return (
       <div className="target-group-container">
         <div className="target-group-header">Target Groups</div>
-        {loading && <JLoader text="Loading" size="large" />}
+        {loading && <Skeleton active paragraph={{ row: 5 }} />}
         {!loading && this.getTargetGroups()}
       </div>
     );
