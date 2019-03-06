@@ -42,13 +42,13 @@ class TableWrapper extends Component {
     />
   );
 
-  renderEditViewLink = ({ value }) => (
-    <>
-      <a onClick={() => this.props.handleTGEditClick(value)} >Edit</a>
-      <Divider type="vertical" />
-      <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>
-    </>
-  );
+  renderViewLink = ({ value }) => <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>;
+
+  renderEditLink = ({ value }) => <a onClick={() => this.props.handleTGEditClick(value)} ><Icon type="edit"/></a>;
+
+  renderAgeRange = ({value, data }) => {
+    return <span>{`${value} to ${data.maximum_age}`}</span>
+  }
 
   renderGender = ({ value }) => <span>{value}</span>;
   
@@ -106,9 +106,11 @@ class TableWrapper extends Component {
             onFirstDataRendered={this.onFirstDataRendered}
             frameworkComponents={{
               renderSwitch: this.renderSwitch,
-              renderEditViewLink: this.renderEditViewLink,
+              renderViewLink: this.renderViewLink,
+              renderEditLink: this.renderEditLink,
               renderGender: this.renderGender,
               renderData: this.renderData,
+              renderAgeRange: this.renderAgeRange,
             }}
           />
         </div>

@@ -81,6 +81,9 @@ class AddQuestionContainer extends Component {
 
   getQuestions = () => (
     <div className="questions">
+      <div className="title">
+        Questions List
+      </div>
       {this.getQuestionList()}
     </div>
   )

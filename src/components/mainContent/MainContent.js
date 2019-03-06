@@ -3,10 +3,8 @@ import React from 'react';
 import {
   Route, Switch, Redirect,
 } from 'react-router-dom';
-// import NoMatch from '../app/NoMatch';
 import TargetGroup from '../question';
 import AddQuestions from '../question/AddQuestion/AddQuestionContainer';
-// import Dashboard from '../dashboard/Dashboard';
 import TargetGroupForm from '../question/TargetGroup/TargetGroupForm';
 import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';

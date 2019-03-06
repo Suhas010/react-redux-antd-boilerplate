@@ -10,7 +10,7 @@ const NAV_MENU = [
   {
     key: 1,
     name: 'Categories',
-    path: routes.moderator,
+    path: routes.categoriesList,
     icon: 'setting',
   },
 ];

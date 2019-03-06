@@ -45,14 +45,17 @@ export const DEFAULT_DATE = [
 ];
 
 export const TG_HEADER = [
+  { headerName: 'Category', field: 'category', sortable: true, editable: true, cellRenderer: 'renderData' },
+  { headerName: 'Sub Category', field: 'subcategory', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'Gender', field: 'gender', sortable: true, editable: true, cellRenderer: 'renderGender' },
-  { headerName: 'Min Age', field: 'minimum_age', sortable: true, editable: true, width: 140 },
-  { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
-  { headerName: 'Region Specific', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
+  { headerName: 'Age', field: 'minimum_age', sortable: true, editable: true, width: 140, cellRenderer: 'renderAgeRange' },
+  // { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
+  // { headerName: 'Region Specific', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
   { headerName: 'Country', field: 'country', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'State', field: 'state', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'City', field: 'city', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'Tier', field: 'tier', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditViewLink', width: 300 },
+  { headerName: 'Edit', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditLink' },
+  { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderViewLink' },
+
 ];
-import { getUUID } from '../../utils/commonFunctions';

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag } from 'antd';
+import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import QuestionModel from '../../../models/AppModel/Questions';
@@ -10,18 +10,23 @@ const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
 class QuestionPanel extends Component {
   getQuestionOptions = options => options.map((option, index) => (
-    <Col span={3}>
-      <div className="q-label">{`Option ${index + 1}`}</div>
-      <div className="q-data">{option.body}</div>
-    </Col>
+    <>
+      <Col span={2}>
+        <span>{`Option ${index + 1}`}</span>
+      </Col>
+      <Col span={21}>
+        <div>{option.body}</div>
+      </Col>
+    </>
   ));
 
   getQuestionsDetails = (type, options) => {
-    const ifOptions = type === 'Select' || type === 'MultiSel';
+    const ifOptions = type === 'Select' || type === 'MultiSelect';
     return (
       <>
+        <Divider />
         {ifOptions && (
-          <Row>
+          <Row className="options-container">
             {this.getQuestionOptions(options)}
           </Row>
         )
@@ -45,37 +50,43 @@ class QuestionPanel extends Component {
   getUpdated = (type, time, status, diff) => (
     <>
       <Row>
-        <Col span={4}>
-          <span className="label"> Status</span>
+        <Col span={12}>
+          <Row>
+            <Col span={4}>
+              <span className="label"> Status</span>
+            </Col>
+            <Col span={18}>
+              <span className="status">{status}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <span className="label">Type</span>
+            </Col>
+            <Col span={18}>
+              <div className="tags">
+                {type}
+              </div>
+            </Col>
+          </Row>
         </Col>
-        <Col span={18}>
-          <span className="status">{status}</span>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={4}>
-          <span className="label">Type</span>
-        </Col>
-        <Col span={18}>
-          <div className="tags">
-            {type}
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={4}>
-          <span className="label">Difficulty</span>
-        </Col>
-        <Col span={18}>
-          {diff}
-        </Col>
-      </Row>
-      <Row>
-        <Col span={4}>
-          <span className="label">Updated at</span>
-        </Col>
-        <Col span={18}>
-          <span className="value">{moment(time).from(moment())}</span>
+        <Col span={12}>
+          <Row>
+            <Col span={4}>
+              <span className="label">Difficulty</span>
+            </Col>
+            <Col span={18}>
+              <span style={{ paddingLeft: 17 }}>{diff}</span>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <span className="label">Updated</span>
+            </Col>
+            <Col span={18}>
+              <span style={{ paddingLeft: 17 }}>{moment(time).from(moment())}</span>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </>
@@ -125,14 +136,13 @@ class QuestionPanel extends Component {
             <Col span={12} >
               {this.getQuestionStatus(type, rest)}
             </Col>
-            <Col span={12}>
-              {this.getQuestionsDetails(
-                type,
-                options,
-              )}
-            </Col>
           </Row>
-          
+          <Row span={12}>
+            {this.getQuestionsDetails(
+              type,
+              options,
+            )}
+          </Row>
         </div>
       </Panel>
     ));

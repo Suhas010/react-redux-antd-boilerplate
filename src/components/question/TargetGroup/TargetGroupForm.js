@@ -317,7 +317,7 @@ class TargetGroupForm extends Component {
             />
           </Col>
         </Row>
-        <Row style={{ paddingTop: 10 }}>
+        <Row style={{ paddingTop: 18 }}>
           <Col span={8}>
             <JSelect
               label="Gender"
@@ -355,17 +355,16 @@ class TargetGroupForm extends Component {
             />
           </Col>
         </Row>
-        <Row className="row-padding">
+        <Row style={{ paddingTop: 18 }}>
           <Col span={10}>
             <JSwitch
-              label="Is region specific?"
+              label="Region specific?"
               labelClass="label"
               disabled
               value={isRegionSpecific}
               checkedChildren={<Icon type="check" />}
               unCheckedChildren={<Icon type="close" />}
               onChange={e => this.handleChange(e, 'isRegionSpecific')}
-              style={{ display: 'flex', marginTop: 8 }}
             />
           </Col>
         </Row>

@@ -49,6 +49,14 @@
     overflow-x: hidden;
     height: 435px;
     margin: 20px 0px;
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-decoration: underline;
+      padding: 2% 0%;
+    }
     .ant-collapse-content-box {
       background-color: #f0f2f5;
       border-top: 0;
@@ -61,6 +69,15 @@
       border-radius: 14px;
       border: 1px solid #eeeeee6b;
       // box-sha  dow: inset 2px 2px 7px 0px #847c7c2e;
+      .options-container {
+        span {
+          font-size: 12px;
+          color: #656060a6 !important;
+        }
+        div {
+          
+        }
+      }
       .edit-button {
         position: relative;
         display: grid;

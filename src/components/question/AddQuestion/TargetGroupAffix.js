@@ -25,9 +25,14 @@ class TargetGroupAffix extends Component {
     getTargetGroup(match.params.targetID)
       .then((payload) => {
         this.setTargetGroupData(payload.target_group);
+        this.setState({
+          loading: false,
+        });
         new TargetGroupModel(payload.target_group).$save();
       }).catch(() => {
-        this.setLoading('loading', false);
+        this.setState({
+          loading: false,
+        });
       });
     return 0;
   }
@@ -71,10 +76,10 @@ class TargetGroupAffix extends Component {
         <div className="tg-label">Age</div>
         <div className="tg-data">{`${minAge} to ${maxAge}`}</div>
       </div>
-      <div>
-        <div className="tg-label">Region</div>
+      {/* <div>
+        <div className="tg-label">Region Specific</div>
         <div className="tg-data">{region ? 'Yes' : 'No'}</div>
-      </div>
+      </div> */}
       <div>
         <div className="tg-label">Country</div>
         <div className="tg-data">{country.name || 'NA'}</div>

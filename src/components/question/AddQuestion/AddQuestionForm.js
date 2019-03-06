@@ -49,10 +49,7 @@ class AddQuestionForm extends React.Component {
       this.setState({ loading: false });
       return;
     }
-    // if (QuestionModel.list().length > 0) {
-    //   this.setQuestionData(QuestionModel.get(questionID).props);
-    //   return;
-    // }
+
     getQuestion(targetID, questionID)
       .then((data) => {
         this.setQuestionData(data.question);
@@ -64,7 +61,7 @@ class AddQuestionForm extends React.Component {
   }
 
   setQuestionData({
-    tags, body, difficulty_level, type, options, repeat_trigger_at, repeat_count, repeat_interval
+    tags, body, difficulty_level, type, options, repeat_trigger_at, repeat_count, repeat_interval,
   }) {
     let questionOptions = [];
     if (!options) {
@@ -217,7 +214,7 @@ class AddQuestionForm extends React.Component {
   getQuestionsOptions = () => (
     <>
       {this.getOptions()}
-      <Col span={1} style={{ marginTop: '4%', marginLeft: 6 }}>
+      <Col span={1} style={{ marginTop: 29, marginLeft: 6 }}>
         <Button icon="plus" onClick={this.addOption} />
       </Col>
     </>
@@ -352,7 +349,7 @@ class AddQuestionForm extends React.Component {
             <JSelect
               onChange={e => this.handleSelectChange(e, 'questionType')}
               options={QUESTION_TYPES}
-              label="Questions Answer Type"
+              label="Question's Answer Type"
               labelClass="label"
               value={questionType}
               style={{ width: '90%' }}
@@ -387,9 +384,7 @@ class AddQuestionForm extends React.Component {
         <Row>
           {(questionType === 0 || questionType === 1) && this.getQuestionsOptions()}
         </Row>
-        <Divider dashed className="divider">
-          Will Repeat
-        </Divider>
+        <Divider dashed className="divider" />
         <Row>
           <Col span={12}>
             <JSwitch
@@ -397,7 +392,7 @@ class AddQuestionForm extends React.Component {
               checkedChildren={<Icon type="check" />}
               unCheckedChildren={<Icon type="close" />}
               onChange={e => this.handleChange(e, 'repeatThis')}
-              label="Repeat this question?"
+              label="Repetition"
               labelClass="label"
             />
           </Col>
@@ -466,9 +461,7 @@ class AddQuestionForm extends React.Component {
             </Col>
           </Row>
         )}
-        <Divider dashed className="divider">
-          Tags
-        </Divider>
+        <Divider dashed className="divider" />
         <Row>{this.getTags(tags)}</Row>
       </div>
       <div className="action">
@@ -482,7 +475,11 @@ class AddQuestionForm extends React.Component {
           </Button>
         </div>
         <div>
-          <Button onClick={this.handleCancelClick}>Cancel</Button>
+          <Button
+            onClick={this.handleCancelClick}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     </div>
