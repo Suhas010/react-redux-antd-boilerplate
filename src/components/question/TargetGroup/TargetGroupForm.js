@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Icon, Skeleton, Divider } from 'antd';
 import { connect } from 'react-redux';
 import { CONFIG } from '../Constants';
 import JInput from '../../reusable/Input';
@@ -14,9 +14,8 @@ import TargetGroupModel from '../../../models/AppModel/TargetGroup';
 import CategoriesModel from '../../../models/AppModel/Categories';
 import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../../actions/appActions/TargetGroupAction';
 import { getCategories, getSubCategories } from '../../../actions/appActions/AppConfigActions';
-import JLoader from '../../reusable/Loader';
 import routes from '../../../utils/routes';
-import { getConfigFor } from '../../../utils/commonFunctions';
+import { getConfigFor, getIDOf } from '../../../utils/commonFunctions';
 import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
 
 const initialError = {
@@ -42,7 +41,7 @@ class TargetGroupForm extends Component {
       minAge: 2,
       maxAge: 14,
       isRegionSpecific: false,
-      error: initialError,
+      error: {},
       id: '',
     };
   }
@@ -79,27 +78,24 @@ class TargetGroupForm extends Component {
   }
 
   addTargetGroup =(payload) => {
-    // console.log(payload);
     const { history } = this.props;
     saveTargetGroup({ target_group: payload })
       .then((data) => {
-        // console.log(data);
         showSuccessNotification('A new target group created successfully.');
         this.setLoading('submitLoading', false);
         history.push(routes.targetGroupList);
       }).catch(() => {
         this.setLoading('submitLoading', false);
-        // showWarningNotification('Seems like you are not connecnted to the internet')
       });
   }
 
   updateTargetGroup = (payload) => {
-    // console.log(payload);
+    const { history } = this.props;
     updateTargetGroup({ target_group: payload })
       .then((data) => {
-        // console.log(data);
         showSuccessNotification('Target group updated successfully.');
         this.setLoading('submitLoading', false);
+        history.push(routes.targetGroupList);
       }).catch(() => {
         this.setLoading('submitLoading', false);
       });
@@ -130,16 +126,16 @@ class TargetGroupForm extends Component {
   }
 
   setEditData = ({
-    id, gender, maximum_age, minimum_age, category_id, subcategory_id,
+    id, gender, maximum_age, minimum_age, category, subcategory,
   }) => {
-    this.getSubCategories(category_id);
+    this.getSubCategories(category.id);
     this.setState({
-      gender,
       id,
+      gender: getIDOf('genders', gender),
+      category: category.id,
       maxAge: maximum_age,
       minAge: minimum_age,
-      category: category_id,
-      subCategory: subcategory_id,
+      subCategory: subcategory.id,
       loading: false,
     });
   }
@@ -229,7 +225,7 @@ class TargetGroupForm extends Component {
     const {
       maxAge, minAge,
       category, subCategory,
-      gender, isRegionSpecific, id
+      gender, id,
     } = this.state;
     if (!this.validateForm(this.state)) {
       showWarningNotification('Looks like something is wrong in form.');
@@ -259,7 +255,7 @@ class TargetGroupForm extends Component {
   getHeader = () => {
     const { match } = this.props;
     if (match.params && match.params.targetID) {
-      return 'Edit';
+      return 'Update';
     }
     return 'Add';
   };
@@ -281,11 +277,11 @@ class TargetGroupForm extends Component {
     submitLoading,
   }) => {
     const { categories } = this.props;
-    // console.log(error, categories);
     return (
       <div className="target-group-form">
         <Row className="target-group-header">
           {`${this.getHeader()} Target Group`}
+          <Divider />
         </Row>
         <Row>
           <Col span={12}>
@@ -295,7 +291,7 @@ class TargetGroupForm extends Component {
               options={categories}
               placeholder="Select category"
               label="Category"
-              value={category}
+              value={category || undefined}
               labelClass="label"
               style={{ width: '100%' }}
               required
@@ -364,7 +360,10 @@ class TargetGroupForm extends Component {
             <JSwitch
               label="Is region specific?"
               labelClass="label"
+              disabled
               value={isRegionSpecific}
+              checkedChildren={<Icon type="check" />}
+              unCheckedChildren={<Icon type="close" />}
               onChange={e => this.handleChange(e, 'isRegionSpecific')}
               style={{ display: 'flex', marginTop: 8 }}
             />
@@ -419,7 +418,7 @@ class TargetGroupForm extends Component {
             <div className="actions">
               <div>
                 <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
-                  {`${this.getHeader()}  Target Group`}
+                  {this.getHeader()}
                 </Button>
               </div>
               <div>
@@ -436,7 +435,7 @@ class TargetGroupForm extends Component {
     const { loading } = this.state;
     return (
       <div className="target-group-form-container">
-        {loading && <JLoader /> }
+        {loading && <Skeleton active paragraph={{ row: 5 }} /> }
         {!loading && this.getForm(this.state)}
       </div>
     );

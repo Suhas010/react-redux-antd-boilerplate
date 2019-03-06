@@ -46,7 +46,7 @@ class WrappedLogin extends React.Component {
               type="primary"
               htmlType="submit"
               className="login-form-button"
-              onClick={() => history.push('/admin/dashboard')}
+              onClick={() => history.push('/admin/dashboard/target-groups')}
               style={{ width: '100%'}}
             >
               Log in

@@ -50,7 +50,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0px' }}>
-        <div id="chartdiv" style={{ width: '50%', height: '400px' }} />
+        {/* <div id="chartdiv" style={{ width: '50%', height: '400px' }} /> */}
       </div>
     );
   }

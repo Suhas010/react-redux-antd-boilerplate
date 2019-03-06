@@ -27,23 +27,24 @@ class TargetGroupAffix extends Component {
         this.setTargetGroupData(payload.target_group);
         new TargetGroupModel(payload.target_group).$save();
       }).catch(() => {
-        // this.setLoading('loading', false);
+        this.setLoading('loading', false);
       });
     return 0;
   }
 
   setTargetGroupData = ({
-    city_id, state_id, country_id, category_id, subcategory_id, gender, maximum_age, minimum_age,
+    tier, city, state, country, category, subcategory, gender, maximum_age, minimum_age,
   }) => {
     this.setState({
       gender,
-      subcategory: 'subcategory_id',
-      category: 'category_id',
+      state,
+      country,
+      city,
+      subcategory,
+      category,
+      tier,
       minAge: minimum_age,
       maxAge: maximum_age,
-      state: state_id,
-      country: country_id,
-      city: city_id,
       region: false,
       loading: false,
     });
@@ -51,20 +52,20 @@ class TargetGroupAffix extends Component {
 
   getTargetGroupAffix = ({
     gender, subcategory, category, minAge,
-    maxAge, state, country, city, region,
+    maxAge, state, country, city, region, tier,
   }) => (
     <>
       <div>
         <div className="tg-label">Category</div>
-        <div className="tg-data">{category}</div>
+        <div className="tg-data">{category.name}</div>
       </div>
       <div>
         <div className="tg-label">Sub-Category</div>
-        <div className="tg-data">{subcategory}</div>
+        <div className="tg-data">{subcategory.name}</div>
       </div>
       <div>
         <div className="tg-label">Gender</div>
-        <div className="tg-data">{getGender(gender)}</div>
+        <div className="tg-data">{gender}</div>
       </div>
       <div>
         <div className="tg-label">Age</div>
@@ -76,23 +77,29 @@ class TargetGroupAffix extends Component {
       </div>
       <div>
         <div className="tg-label">Country</div>
-        <div className="tg-data">{country || 'NA'}</div>
+        <div className="tg-data">{country.name || 'NA'}</div>
       </div>
       <div>
         <div className="tg-label">State</div>
-        <div className="tg-data">{state || 'NA'}</div>
+        <div className="tg-data">{state.name || 'NA'}</div>
       </div>
       <div>
         <div className="tg-label">City</div>
-        <div className="tg-data">{city || 'NA'}</div>
+        <div className="tg-data">{city.name || 'NA'}</div>
+      </div>
+      <div>
+        <div className="tg-label">Tier</div>
+        <div className="tg-data">{tier.name || 'NA'}</div>
       </div>
     </>
   )
 
   render = () => (
-    <div className="target-group">
-      {!this.state.loading && this.getTargetGroupAffix(this.state)}
-      <span>{this.state.loading && <JLoader size="small" text="" />}</span>
+    <div className="question-container">
+      <div className="target-group">
+        {!this.state.loading && this.getTargetGroupAffix(this.state)}
+        <span>{this.state.loading && <JLoader size="small" text="" />}</span>
+      </div>
     </div>
   )
 }

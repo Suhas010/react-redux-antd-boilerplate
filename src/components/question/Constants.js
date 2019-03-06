@@ -1,4 +1,4 @@
-import { getUUID } from '../../utils/commonFunctions';
+import moment from 'moment';
 
 export const CONFIG = {
   genders: [
@@ -32,44 +32,27 @@ export const CONFIG = {
   ],
 };
 
-export const TG = [
-  {
-    id: 123123123123,
-    gender: 'Male',
-    minAge: 2,
-    maxAge: 14,
-    region: true,
-    country: 'India',
-    state: 'Maharashtra',
-    city: 'Pune',
-    tire: 1,
-  },
-  {
-    id: 123123123,
-    gender: 'Male',
-    minAge: 2,
-    maxAge: 14,
-    region: false,
-    country: 'India',
-    state: 'Maharashtra',
-    city: 'Pune',
-    tire: 1,
-  },
-];
-
-export const TG_DATA = [
-  { id: getUUID(), gender: 'Male', minimum_age: 2, maximum_age: 14, region: false, country: 'India', state: 'Maharashtra', city: 'Pune', tier: 'Two'},
-  { id: getUUID(), gender: 'Female', minimum_age: 2, maximum_age: 12, region: true, country: 'India', state: 'Maharashtra', city: 'Pune', tier: 'Two'}
+export const DEFAULT_DATE = [
+  { value: moment().add(1, 'h') },
+  { value: moment().add(1, 'h') },
+  { value: moment().add(1, 'd') },
+  { value: moment().add(3, 'd') },
+  { value: moment().add(7, 'd') },
+  { value: moment().add(1, 'M') },
+  { value: moment().add(3, 'M') },
+  { value: moment() },
+  { value: moment() },
 ];
 
 export const TG_HEADER = [
   { headerName: 'Gender', field: 'gender', sortable: true, editable: true, cellRenderer: 'renderGender' },
   { headerName: 'Min Age', field: 'minimum_age', sortable: true, editable: true, width: 140 },
   { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
-  { headerName: 'Region', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
+  { headerName: 'Region Specific', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
   { headerName: 'Country', field: 'country', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'State', field: 'state', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'City', field: 'city', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'Tier', field: 'tier', sortable: true, editable: true, cellRenderer: 'renderData' },
   { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditViewLink', width: 300 },
 ];
+import { getUUID } from '../../utils/commonFunctions';

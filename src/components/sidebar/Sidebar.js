@@ -27,7 +27,7 @@ class Sidebar extends Component {
   getMenu = () => {
     return NAV_MENU.map(({ path, name, icon }) => {
       return (
-        <Menu.Item key={path}>
+        <Menu.Item key={`${path}`}>
           <Icon type={icon} />
           <span>{name}</span>
         </Menu.Item>
@@ -46,6 +46,7 @@ class Sidebar extends Component {
         // collapsedWidth={10}
       >
         <div className="sidebar-logo"> AtCOI </div>
+        <Divider />
         <Menu
           theme="dark"
           mode="inline"
@@ -53,18 +54,6 @@ class Sidebar extends Component {
           onClick={this.handleMenuChange}
         >
           {this.getMenu()}
-          <Divider />
-          <Menu.SubMenu
-            key="sub1"
-            title={<span><Icon type="appstore" /><span>Other</span></span>}
-          >
-            <Menu.Item key="3">Option 3</Menu.Item>
-            <Menu.Item key="4">Option 4</Menu.Item>
-            <Menu.SubMenu key="sub1-2" title="Submenu">
-              <Menu.Item key="5">Option 5</Menu.Item>
-              <Menu.Item key="6">Option 6</Menu.Item>
-            </Menu.SubMenu>
-          </Menu.SubMenu>
         </Menu>
       </Sider>
     );

@@ -3,7 +3,7 @@ import handleError from './handleError';
 import { showFailureNotification } from '../reusable/Notifications';
 
 const API_BASE_URL = process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : `${window.location.origin}/questionbank`;
-
+// const API_BASE_URL = 'http://af293494236ee11e9989602fe773b974-224893321.us-east-1.elb.amazonaws.com/questionbank';
 export default class RequestHandler {
   // returns header object
   static getHeader(type, data = {}, isFile = false) {
@@ -31,7 +31,6 @@ export default class RequestHandler {
   }
 
   static isSuccess(response) {
-    // console.log("Response", response.json());
     if (!(response.ok || response.status === 200 || response.status === 201)) {
       showFailureNotification(handleError(response));
       throw Error(response.statusText);

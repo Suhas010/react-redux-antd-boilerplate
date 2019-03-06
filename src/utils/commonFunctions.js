@@ -38,8 +38,8 @@ export function getUUID() {
   return uuid;
 }
 
-export function getGender(value) {
-  return JSON.parse(getItem('genders')).find(item => item.value === value).name;
+export function getIDOf(key, name) {
+  return JSON.parse(getItem(key)).find(item => item.name === name).value;
 }
 
 export function getConfigFor(key) {
