@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { Empty, Skeleton } from 'antd';
-import TargetGroupModel from '../../../models/AppModel/TargetGroup';
-import QuestionModel from '../../../models/AppModel/Questions';
-import { getTargetGroups } from '../../../actions/appActions/TargetGroupAction';
+import TargetGroupModel from '../../models/AppModel/TargetGroup';
+import QuestionModel from '../../models/AppModel/Questions';
+import { getTargetGroups } from '../../actions/appActions/TargetGroupAction';
 import TargetGroup from './TargetGroup';
 import './TargetGroup.scss';
-import { showFailureNotification } from '../../reusable/Notifications';
-import routes from '../../../utils/routes';
+import { showFailureNotification } from '../reusable/Notifications';
+import routes from '../../utils/routes';
 
 class TargetGroupContainer extends Component {
   constructor(props) {

@@ -2,15 +2,15 @@
 import React, { Component } from 'react';
 import { Button, Tooltip, BackTop, Skeleton } from 'antd';
 import { connect } from 'react-redux';
-import QuestionModel from '../../../models/AppModel/Questions';
-import { getQuestions } from '../../../actions/appActions/QuestionActions';
-import TargetGroupAffix from './TargetGroupAffix';
-import QuestionPanel from './QuestionPanel';
-import './AddQuestions.scss';
-import routes from '../../../utils/routes';
+import QuestionModel from '../../models/AppModel/Questions';
+import { getQuestions } from '../../actions/appActions/QuestionActions';
+import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
+import QuestionDetails from './QuestionDetails';
+import './Question.scss';
+import routes from '../../utils/routes';
 
 
-class AddQuestionContainer extends Component {
+class QuestionContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,9 +75,9 @@ class AddQuestionContainer extends Component {
     </div>
   );
 
-  getQuestionList = () => <QuestionPanel {...this.props} />;
+  getQuestionList = () => <QuestionDetails {...this.props} />;
 
-  getAffix = () => <TargetGroupAffix />
+  getAffix = () => <TargetGroupDetails />
 
   getQuestions = () => (
     <div className="questions">
@@ -112,4 +112,4 @@ function mapStateToProps() {
 }
 
 
-export default connect(mapStateToProps)(AddQuestionContainer);
+export default connect(mapStateToProps)(QuestionContainer);

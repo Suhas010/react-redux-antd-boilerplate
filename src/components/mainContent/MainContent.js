@@ -3,12 +3,12 @@ import React from 'react';
 import {
   Route, Switch, Redirect,
 } from 'react-router-dom';
-import TargetGroup from '../question';
-import AddQuestions from '../question/AddQuestion/AddQuestionContainer';
-import TargetGroupForm from '../question/TargetGroup/TargetGroupForm';
+import TargetGroup from '../targetGroup/TargetGroupContainer';
+import QuestionContainer from '../question/QuestionContainer';
+import TargetGroupForm from '../targetGroup/TargetGroupForm';
 import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';
-import AddQuestionForm from '../question/AddQuestion/AddQuestionForm';
+import QuestionForm from '../question/QuestionForm';
 
 function isAuthenticated() {
   if (getItem('user')) {
@@ -43,9 +43,9 @@ const MainContent = () => (
     <PrivateRoute exact path={routes.targetGroupList} component={TargetGroup} />
     <PrivateRoute exact path={routes.targetGroupAdd} component={TargetGroupForm} />
     <PrivateRoute exact path={routes.targetGroupEdit} component={TargetGroupForm} />
-    <PrivateRoute exact path={routes.questionList} component={AddQuestions} />
-    <PrivateRoute exact path={routes.questionAdd} component={AddQuestionForm} />
-    <PrivateRoute exact path={routes.questionEdit} component={AddQuestionForm} />
+    <PrivateRoute exact path={routes.questionList} component={QuestionContainer} />
+    <PrivateRoute exact path={routes.questionAdd} component={QuestionForm} />
+    <PrivateRoute exact path={routes.questionEdit} component={QuestionForm} />
     {/* <PrivateRoute component={NoMatch} /> */}
   </Switch>
 );

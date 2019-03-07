@@ -5,23 +5,23 @@
 import React from 'react';
 import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon } from 'antd';
 import moment from 'moment';
-import { showSuccessNotification } from '../../reusable/Notifications';
-import JSelect from '../../reusable/Select';
-import JTextArea from '../../reusable/TextArea';
-import { CONFIG, DEFAULT_DATE } from '../Constants';
-import JInput from '../../reusable/Input';
-import JSwitch from '../../reusable/Switch';
-import TargetGroupAffix from './TargetGroupAffix';
-import './AddQuestions.scss';
-import QuestionModel from '../../../models/AppModel/Questions';
-import { getQuestion, updateQuestion, saveQuestion } from '../../../actions/appActions/QuestionActions';
-import { getConfigFor, getIDOf } from '../../../utils/commonFunctions';
+import { showSuccessNotification } from '../reusable/Notifications';
+import JSelect from '../reusable/Select';
+import JTextArea from '../reusable/TextArea';
+import { CONFIG, DEFAULT_DATE } from '../targetGroup/Constants';
+import JInput from '../reusable/Input';
+import JSwitch from '../reusable/Switch';
+import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
+import './Question.scss';
+import QuestionModel from '../../models/AppModel/Questions';
+import { getQuestion, updateQuestion, saveQuestion } from '../../actions/appActions/QuestionActions';
+import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
 
 const { Option } = Select;
 const QUESTION_TYPES = getConfigFor('questionTypes');
 const DIFF_LEVELS = getConfigFor('difficultyLevels');
 
-class AddQuestionForm extends React.Component {
+class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -320,7 +320,7 @@ class AddQuestionForm extends React.Component {
     history.push(`/admin/dashboard/${match.params.targetID}/questions`);
   };
 
-  getAffix = () => <TargetGroupAffix />;
+  getAffix = () => <TargetGroupDetails />;
 
   getHeader = () => {
     const { match } = this.props;
@@ -333,6 +333,12 @@ class AddQuestionForm extends React.Component {
   disabledDate = (currentDate) => {
     // Can not select days before today and today
     return currentDate && currentDate < moment().subtract(1, 'd').endOf('day');
+  }
+
+  renderCloseButton = () => {
+    return <Button type="primary" onClick={()=> this.setState({
+      openDatePicker: false,
+    })}>Ok </Button>;
   }
 
   getForm = ({ questionType, question, difficultyLevel, repeatThis,
@@ -431,6 +437,8 @@ class AddQuestionForm extends React.Component {
                   onOpenChange={() => this.setState({ openDatePicker: true })}
                   onChange={this.handleDateChange}
                   disabledDate={this.disabledDate}
+                  renderExtraFooter={this.renderCloseButton}
+                  format="DD-MM-YYYY"
                   open={openDatePicker}
                 />
               </Col>
@@ -497,4 +505,4 @@ class AddQuestionForm extends React.Component {
   }
 }
 
-export default AddQuestionForm;
+export default QuestionForm;

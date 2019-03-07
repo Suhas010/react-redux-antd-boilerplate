@@ -3,12 +3,11 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import TargetGroupModel from '../../../models/AppModel/TargetGroup';
-import { getTargetGroup } from '../../../actions/appActions/TargetGroupAction';
-import JLoader from '../../reusable/Loader';
-import { getGender } from '../../../utils/commonFunctions';
+import TargetGroupModel from '../../models/AppModel/TargetGroup';
+import { getTargetGroup } from '../../actions/appActions/TargetGroupAction';
+import JLoader from '../reusable/Loader';
 
-class TargetGroupAffix extends Component {
+class TargetGroupDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -109,4 +108,4 @@ class TargetGroupAffix extends Component {
   )
 }
 
-export default withRouter(TargetGroupAffix);
+export default withRouter(TargetGroupDetails);

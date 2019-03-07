@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import QuestionModel from '../../../models/AppModel/Questions';
+import QuestionModel from '../../models/AppModel/Questions';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
-class QuestionPanel extends Component {
+class QuestionDetails extends Component {
   getQuestionOptions = options => options.map((option, index) => (
     <>
       <Col span={2}>
@@ -24,7 +24,7 @@ class QuestionPanel extends Component {
     const ifOptions = type === 'Select' || type === 'MultiSelect';
     return (
       <>
-        <Divider />
+        <Divider style={{ margin: '8px 0px' }} />
         {ifOptions && (
           <Row className="options-container">
             {this.getQuestionOptions(options)}
@@ -50,43 +50,31 @@ class QuestionPanel extends Component {
   getUpdated = (type, time, status, diff) => (
     <>
       <Row>
-        <Col span={12}>
-          <Row>
-            <Col span={4}>
-              <span className="label"> Status</span>
-            </Col>
-            <Col span={18}>
-              <span className="status">{status}</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <span className="label">Type</span>
-            </Col>
-            <Col span={18}>
-              <div className="tags">
-                {type}
-              </div>
-            </Col>
-          </Row>
+        <Col span={3}>
+          <div className="data-container">
+            <span className="label"> Status</span>
+            <span className="status">{status}</span>
+          </div>
         </Col>
-        <Col span={12}>
-          <Row>
-            <Col span={4}>
-              <span className="label">Difficulty</span>
-            </Col>
-            <Col span={18}>
-              <span style={{ paddingLeft: 17 }}>{diff}</span>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={4}>
-              <span className="label">Updated</span>
-            </Col>
-            <Col span={18}>
-              <span style={{ paddingLeft: 17 }}>{moment(time).from(moment())}</span>
-            </Col>
-          </Row>
+        <Col span={3}>
+          <div className="data-container">
+            <span className="label">Type</span>
+            <div className="tags">
+              {type}
+            </div>
+          </div>
+        </Col>
+        <Col span={3}>
+          <div className="data-container">
+            <span className="label">Difficulty</span>
+            <span >{diff}</span>
+          </div>
+        </Col>
+        <Col span={3}>
+          <div className="data-container">
+            <span className="label">Updated</span>
+            <span>{moment(time).from(moment())}</span>
+          </div>
         </Col>
       </Row>
     </>
@@ -97,17 +85,18 @@ class QuestionPanel extends Component {
   }) => {
     return (
       <div className="details-container">
+        {this.getUpdated(type, updated_at, status, difficulty_level)}
+        <Divider style={{ margin: '8px 0px'}} />
         <Row>
-          <Col span={4}>
+          <Col span={1}>
             <span className="label">Tags</span>
           </Col>
-          <Col span={18}>
+          <Col span={23}>
             <div className="tags">
               {tags && this.getTags(tags)}
             </div>
           </Col>
         </Row>
-        {this.getUpdated(type, updated_at, status, difficulty_level)}
       </div>
     );
   }
@@ -133,11 +122,9 @@ class QuestionPanel extends Component {
             </Tooltip>
           </Row>
           <Row>
-            <Col span={12} >
-              {this.getQuestionStatus(type, rest)}
-            </Col>
+            {this.getQuestionStatus(type, rest)}
           </Row>
-          <Row span={12}>
+          <Row>
             {this.getQuestionsDetails(
               type,
               options,
@@ -173,4 +160,4 @@ function mapStateToProps() {
   };
 }
 
-export default connect(mapStateToProps)(QuestionPanel);
+export default connect(mapStateToProps)(QuestionDetails);

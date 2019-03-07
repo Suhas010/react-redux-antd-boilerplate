@@ -5,24 +5,18 @@
 import React, { Component } from 'react';
 import { Row, Col, Button, Icon, Skeleton, Divider } from 'antd';
 import { connect } from 'react-redux';
-import { CONFIG } from '../Constants';
-import JInput from '../../reusable/Input';
-import JSelect from '../../reusable/Select';
-import JSwitch from '../../reusable/Switch';
+import { CONFIG } from './Constants';
+import JInput from '../reusable/Input';
+import JSelect from '../reusable/Select';
+import JSwitch from '../reusable/Switch';
 import './TargetGroup.scss';
-import TargetGroupModel from '../../../models/AppModel/TargetGroup';
-import CategoriesModel from '../../../models/AppModel/Categories';
-import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../../actions/appActions/TargetGroupAction';
-import { getCategories, getSubCategories } from '../../../actions/appActions/AppConfigActions';
-import routes from '../../../utils/routes';
-import { getConfigFor, getIDOf } from '../../../utils/commonFunctions';
-import { showWarningNotification, showSuccessNotification } from '../../reusable/Notifications';
-
-const initialError = {
-  minAge: '',
-  maxAge: '',
-  subCategory: '',
-};
+import TargetGroupModel from '../../models/AppModel/TargetGroup';
+import CategoriesModel from '../../models/AppModel/Categories';
+import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../actions/appActions/TargetGroupAction';
+import { getCategories, getSubCategories } from '../../actions/appActions/AppConfigActions';
+import routes from '../../utils/routes';
+import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
+import { showWarningNotification, showSuccessNotification } from '../reusable/Notifications';
 
 const MAX_AGE = 60;
 const MIN_AGE = 0;

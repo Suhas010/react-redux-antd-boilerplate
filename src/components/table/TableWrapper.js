@@ -4,12 +4,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { Switch, Divider, Icon } from 'antd';
+import { Switch, Icon } from 'antd';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
-
-import { getGender } from '../../utils/commonFunctions';
 
 class TableWrapper extends Component {
   constructor(props) {
