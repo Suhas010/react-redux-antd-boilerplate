@@ -16,4 +16,16 @@
     display: flex;
     justify-content: center;
   }
+  
+}
+
+.category-form-container {
+  .actions-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 3%;
+    div {
+      padding-right: 3%;
+    }
+  }
 }

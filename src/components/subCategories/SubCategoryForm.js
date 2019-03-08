@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
-
-import './SubCategories.scss';
 import { Row, Col, Button } from 'antd';
 import { addSubCategory, updateSubCategory, getSubCategory } from '../../actions/appActions/AppConfigActions'
 import JInput from '../reusable/Input';
 import CategoryDetails from '../categories/CategoryDetails';
 import { showSuccessNotification } from '../reusable/Notifications';
+import './SubCategories.scss';
 
 class SubCategoryForm extends Component {
   constructor(props) {
@@ -149,13 +148,13 @@ class SubCategoryForm extends Component {
         {/* <Divider /> */}
         <Row>
           <Col span={24}>
-            <div className="actions">
+            <div className="actions-container">
               <div>
                 <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
                   {this.getHeader()}
                 </Button>
               </div>
-              <div>
+              <div style={{ paddingLeft: '1%'}}>
                 <Button onClick={this.handleCancel}>Cancel</Button>
               </div>
             </div>

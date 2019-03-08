@@ -22,6 +22,7 @@ class SubCategoriesContainer extends Component {
   componentDidMount() {
     this.setLoading('loading', true);
     const { match } = this.props;
+    SubCategoriesModel.deleteAll();
     getSubCategories(match.params.categoryID)
       .then((payload) => {
         this.setLoading('loading', false);
