@@ -10,14 +10,14 @@ const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
 class QuestionDetails extends Component {
   getQuestionOptions = options => options.map((option, index) => (
-    <>
+    <Row className="options-container" key={option.body+index}>
       <Col span={2}>
         <span>{`Option ${index + 1}`}</span>
       </Col>
       <Col span={21}>
         <div>{option.body}</div>
       </Col>
-    </>
+    </Row>
   ));
 
   getQuestionsDetails = (type, options) => {
@@ -26,9 +26,9 @@ class QuestionDetails extends Component {
       <>
         <Divider style={{ margin: '8px 0px' }} />
         {ifOptions && (
-          <Row className="options-container">
+          <>
             {this.getQuestionOptions(options)}
-          </Row>
+          </>
         )
         }
       </>
@@ -43,7 +43,7 @@ class QuestionDetails extends Component {
 
   getTags = (tags) => {
     const tagsArray = tags.split(',');
-    return tagsArray.map(tag => <Tag color={colorArray[this.getRandomInt(0, 8)]}>{tag}</Tag>);
+    return tagsArray.map(tag => <Tag color={colorArray[this.getRandomInt(0, 8)]} key={tag}>{tag}</Tag>);
   }
 
 

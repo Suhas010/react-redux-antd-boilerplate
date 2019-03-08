@@ -12,6 +12,7 @@ import JSwitch from '../reusable/Switch';
 import './TargetGroup.scss';
 import TargetGroupModel from '../../models/AppModel/TargetGroup';
 import CategoriesModel from '../../models/AppModel/Categories';
+import ErrorBoundary from '../reusable/ErrorBoundary';
 import { getTargetGroup, saveTargetGroup, updateTargetGroup } from '../../actions/appActions/TargetGroupAction';
 import { getCategories, getSubCategories } from '../../actions/appActions/AppConfigActions';
 import routes from '../../utils/routes';
@@ -29,7 +30,7 @@ class TargetGroupForm extends Component {
       subCategoryLoading: false,
       submitLoading: false,
       subCategories: [],
-      subCategory: '',
+      subCategory: null,
       addEdit: false,
       gender: 1,
       minAge: 2,
@@ -96,6 +97,7 @@ class TargetGroupForm extends Component {
   }
 
   getSubCategories = (id, categoryChanged = false) => {
+    console.log('getting sub categories');
     this.setLoading('subCategoryLoading', true);
     getSubCategories(id)
       .then((payload) => {
@@ -122,7 +124,7 @@ class TargetGroupForm extends Component {
   setEditData = ({
     id, gender, maximum_age, minimum_age, category, subcategory,
   }) => {
-    this.getSubCategories(category.id);
+    // this.getSubCategories(category.id);
     this.setState({
       id,
       gender: getIDOf('genders', gender),
@@ -130,6 +132,7 @@ class TargetGroupForm extends Component {
       maxAge: maximum_age,
       minAge: minimum_age,
       subCategory: subcategory.id,
+      subCategories: [subcategory],
       loading: false,
     });
   }
@@ -170,11 +173,15 @@ class TargetGroupForm extends Component {
 
   handleChange = (value, type) => {
     if (type === 'category') {
-      this.getSubCategories(value, true);
+      this.setError('category', '');
+      this.setState({
+        subCategories: [],
+        subCategory: null,
+      });
     }
-    if (type === 'subCategory') {
-      this.setError('subCategory', '');
-    }
+    // if (type === 'subCategory') {
+    //   this.setError('subCategory', '');
+    // }
     if (type === 'minAge' || type === 'maxAge') {
       this.resetErrors();
       this.validateAge(value, type);
@@ -187,10 +194,10 @@ class TargetGroupForm extends Component {
 
   validateForm = ({
     maxAge, minAge,
-    subCategory,
+    category,
   }) => {
-    if (!subCategory) {
-      this.setError('subCategory', 'Please select sub-category.');
+    if (!category) {
+      this.setError('category', 'Please select category.');
       return false;
     }
     if (!minAge || !maxAge) {
@@ -277,135 +284,142 @@ class TargetGroupForm extends Component {
           {`${this.getHeader()} Target Group`}
           <Divider />
         </Row>
-        <Row>
-          <Col span={12}>
-            <JSelect
-              showSearch
-              onChange={e => this.handleChange(e, 'category')}
-              options={categories}
-              placeholder="Select category"
-              label="Category"
-              value={category || undefined}
-              labelClass="label"
-              style={{ width: '100%' }}
-              required
-              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            />
-          </Col>
-          <Col span={11} offset={1}>
-            <JSelect
-              showSearch
-              onChange={e => this.handleChange(e, 'subCategory')}
-              options={subCategories}
-              placeholder="Select sub-category"
-              label="Sub Category"
-              value={subCategory || undefined}
-              labelClass="label"
-              className={error.subCategory ? 'select-error' : ''}
-              style={{ width: '100%' }}
-              required
-              loading={subCategoryLoading}
-              disabled={!category ? true : subCategoryLoading}
-              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              error={error.subCategory}
-            />
-          </Col>
-        </Row>
-        <Row style={{ paddingTop: 18 }}>
-          <Col span={8}>
-            <JSelect
-              label="Gender"
-              labelClass="label"
-              options={getConfigFor('genders')}
-              value={gender}
-              onChange={e => this.handleChange(e, 'gender')}
-              style={{ width: '100%' }}
-            />
-          </Col>
-          <Col span={7} offset={1}>
-            <JInput
-              label="Minimum Age"
-              labelClass="label"
-              options={CONFIG.genders}
-              value={minAge}
-              type="number"
-              min={0}
-              max={100}
-              onChange={e => this.handleChange(e.target.value, 'minAge')}
-              error={error.minAge}
-            />
-          </Col>
-          <Col span={7} offset={1}>
-            <JInput
-              label="Maximum Age"
-              labelClass="label"
-              options={CONFIG.genders}
-              value={maxAge}
-              type="number"
-              min={0}
-              max={100}
-              onChange={e => this.handleChange(e.target.value, 'maxAge')}
-              error={error.maxAge}
-            />
-          </Col>
-        </Row>
-        <Row style={{ paddingTop: 18 }}>
-          <Col span={10}>
-            <JSwitch
-              label="Region specific?"
-              labelClass="label"
-              disabled
-              value={isRegionSpecific}
-              checkedChildren={<Icon type="check" />}
-              unCheckedChildren={<Icon type="close" />}
-              onChange={e => this.handleChange(e, 'isRegionSpecific')}
-            />
-          </Col>
-        </Row>
-        {isRegionSpecific && (
-          <Row className="row-padding">
-            <Col span={5}>
+        <ErrorBoundary name="Category Selection">
+          <Row>
+            <Col span={12}>
               <JSelect
-                label="Country"
+                showSearch
+                required
+                onChange={e => this.handleChange(e, 'category')}
+                options={categories}
+                placeholder="Select category"
+                label="Category"
+                value={category || undefined}
                 labelClass="label"
-                value={country}
-                options={CONFIG.questionTypes}
-                onChange={e => this.handleChange(e, 'country')}
                 style={{ width: '100%' }}
+                error={error.category}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
               />
             </Col>
-            <Col span={5} offset={1}>
+            <Col span={11} offset={1}>
               <JSelect
-                label="State"
+                showSearch
+                autoFocus={subCategoryLoading}
+                onFocus={() => this.getSubCategories(category, true)}
+                onChange={e => this.handleChange(e, 'subCategory')}
+                options={subCategories}
+                placeholder="Select sub-category"
+                label="Sub Category"
+                value={subCategory || undefined}
                 labelClass="label"
-                value={state}
-                options={CONFIG.questionTypes}
-                onChange={e => this.handleChange(e, 'state')}
+                className={error.subCategory ? 'select-error' : ''}
                 style={{ width: '100%' }}
-              />
-            </Col>
-            <Col span={5} offset={1}>
-              <JSelect
-                label="City"
-                labelClass="label"
-                value={city}
-                options={CONFIG.questionTypes}
-                onChange={e => this.handleChange(e, 'city')}
-                style={{ width: '100%' }}
-              />
-            </Col>
-            <Col span={5} offset={1}>
-              <JSelect
-                label="Tier"
-                labelClass="label"
-                value={tier}
-                options={CONFIG.questionTypes}
-                onChange={e => this.handleChange(e, 'tier')}
-                style={{ width: '100%' }}
+                // required
+                loading={subCategoryLoading}
+                disabled={!category ? true : subCategoryLoading}
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                // error={error.subCategory}
               />
             </Col>
           </Row>
-        )}
+          <Row style={{ paddingTop: 18 }}>
+            <Col span={8}>
+              <JSelect
+                label="Gender"
+                labelClass="label"
+                options={getConfigFor('genders')}
+                value={gender}
+                onChange={e => this.handleChange(e, 'gender')}
+                style={{ width: '100%' }}
+              />
+            </Col>
+            <Col span={7} offset={1}>
+              <JInput
+                label="Minimum Age"
+                labelClass="label"
+                options={CONFIG.genders}
+                value={minAge}
+                type="number"
+                min={0}
+                max={100}
+                onChange={e => this.handleChange(e.target.value, 'minAge')}
+                error={error.minAge}
+              />
+            </Col>
+            <Col span={7} offset={1}>
+              <JInput
+                label="Maximum Age"
+                labelClass="label"
+                options={CONFIG.genders}
+                value={maxAge}
+                type="number"
+                min={0}
+                max={100}
+                onChange={e => this.handleChange(e.target.value, 'maxAge')}
+                error={error.maxAge}
+              />
+            </Col>
+          </Row>
+          <Row style={{ paddingTop: 18 }}>
+            <Col span={10}>
+              <JSwitch
+                label="Region specific?"
+                labelClass="label"
+                disabled
+                value={isRegionSpecific}
+                checkedChildren={<Icon type="check" />}
+                unCheckedChildren={<Icon type="close" />}
+                onChange={e => this.handleChange(e, 'isRegionSpecific')}
+              />
+            </Col>
+          </Row>
+        </ErrorBoundary>
+        <ErrorBoundary name="Region Selection">
+          {isRegionSpecific && (
+            <Row className="row-padding">
+              <Col span={5}>
+                <JSelect
+                  label="Country"
+                  labelClass="label"
+                  value={country}
+                  options={CONFIG.questionTypes}
+                  onChange={e => this.handleChange(e, 'country')}
+                  style={{ width: '100%' }}
+                />
+              </Col>
+              <Col span={5} offset={1}>
+                <JSelect
+                  label="State"
+                  labelClass="label"
+                  value={state}
+                  options={CONFIG.questionTypes}
+                  onChange={e => this.handleChange(e, 'state')}
+                  style={{ width: '100%' }}
+                />
+              </Col>
+              <Col span={5} offset={1}>
+                <JSelect
+                  label="City"
+                  labelClass="label"
+                  value={city}
+                  options={CONFIG.questionTypes}
+                  onChange={e => this.handleChange(e, 'city')}
+                  style={{ width: '100%' }}
+                />
+              </Col>
+              <Col span={5} offset={1}>
+                <JSelect
+                  label="Tier"
+                  labelClass="label"
+                  value={tier}
+                  options={CONFIG.questionTypes}
+                  onChange={e => this.handleChange(e, 'tier')}
+                  style={{ width: '100%' }}
+                />
+              </Col>
+            </Row>
+          )}
+        </ErrorBoundary>
         <Row>
           <Col span={24}>
             <div className="actions">

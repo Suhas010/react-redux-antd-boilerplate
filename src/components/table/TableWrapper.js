@@ -10,14 +10,6 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TableWrapper.scss';
 
 class TableWrapper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpenForm: false,
-      mode: '',
-      id: '',
-    };
-  }
 
   onGridReady = (params) => {
     this.params = params;

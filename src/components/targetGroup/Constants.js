@@ -21,7 +21,7 @@ export const CONFIG = {
     { value: 4, name: 'Number' },
     { value: 5, name: 'Range' },
   ],
-  date: [
+  triggerDate: [
     { value: 1, name: 'Now' },
     { value: 2, name: 'Tomorrow' },
     { value: 3, name: 'After three days' },
@@ -45,17 +45,17 @@ export const DEFAULT_DATE = [
 ];
 
 export const TG_HEADER = [
-  { headerName: 'Category', field: 'category', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'Sub Category', field: 'subcategory', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'Gender', field: 'gender', sortable: true, editable: true, cellRenderer: 'renderGender' },
-  { headerName: 'Age', field: 'minimum_age', sortable: true, editable: true, width: 140, cellRenderer: 'renderAgeRange' },
-  // { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: true, width: 140 },
-  // { headerName: 'Region Specific', field: 'region', sortable: true, editable: true, cellRenderer: 'renderSwitch' },
-  { headerName: 'Country', field: 'country', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'State', field: 'state', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'City', field: 'city', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'Tier', field: 'tier', sortable: true, editable: true, cellRenderer: 'renderData' },
-  { headerName: 'Edit', field: 'id', sortable: true, editable: true, cellRenderer: 'renderEditLink' },
-  { headerName: 'Action', field: 'id', sortable: true, editable: true, cellRenderer: 'renderViewLink' },
+  { headerName: 'Category', field: 'category', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'Sub Category', field: 'subcategory', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'Gender', field: 'gender', sortable: true, editable: false, cellRenderer: 'renderGender' },
+  { headerName: 'Age Group', field: 'minimum_age', sortable: true, editable: false, width: 200, cellRenderer: 'renderAgeRange' },
+  // { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: false, width: 140 },
+  // { headerName: 'Region Specific', field: 'region', sortable: true, editable: false, cellRenderer: 'renderSwitch' },
+  { headerName: 'Country', field: 'country', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'State', field: 'state', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'City', field: 'city', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'Tier', field: 'tier', sortable: true, editable: false, cellRenderer: 'renderData' },
+  { headerName: 'Edit', field: 'id', sortable: true, editable: false, width: 100, cellRenderer: 'renderEditLink' },
+  { headerName: 'Action', field: 'id', sortable: true, editable: false, cellRenderer: 'renderViewLink' },
 
 ];

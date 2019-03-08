@@ -72,7 +72,7 @@ class TargetGroupDetails extends Component {
         <div className="tg-data">{gender}</div>
       </div>
       <div>
-        <div className="tg-label">Age</div>
+        <div className="tg-label">Age Group</div>
         <div className="tg-data">{`${minAge} to ${maxAge}`}</div>
       </div>
       {/* <div>

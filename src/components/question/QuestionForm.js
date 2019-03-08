@@ -5,7 +5,7 @@
 import React from 'react';
 import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon } from 'antd';
 import moment from 'moment';
-import { showSuccessNotification } from '../reusable/Notifications';
+import { showSuccessNotification, showWarningNotification } from '../reusable/Notifications';
 import JSelect from '../reusable/Select';
 import JTextArea from '../reusable/TextArea';
 import { CONFIG, DEFAULT_DATE } from '../targetGroup/Constants';
@@ -16,6 +16,7 @@ import './Question.scss';
 import QuestionModel from '../../models/AppModel/Questions';
 import { getQuestion, updateQuestion, saveQuestion } from '../../actions/appActions/QuestionActions';
 import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
+import ErrorBoundary from '../reusable/ErrorBoundary';
 
 const { Option } = Select;
 const QUESTION_TYPES = getConfigFor('questionTypes');
@@ -32,12 +33,12 @@ class QuestionForm extends React.Component {
       question: '',
       difficultyLevel: 10,
       repeatThis: false,
-      triggerDate: 2,
-      count: '',
+      repeatTypeOption: 2,
+      repeatCount: '',
       interval: '',
       tags: [],
       options: [{ body: '' }, { body: '' }],
-      date: moment(),
+      triggerDate: moment(),
       error: {},
     };
   }
@@ -69,11 +70,11 @@ class QuestionForm extends React.Component {
     }
     options.map(item => questionOptions.push(item));
     this.setState({
-      tags: tags.split(','),
-      triggerDate: repeat_trigger_at ? 7 : 2,
-      date: moment(repeat_trigger_at),
-      count: repeat_count,
-      repeatThis: repeat_trigger_at ? true : false,
+      tags: tags.length > 0 ? tags.split(',') : [],
+      repeatTypeOption: repeat_trigger_at ? 7 : 2,
+      triggerDate: moment(repeat_trigger_at),
+      repeatCount: repeat_count,
+      repeatThis: repeat_count ? true : false,
       interval: repeat_interval,
       question: body,
       difficultyLevel: getIDOf('difficultyLevels', difficulty_level),
@@ -118,6 +119,7 @@ class QuestionForm extends React.Component {
   }
 
   handleTagsChange = (tags) => {
+    console.log(tags, "$$$$");
     this.setState({
       tags,
     });
@@ -136,7 +138,9 @@ class QuestionForm extends React.Component {
     if (!options || options.length === 0) {
       return [];
     }
-    return options.map(item => <Option key={item}>{item}</Option>);
+    return options.map((item) => {
+      if (item) return <Option key={item}>{item}</Option>;
+    });
   };
 
   getTags = tags => (
@@ -220,24 +224,24 @@ class QuestionForm extends React.Component {
     </>
   );
 
-  handleDateChange = (date, ...rest) => {
-    if (!date) {
+  handleDateChange = (triggerDate, ...rest) => {
+    if (!triggerDate) {
       this.setState({
-        triggerDate: 1,
+        repeatTypeOption: 1,
         openDatePicker: false,
       });
     }
     this.setState({
-      date,
+      triggerDate,
       openDatePicker: false,
     });
   };
 
 
   handleSelectChange = (value, type) => {
-    if (type === 'triggerDate' && value === 7) {
+    if (type === 'repeatTypeOption' && value === 7) {
       this.setState({
-        date: moment(),
+        triggerDate: moment(),
         openDatePicker: true,
       });
     }
@@ -259,8 +263,21 @@ class QuestionForm extends React.Component {
 
   validateForm = () => {
     const {
-      question,      
+      question,
+      repeatThis,
+      triggerDate,
+      interval,
+      repeatCount,
     } = this.state;
+
+    if (repeatThis) {
+      if (!triggerDate || !repeatCount || !interval) {
+        showWarningNotification('If question is repeating, Trigger date, repeat count and repeat interval must present');
+        return false;
+      }
+      return true;
+    }
+
     if (!question.trim()) {
       this.setError('question', 'Field is mandatory.');
       return false;
@@ -278,32 +295,29 @@ class QuestionForm extends React.Component {
       question,
       difficultyLevel,
       repeatThis,
-      triggerDate,
-      count,
+      repeatTypeOption,
+      repeatCount,
       interval,
       options,
       tags,
-      date
+      triggerDate,
     } = this.state;
-    let questionTags = "";
-    if (tags) {
-      tags.forEach((tag) => {
-        questionTags = questionTags.concat(`${tag},`);
-      });
-      questionTags = questionTags.slice(0, questionTags.length - 1);
+    let questionTags = null;
+    if (tags && tags.length > 0) {
+      questionTags = tags.join().replace(/,\s*$/, '');
     }
 
     const payload = {
       body: question,
-      tags: questionTags,
+      tags: questionTags ? questionTags : null,
       difficulty_level: difficultyLevel,
       type: questionType,
       options,
     };
     const { match } = this.props;
     if (repeatThis) {
-      payload.repeat_trigger_at = triggerDate === 7 ? date : DEFAULT_DATE[triggerDate].value;
-      payload.repeat_count = parseInt(count);
+      payload.repeat_trigger_at = repeatTypeOption === 7 ? triggerDate : DEFAULT_DATE[repeatTypeOption].value;
+      payload.repeat_count = parseInt(repeatCount);
       payload.repeat_interval = parseInt(interval);
     }
     if (match.params && match.params.questionID) {
@@ -342,7 +356,7 @@ class QuestionForm extends React.Component {
   }
 
   getForm = ({ questionType, question, difficultyLevel, repeatThis,
-    triggerDate, count, interval, tags, date, error, submitLoading, openDatePicker,
+    repeatTypeOption, repeatCount, interval, tags, triggerDate, error, submitLoading, openDatePicker,
   }) => (
     <div className="question-form-container">
       <Row className="header">
@@ -350,127 +364,137 @@ class QuestionForm extends React.Component {
       </Row>
       <div className="form">
         <Divider />
-        <Row>
-          <Col span={12}>
-            <JSelect
-              onChange={e => this.handleSelectChange(e, 'questionType')}
-              options={QUESTION_TYPES}
-              label="Question's Answer Type"
-              labelClass="label"
-              value={questionType}
-              style={{ width: '90%' }}
-              required
-            />
-          </Col>
-          <Col span={11} offset={1}>
-            <JSelect
-              label="Difficulty Level"
-              labelClass="label"
-              onChange={e => this.handleSelectChange(e, 'difficultyLevel')}
-              value={difficultyLevel}
-              options={DIFF_LEVELS}
-              style={{ width: '90%' }}
-            />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col span={24}>
-            <JTextArea
-              label="Question"
-              labelClass="label"
-              value={question}
-              row={1}
-              onChange={e => this.handleChange(e.target.value, 'question')}
-              required
-              error={error.question}
-            />
-          </Col>
-        </Row>
-        <Row>
-          {(questionType === 0 || questionType === 1) && this.getQuestionsOptions()}
-        </Row>
-        <Divider dashed className="divider" />
-        <Row>
-          <Col span={12}>
-            <JSwitch
-              checked={repeatThis}
-              checkedChildren={<Icon type="check" />}
-              unCheckedChildren={<Icon type="close" />}
-              onChange={e => this.handleChange(e, 'repeatThis')}
-              label="Repetition"
-              labelClass="label"
-            />
-          </Col>
-        </Row>
-        {repeatThis && (
-          <Row style={{ paddingTop: '4%' }}>
-            {triggerDate !== 7 && (
-              <Col span={7}>
-                <JSelect
-                  value={triggerDate}
-                  label="Trigger Date"
-                  labelClass="label"
-                  options={CONFIG.date}
-                  onChange={e => this.handleSelectChange(e, 'triggerDate')}
-                  style={{ width: '90%' }}
-                />
-              </Col>
-            )}
-            {triggerDate === 7 && (
-              <Col span={7}>
-                <span
-                  className="label"
-                  style={{
-                    display: 'flex',
-                    top: '-11%',
-                    color: '#333333',
-                    fontSize: '14px',
-                    width: '192px',
-                    fontWeight: '500',
-                  }}
-                >
-                  Trigger Date
-                </span>
-                <DatePicker
-                  value={date}
-                  onOpenChange={() => this.setState({ openDatePicker: true })}
-                  onChange={this.handleDateChange}
-                  disabledDate={this.disabledDate}
-                  renderExtraFooter={this.renderCloseButton}
-                  format="DD-MM-YYYY"
-                  open={openDatePicker}
-                />
-              </Col>
-            )}
-            <Col span={7} offset={1}>
-              <JInput
-                label="Repeat Count"
+        <ErrorBoundary name="Question Type and Difficulty Level">
+          <Row>
+            <Col span={12}>
+              <JSelect
+                onChange={e => this.handleSelectChange(e, 'questionType')}
+                options={QUESTION_TYPES}
+                label="Question's Answer Type"
                 labelClass="label"
-                type="number"
-                value={count}
-                min={0}
-                onChange={e => this.handleChange(e.target.value, 'count')}
+                value={questionType}
+                style={{ width: '90%' }}
+                required
               />
             </Col>
-            <Col
-              span={7}
-              offset={1}
-              // style={triggerDate === 7 ? { paddingTop: '4%' } : {}}
-            >
-              <JInput
-                label="Repeat Interval"
+            <Col span={11} offset={1}>
+              <JSelect
+                label="Difficulty Level"
                 labelClass="label"
-                value={interval}
-                type="number"
-                min={0}
-                onChange={e => this.handleChange(e.target.value, 'interval')}
+                onChange={e => this.handleSelectChange(e, 'difficultyLevel')}
+                value={difficultyLevel}
+                options={DIFF_LEVELS}
+                style={{ width: '90%' }}
               />
             </Col>
           </Row>
-        )}
+        </ErrorBoundary>
+        <br />
+        <ErrorBoundary name="Question">
+          <Row>
+            <Col span={24}>
+              <JTextArea
+                label="Question"
+                labelClass="label"
+                value={question}
+                row={1}
+                onChange={e => this.handleChange(e.target.value, 'question')}
+                required
+                error={error.question}
+              />
+            </Col>
+          </Row>
+        </ErrorBoundary>
+        <ErrorBoundary name="Question Options">
+          <Row>
+            {(questionType === 0 || questionType === 1) && this.getQuestionsOptions()}
+          </Row>
+        </ErrorBoundary>
+        <ErrorBoundary name="Question Repetition">
+          <Divider dashed className="divider" />
+          <Row>
+            <Col span={12}>
+              <JSwitch
+                checked={repeatThis}
+                checkedChildren={<Icon type="check" />}
+                unCheckedChildren={<Icon type="close" />}
+                onChange={e => this.handleChange(e, 'repeatThis')}
+                label="Repetition"
+                labelClass="label"
+              />
+            </Col>
+          </Row>
+          {repeatThis && (
+            <Row style={{ paddingTop: '4%' }}>
+              {repeatTypeOption !== 7 && (
+                <Col span={7}>
+                  <JSelect
+                    value={repeatTypeOption}
+                    label="Trigger Date"
+                    labelClass="label"
+                    options={CONFIG.triggerDate}
+                    onChange={e => this.handleSelectChange(e, 'repeatTypeOption')}
+                    style={{ width: '90%' }}
+                  />
+                </Col>
+              )}
+              {repeatTypeOption === 7 && (
+                <Col span={7}>
+                  <span
+                    className="label"
+                    style={{
+                      display: 'flex',
+                      top: '-11%',
+                      color: '#333333',
+                      fontSize: '14px',
+                      width: '192px',
+                      fontWeight: '500',
+                    }}
+                  >
+                    Trigger Date
+                  </span>
+                  <DatePicker
+                    value={triggerDate}
+                    onOpenChange={() => this.setState({ openDatePicker: true })}
+                    onChange={this.handleDateChange}
+                    disabledDate={this.disabledDate}
+                    renderExtraFooter={this.renderCloseButton}
+                    format="DD-MM-YYYY"
+                    open={openDatePicker}
+                  />
+                </Col>
+              )}
+              <Col span={7} offset={1}>
+                <JInput
+                  label="Repeat Count"
+                  labelClass="label"
+                  type="number"
+                  value={repeatCount}
+                  min={0}
+                  onChange={e => this.handleChange(e.target.value, 'repeatCount')}
+                />
+              </Col>
+              <Col
+                span={7}
+                offset={1}
+                // style={repeatTypeOption === 7 ? { paddingTop: '4%' } : {}}
+              >
+                <JInput
+                  label="Repeat Interval"
+                  labelClass="label"
+                  value={interval}
+                  type="number"
+                  min={0}
+                  onChange={e => this.handleChange(e.target.value, 'interval')}
+                />
+              </Col>
+            </Row>
+          )}
+        </ErrorBoundary>
         <Divider dashed className="divider" />
-        <Row>{this.getTags(tags)}</Row>
+        <ErrorBoundary name="Tags">
+          <Row>{this.getTags(tags)}</Row>
+        </ErrorBoundary>
       </div>
       <div className="action">
         <div>
@@ -496,11 +520,11 @@ class QuestionForm extends React.Component {
   render() {
     const { loading, ...rest } = this.state;
     return (
-      <>
+      <ErrorBoundary name="Question Form">
         {this.getAffix()}
         {!loading && this.getForm(rest)}
-        {loading && <Skeleton row={5} />}
-      </>
+        {loading && <Skeleton active paragraph={{ row: 5 }} />}
+      </ErrorBoundary>
     );
   }
 }
