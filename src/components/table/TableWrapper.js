@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -32,44 +33,24 @@ class TableWrapper extends Component {
     />
   );
 
-  renderViewLink = ({ value }) => <a onClick={() => this.props.handleViewQuestionClick(value)} >View Questions</a>;
+  renderViewLink = ({ value }) => <a onClick={() => this.props.handleViewClick(value)}>View Questions</a>;
 
-  renderEditLink = ({ value }) => <a onClick={() => this.props.handleTGEditClick(value)} ><Icon type="edit"/></a>;
+  renderViewSubcategories = ({ value }) => <a onClick={() => this.props.handleViewClick(value)}>View Sub-Categories</a>;
+
+  renderEditLink = ({ value }) => <a onClick={() => this.props.handleEditClick(value)}><Icon type="edit" /></a>;
+  
+  renderDeleteIcon = ({ value }) => <a onClick={() => this.props.handleDeleteClick(value)}><Icon type="close" /></a>;
 
   renderAgeRange = ({value, data }) => {
-    return <span>{`${value} to ${data.maximum_age}`}</span>
+    return <span>{`${value} to ${data.maximum_age}`}</span>;
   }
 
   renderGender = ({ value }) => <span>{value}</span>;
-  
+
   renderData = ({ value }) => <span>{value.name || 'NA'}</span>;
-  
+
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
     // console.log(oldValue, newValue);
-  }
-
-  handleEditClick = (id) => {
-    this.openForm('Edit', id);
-  }
-
-  handleViewClick = (id) => {
-    this.openForm('View', id);
-  }
-
-  openForm = (mode, id) => {
-    this.setState({
-      isOpenForm: true,
-      mode,
-      id,
-    });
-  }
-
-  handleClose = () => {
-    this.setState({
-      isOpenForm: false,
-      mode: '',
-      id: '',
-    });
   }
 
   render = () => {
@@ -101,6 +82,8 @@ class TableWrapper extends Component {
               renderGender: this.renderGender,
               renderData: this.renderData,
               renderAgeRange: this.renderAgeRange,
+              renderViewSubcategories: this.renderViewSubcategories,
+              renderDelete: this.renderDeleteIcon,
             }}
           />
         </div>

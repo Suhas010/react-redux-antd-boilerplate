@@ -51,7 +51,7 @@ class TargetGroupContainer extends Component {
     history.push(routes.targetGroupAdd);
   }
 
-  handleViewQuestionClick = (id) => {
+  handleViewTargetGroupClick = (id) => {
     const { history } = this.props;
     // console.log('view q', id)
     history.push(`/admin/dashboard/${id}/questions`);
@@ -65,9 +65,9 @@ class TargetGroupContainer extends Component {
     return (
       <TargetGroup
         data={targetGroup}
-        handleTGEditClick={this.handleTGEditClick}
-        handleViewQuestionClick={this.handleViewQuestionClick}
-        handleAddTGButtonClick={this.handleAddTGButtonClick}
+        handleEditClick={this.handleTGEditClick}
+        handleViewClick={this.handleViewTargetGroupClick}
+        handleAddClick={this.handleAddTGButtonClick}
       />
     );
   }
@@ -76,7 +76,7 @@ class TargetGroupContainer extends Component {
     const { loading } = this.state;
     return (
       <div className="target-group-container">
-        <div className="target-group-header">Target Groups</div>
+        <div className="header">Target Groups</div>
         {loading && <Skeleton active paragraph={{ row: 5 }} />}
         {!loading && this.getTargetGroups()}
       </div>

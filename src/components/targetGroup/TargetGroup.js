@@ -6,18 +6,18 @@ import ErrorBoundary from '../reusable/ErrorBoundary';
 import { TG_HEADER } from './Constants';
 
 const TargetGroup = ({
-  data, handleAddTGButtonClick, handleTGEditClick, handleViewQuestionClick,
+  data, handleAddClick, handleEditClick, handleViewClick,
 }) => (
   <>
     <div className="add-button" >
-      <Button icon="plus" onClick={handleAddTGButtonClick} />
+      <Button icon="plus" onClick={handleAddClick} />
     </div>
     <ErrorBoundary name="Target Group List">
       <TableWrapper
         data={data}
         headers={TG_HEADER}
-        handleTGEditClick={handleTGEditClick}
-        handleViewQuestionClick={handleViewQuestionClick}
+        handleEditClick={handleEditClick}
+        handleViewClick={handleViewClick}
       />
     </ErrorBoundary>
   </>
@@ -26,7 +26,7 @@ const TargetGroup = ({
 TargetGroup.propTypes = {
   handleAddTGButtonClick: propTypes.func.isRequired,
   handleTGEditClick: propTypes.func.isRequired,
-  handleViewQuestionClick: propTypes.func.isRequired,
+  handleViewClick: propTypes.func.isRequired,
 };
 
 export default TargetGroup;

@@ -13,6 +13,11 @@ const routes = {
   categoriesAdd: '/admin/dashboard/categories-list/add',
   categoriesEdit: '/admin/dashboard/categories-list/:categoryID/edit',
 
+  subCategoriesList: '/admin/dashboard/category/:categoryID/sub-categories-list',
+  subCategoriesAdd: '/admin/dashboard/category/:categoryID/sub-categories-list/add',
+  subCategoriesEdit: '/admin/dashboard/category/:categoryID/sub-categories-list/:subCategoryID/edit',
+
+
 };
 
 export default routes;

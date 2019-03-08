@@ -1,0 +1,19 @@
+.categories-container {
+  .add-button {
+    position: fixed;
+    top: 9%;
+    right: 3%;
+    z-index: 1111;
+  }
+  .back-button {
+    position: fixed;
+    top: 9%;
+    left: 24%;
+    z-index: 1111;
+  }
+
+  .categories-table-container {
+    display: flex;
+    justify-content: center;
+  }
+}

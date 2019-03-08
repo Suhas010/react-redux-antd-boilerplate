@@ -45,9 +45,9 @@ export const DEFAULT_DATE = [
 ];
 
 export const TG_HEADER = [
-  { headerName: 'Category', field: 'category', sortable: true, editable: false, cellRenderer: 'renderData' },
-  { headerName: 'Sub Category', field: 'subcategory', sortable: true, editable: false, cellRenderer: 'renderData' },
-  { headerName: 'Gender', field: 'gender', sortable: true, editable: false, cellRenderer: 'renderGender' },
+  { headerName: 'Category', field: 'category.name', sortable: true, editable: false },
+  { headerName: 'Sub Category', field: 'subcategory.name', sortable: true, editable: false },
+  { headerName: 'Gender', field: 'gender', sortable: true, editable: false },
   { headerName: 'Age Group', field: 'minimum_age', sortable: true, editable: false, width: 200, cellRenderer: 'renderAgeRange' },
   // { headerName: 'Max Age', field: 'maximum_age', sortable: true, editable: false, width: 140 },
   // { headerName: 'Region Specific', field: 'region', sortable: true, editable: false, cellRenderer: 'renderSwitch' },
