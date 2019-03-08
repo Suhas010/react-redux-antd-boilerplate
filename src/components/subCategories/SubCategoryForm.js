@@ -154,7 +154,7 @@ class SubCategoryForm extends Component {
                   {this.getHeader()}
                 </Button>
               </div>
-              <div style={{ paddingLeft: '1%'}}>
+              <div style={{ paddingLeft: '3%' }}>
                 <Button onClick={this.handleCancel}>Cancel</Button>
               </div>
             </div>

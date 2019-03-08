@@ -23,6 +23,7 @@ class TargetGroupContainer extends Component {
 
   componentWillMount() {
     this.setLoading(true);
+    TargetGroupModel.deleteAll();
     QuestionModel.deleteAll();
     getTargetGroups()
       .then(((data) => {

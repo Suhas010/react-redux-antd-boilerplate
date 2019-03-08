@@ -149,7 +149,7 @@ class CategoryForm extends Component {
                   {this.getHeader()}
                 </Button>
               </div>
-              <div>
+              <div style={{ paddingLeft: '3%' }}>
                 <Button onClick={this.handleCancel}>Cancel</Button>
               </div>
             </div>

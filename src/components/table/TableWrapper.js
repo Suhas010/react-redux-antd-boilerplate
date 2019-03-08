@@ -5,11 +5,37 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { Switch, Icon } from 'antd';
+import { Switch, Icon, Popconfirm } from 'antd';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import styled from 'styled-components';
 import './TableWrapper.scss';
 
+const Message = styled.div`
+  width: 300px;
+  font-size: 14px;
+  font-weight: 500;
+`;
+
+const ConfirmMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding-top: 4%;
+  font-weight: 700;
+`;
+
+const CategoryMessage = () => (
+  <>
+    <Message>
+      Deleting category will also delete all the target groups which are created using this category.
+    </Message>
+    <ConfirmMessage>
+      Are you sure?
+    </ConfirmMessage>
+  </>
+);
 class TableWrapper extends Component {
 
   onGridReady = (params) => {
@@ -39,7 +65,17 @@ class TableWrapper extends Component {
 
   renderEditLink = ({ value }) => <a onClick={() => this.props.handleEditClick(value)}><Icon type="edit" /></a>;
   
-  renderDeleteIcon = ({ value }) => <a onClick={() => this.props.handleDeleteClick(value)}><Icon type="close" /></a>;
+  renderDeleteIcon = ({ value }) => (
+    <Popconfirm
+      title={<CategoryMessage />}
+      onConfirm={() => this.props.handleDeleteClick(value)}
+      onCancel={() => {}}
+      okText="Yes"
+      cancelText="No"
+    >
+      <a><Icon type="close" /></a>
+    </Popconfirm>
+  );
 
   renderAgeRange = ({value, data }) => {
     return <span>{`${value} to ${data.maximum_age}`}</span>;
