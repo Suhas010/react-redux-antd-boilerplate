@@ -86,7 +86,22 @@ class TableWrapper extends Component {
   renderData = ({ value }) => <span>{value.name || 'NA'}</span>;
 
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
-    // console.log(oldValue, newValue);
+    if (!newValue) {
+      return;
+    }
+    if (!data.parent_id) {
+      const payload = {
+        id: data.id,
+        name: newValue,
+      };
+      this.props.updateCategory(payload);
+    } else {
+      const payload = {
+        id: data.id,
+        name: newValue,
+      };
+      this.props.updateSubcategory(data.parent_id, payload);
+    }
   }
 
   render = () => {

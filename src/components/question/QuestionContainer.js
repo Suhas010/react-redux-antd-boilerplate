@@ -39,14 +39,9 @@ class QuestionContainer extends Component {
     });
   }
 
-  handleAddQuestionClick = (mode) => {
+  handleAddQuestionClick = () => {
     const { history, match } = this.props;
-    // console.log(mode)
-    if (mode === 'Add') {
-      history.push(`/admin/dashboard/${match.params.targetID}/questions/add`);
-      return 0;
-    }
-    history.push(`/admin/dashboard/${match.params.targetID}/questions/edit/${123}`);
+    history.push(`/admin/dashboard/${match.params.targetID}/questions/add`);
   }
 
   handleBackClick = () => {
@@ -67,7 +62,7 @@ class QuestionContainer extends Component {
       <div>
         <Tooltip title="Add question">
           <Button
-            onClick={() => this.handleAddQuestionClick('Add')}
+            onClick={this.handleAddQuestionClick}
             icon="plus"
           />
         </Tooltip>

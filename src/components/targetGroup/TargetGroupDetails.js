@@ -65,7 +65,7 @@ class TargetGroupDetails extends Component {
       </div>
       <div>
         <div className="tg-label">Sub-Category</div>
-        <div className="tg-data">{subcategory.name}</div>
+        <div className="tg-data">{subcategory.name || '-'}</div>
       </div>
       <div>
         <div className="tg-label">Gender</div>

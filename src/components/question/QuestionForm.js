@@ -14,13 +14,12 @@ import JSwitch from '../reusable/Switch';
 import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
 import './Question.scss';
 import QuestionModel from '../../models/AppModel/Questions';
+import { getConfig } from '../../actions/appActions/AppConfigActions';
 import { getQuestion, updateQuestion, saveQuestion } from '../../actions/appActions/QuestionActions';
-import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
+import { getIDOf } from '../../utils/commonFunctions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 
 const { Option } = Select;
-const QUESTION_TYPES = getConfigFor('questionTypes');
-const DIFF_LEVELS = getConfigFor('difficultyLevels');
 
 class QuestionForm extends React.Component {
   constructor(props) {
@@ -40,12 +39,25 @@ class QuestionForm extends React.Component {
       options: [{ body: '' }, { body: '' }],
       triggerDate: moment(),
       error: {},
+      questionTypes: [],
+      difficultyLevels: [],
     };
   }
 
   componentWillMount() {
     const { match } = this.props;
     const { questionID, targetID } = match.params;
+
+    getConfig().then((data) => {
+      const { difficulty_levels, question_types } = data;
+      this.setState({
+        questionTypes: question_types,
+        difficultyLevels: difficulty_levels,
+      });
+    }).catch((e) => {
+      console.log(e);
+    });
+
     if (!questionID) {
       this.setState({ loading: false });
       return;
@@ -193,6 +205,7 @@ class QuestionForm extends React.Component {
           <Col
             span={index > 1 ? 10 : 11}
             style={{ marginLeft, marginTop: 5, marginBottom: 5 }}
+            key={option.body}
           >
             <JInput
               value={option.body}
@@ -265,13 +278,12 @@ class QuestionForm extends React.Component {
     const {
       question,
       repeatThis,
-      triggerDate,
       interval,
       repeatCount,
     } = this.state;
 
     if (repeatThis) {
-      if (!triggerDate || !repeatCount || !interval) {
+      if (!repeatCount || !interval) {
         showWarningNotification('If question is repeating, Trigger date, repeat count and repeat interval must present');
         return false;
       }
@@ -355,7 +367,7 @@ class QuestionForm extends React.Component {
     })}>Ok </Button>;
   }
 
-  getForm = ({ questionType, question, difficultyLevel, repeatThis,
+  getForm = ({ questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
     repeatTypeOption, repeatCount, interval, tags, triggerDate, error, submitLoading, openDatePicker,
   }) => (
     <div className="question-form-container">
@@ -369,7 +381,7 @@ class QuestionForm extends React.Component {
             <Col span={12}>
               <JSelect
                 onChange={e => this.handleSelectChange(e, 'questionType')}
-                options={QUESTION_TYPES}
+                options={questionTypes}
                 label="Question's Answer Type"
                 labelClass="label"
                 value={questionType}
@@ -383,7 +395,7 @@ class QuestionForm extends React.Component {
                 labelClass="label"
                 onChange={e => this.handleSelectChange(e, 'difficultyLevel')}
                 value={difficultyLevel}
-                options={DIFF_LEVELS}
+                options={difficultyLevels}
                 style={{ width: '90%' }}
               />
             </Col>
@@ -477,10 +489,9 @@ class QuestionForm extends React.Component {
               <Col
                 span={7}
                 offset={1}
-                // style={repeatTypeOption === 7 ? { paddingTop: '4%' } : {}}
               >
                 <JInput
-                  label="Repeat Interval"
+                  label="Repeat Interval In Days"
                   labelClass="label"
                   value={interval}
                   type="number"
@@ -516,7 +527,7 @@ class QuestionForm extends React.Component {
       </div>
     </div>
   );
-  
+
   render() {
     const { loading, ...rest } = this.state;
     return (

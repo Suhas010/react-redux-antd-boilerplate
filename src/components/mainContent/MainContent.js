@@ -60,6 +60,7 @@ const MainContent = () => (
     <PrivateRoute exact path={routes.subCategoriesList} component={SubCategoryContainer} />
     <PrivateRoute exact path={routes.subCategoriesAdd} component={SubCategoryForm} />
     <PrivateRoute exact path={routes.subCategoriesEdit} component={SubCategoryForm} />
+    <Redirect to={routes.targetGroupList} />
     
 
     {/* <PrivateRoute component={NoMatch} /> */}
