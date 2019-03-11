@@ -10,6 +10,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import styled from 'styled-components';
 import './TableWrapper.scss';
+import CategoriesModel from '../../models/AppModel/Categories';
+import SubCategoriesModel from '../../models/AppModel/SubCategories';
 
 const Message = styled.div`
   width: 300px;
@@ -85,10 +87,29 @@ class TableWrapper extends Component {
 
   renderData = ({ value }) => <span>{value.name || 'NA'}</span>;
 
+  resetCategory = ((id, name) => {
+    console.log(name)
+    let { props } = CategoriesModel.get(id);
+    console.log({ name: name, ...props });
+    new CategoriesModel({ name, ...props }).$save();
+    // console.log(category.props, "^^^");
+  })
+
+  resetSubCategory = ((id) => {
+    const cate = SubCategoriesModel.get(id);
+    console.log(cate.props, "%%%");
+  })
+
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
-    if (!newValue) {
-      return;
-    }
+    // console.log(colDef, node);
+    // if (!newValue.trim()) {
+    //   if (!data.parent_id) {
+    //     this.resetCategory(data.id, data);
+    //   } else {
+    //     this.resetSubCategory(data.id);
+    //   }
+    //   return;
+    // }
     if (!data.parent_id) {
       const payload = {
         id: data.id,
