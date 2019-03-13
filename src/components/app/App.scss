@@ -4,6 +4,13 @@
 .App {
   color: rgb(105, 102, 102);
   font-family: 'Roboto', sans-serif;
+  .online {
+    margin: 0px 22%;
+    background: #f0f2f5;
+    position: fixed;
+    left: 15%;
+    width: 32%;
+  }
   .no-match-container {
     display: flex;
     justify-content: center;
