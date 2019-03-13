@@ -3,7 +3,7 @@ import TableWrapper from '../table/TableWrapper';
 import { CATEGORIES_HEADER } from './Constants';
 import { deleteCategory, updateCategory } from '../../actions/appActions/AppConfigActions';
 import routes from '../../utils/routes';
-import { showSuccessNotification } from '../reusable/Notifications';
+import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
 import CategoriesModel from '../../models/AppModel/Categories';
 
 class CategoriesTable extends Component {
@@ -36,12 +36,17 @@ class CategoriesTable extends Component {
       });
   }
 
-  updateCategory = (payload) =>{
+  updateCategory = (payload, oldName, api) =>{
     updateCategory({ category: payload })
       .then((respone) => {
         showSuccessNotification('Category has been updated successfully.');
       })
       .catch((error) => {
+        const category = CategoriesModel.get(payload.id);
+        category.props.name = oldName;
+        new CategoriesModel(category.props).$save();
+        api.refreshCells();
+        showFailureNotification('Oops! Something went wrong while updating category. Resetting value to old one.');
         console.log(error);
       });
   }

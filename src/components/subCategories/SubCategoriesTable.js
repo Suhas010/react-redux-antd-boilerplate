@@ -3,7 +3,7 @@ import TableWrapper from '../table/TableWrapper';
 import { SUB_CATEGORIES_HEADER } from './Constants';
 import { deleteSubCategory, updateSubCategory } from '../../actions/appActions/AppConfigActions';
 import SubCategoryModel from '../../models/AppModel/SubCategories';
-import { showSuccessNotification } from '../reusable/Notifications';
+import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
 
 class SubCategoriesTable extends Component {
   constructor(props) {
@@ -34,13 +34,17 @@ class SubCategoriesTable extends Component {
     history.push(`/admin/dashboard/category/${categoryID}/sub-categories-list`);
   }
 
-  updateSubcategory = (categoryID, payload) => {
+  updateSubcategory = (categoryID, payload, oldName, api) => {
     updateSubCategory(categoryID, { subcategory: payload })
-      .then((respone) => {
+      .then((response) => {
         showSuccessNotification('Sub- Category has been updated successfully.');
       })
       .catch((error) => {
-        console.log(error);
+        showFailureNotification('Oops! Something went wrong while updating sub-category. Resetting value to old one.');
+        const category = SubCategoryModel.get(payload.id);
+        category.props.name = oldName;
+        new SubCategoryModel(category.props).$save();
+        api.refreshCells();
       });
   }
 

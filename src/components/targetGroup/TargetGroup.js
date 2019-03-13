@@ -24,8 +24,8 @@ const TargetGroup = ({
 );
 
 TargetGroup.propTypes = {
-  handleAddTGButtonClick: propTypes.func.isRequired,
-  handleTGEditClick: propTypes.func.isRequired,
+  handleAddClick: propTypes.func.isRequired,
+  handleEditClick: propTypes.func.isRequired,
   handleViewClick: propTypes.func.isRequired,
 };
 

@@ -39,8 +39,8 @@ const CategoryMessage = () => (
     </ConfirmMessage>
   </>
 );
-class TableWrapper extends Component {
 
+class TableWrapper extends Component {
   onGridReady = (params) => {
     this.params = params;
     this.api = params.api;
@@ -89,19 +89,18 @@ class TableWrapper extends Component {
   renderData = ({ value }) => <span>{value.name || 'NA'}</span>;
 
   resetCategory = ((id, name) => {
-    let category = CategoriesModel.get(id);
+    const category = CategoriesModel.get(id);
     category.props.name = name;
     new CategoriesModel(category.props).$save();
-  })
+  });
 
   resetSubCategory = ((id, name) => {
-    let category = SubCategoriesModel.get(id);
+    const category = SubCategoriesModel.get(id);
     category.props.name = name;
     new SubCategoriesModel(category.props).$save();
-  })
+  });
 
   handleChange = ({ oldValue, newValue, colDef, data, node }) => {
-    console.log(oldValue);
     if (!newValue.trim()) {
       if (!data.parent_id) {
         this.resetCategory(data.id, oldValue);
@@ -117,13 +116,13 @@ class TableWrapper extends Component {
         id: data.id,
         name: newValue,
       };
-      this.props.updateCategory(payload);
+      this.props.updateCategory(payload, oldValue, this.api);
     } else {
       const payload = {
         id: data.id,
         name: newValue,
       };
-      this.props.updateSubcategory(data.parent_id, payload);
+      this.props.updateSubcategory(data.parent_id, payload, oldValue, this.api);
     }
   }
 
