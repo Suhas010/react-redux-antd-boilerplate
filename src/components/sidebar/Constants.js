@@ -3,7 +3,7 @@ import routes from '../../utils/routes';
 const NAV_MENU = [
   {
     key: 2,
-    name: 'Add Questions',
+    name: 'Questions',
     path: routes.targetGroupList,
     icon: 'fund',
   },

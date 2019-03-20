@@ -69,6 +69,7 @@ class QuestionForm extends React.Component {
         new QuestionModel(data.question).$save();
       })
       .catch((e) => {
+        this.handleCancelClick();
         console.log(e);
       });
   }
@@ -201,7 +202,7 @@ class QuestionForm extends React.Component {
         marginLeft = 10;
       }
       return (
-        <>
+        <React.Fragment key={`${option.body}${index}`}>
           <Col
             span={index > 1 ? 10 : 11}
             style={{ marginLeft, marginTop: 5, marginBottom: 5 }}
@@ -223,7 +224,7 @@ class QuestionForm extends React.Component {
               }
             />
           </Col>
-        </>
+        </React.Fragment>
       );
     });
   };

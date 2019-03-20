@@ -64,6 +64,7 @@ class TargetGroupForm extends Component {
         new TargetGroupModel(payload.target_group).$save();
       }).catch(() => {
         this.setLoading('loading', false);
+        this.handleCancel();
       });
     return 0;
   }

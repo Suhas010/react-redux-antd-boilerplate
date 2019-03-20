@@ -26,6 +26,7 @@ class CategoryForm extends Component {
           this.setEditData(payload.category);
         })
         .catch((error) => {
+          this.handleCancel();
           console.log(error);
         });
     }
