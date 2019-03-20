@@ -51,9 +51,9 @@ class CategoryForm extends Component {
       });
   }
 
-  updateCategory(payload) {
+  updateCategory(id, payload) {
     this.setLoading('submitLoading', true);
-    updateCategory({ category: payload })
+    updateCategory(id, { category: payload })
       .then((respone) => {
         this.setLoading('submitLoading', true);
         showSuccessNotification('Category has been updated successfully.');
@@ -105,8 +105,8 @@ class CategoryForm extends Component {
       name: category,
     };
     if (match.params.categoryID) {
-      payload.id = match.params.categoryID;
-      this.updateCategory(payload);
+      // payload.id = match.params.categoryID;
+      this.updateCategory(match.params.categoryID, payload);
       return 0;
     }
     this.addCategory(payload);

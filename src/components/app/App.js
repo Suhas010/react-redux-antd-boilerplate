@@ -9,11 +9,11 @@ import './App.scss';
 
 const App = () => {
   const [online, changeStatus] = useState(true);
-  
+
   function changeStatus(value) {
     online= value;
   }
-  useEffect(()=> {
+  useEffect(() => {
     window.addEventListener('online', () => {
       changeStatus(navigator.onLine);
     });

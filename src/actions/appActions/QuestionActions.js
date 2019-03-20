@@ -16,6 +16,6 @@ export function saveQuestion(targetGroupID, payload) {
 }
 
 // save new target group
-export function updateQuestion(targetGroupID, payload) {
-  return RequestHandler.put(`/target_groups/${targetGroupID}/questions`, payload);
+export function updateQuestion(targetGroupID, questionID, payload) {
+  return RequestHandler.put(`/target_groups/${targetGroupID}/questions/${questionID}`, payload);
 }

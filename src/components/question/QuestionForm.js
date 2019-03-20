@@ -96,9 +96,9 @@ class QuestionForm extends React.Component {
     });
   }
 
-  updateQuestion = (payload) => {
+  updateQuestion = (questionID, payload) => {
     const { match: { params } } = this.props;
-    updateQuestion(params.targetID, payload)
+    updateQuestion(params.targetID, questionID, payload)
       .then(() => {
         this.setLoading('submitLoading', false);
         showSuccessNotification('Question has been updated successfully.');
@@ -333,8 +333,7 @@ class QuestionForm extends React.Component {
       payload.repeat_interval = parseInt(interval);
     }
     if (match.params && match.params.questionID) {
-      payload.id = match.params.questionID;
-      this.updateQuestion({ question: payload });
+      this.updateQuestion(match.params.questionID, { question: payload });
       return 0;
     }
     this.addQuestion({ question: payload });

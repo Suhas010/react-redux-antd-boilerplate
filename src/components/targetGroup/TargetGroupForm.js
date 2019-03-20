@@ -84,9 +84,9 @@ class TargetGroupForm extends Component {
       });
   }
 
-  updateTargetGroup = (payload) => {
+  updateTargetGroup = (targetID, payload) => {
     const { history } = this.props;
-    updateTargetGroup({ target_group: payload })
+    updateTargetGroup(targetID, { target_group: payload })
       .then((data) => {
         showSuccessNotification('Target group updated successfully.');
         this.setLoading('submitLoading', false);
@@ -241,8 +241,7 @@ class TargetGroupForm extends Component {
       subcategory_id: subCategory,
     };
     if (id) {
-      payload.id = id;
-      this.updateTargetGroup(payload);
+      this.updateTargetGroup(id, payload);
       return 0;
     }
     this.addTargetGroup(payload);

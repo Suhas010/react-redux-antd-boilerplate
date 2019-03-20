@@ -36,13 +36,13 @@ class CategoriesTable extends Component {
       });
   }
 
-  updateCategory = (payload, oldName, api) =>{
-    updateCategory({ category: payload })
+  updateCategory = (categoryID, payload, oldName, api) =>{
+    updateCategory(categoryID, { category: payload })
       .then((respone) => {
         showSuccessNotification('Category has been updated successfully.');
       })
       .catch((error) => {
-        const category = CategoriesModel.get(payload.id);
+        const category = CategoriesModel.get(categoryID);
         category.props.name = oldName;
         new CategoriesModel(category.props).$save();
         api.refreshCells();

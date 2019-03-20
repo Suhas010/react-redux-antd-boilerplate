@@ -16,8 +16,8 @@ export function addCategory(payload) {
   return RequestHandler.post('/categories', payload);
 }
 
-export function updateCategory(payload) {
-  return RequestHandler.put('/categories', payload);
+export function updateCategory(id, payload) {
+  return RequestHandler.put(`/categories/${id}`, payload);
 }
 
 export function deleteCategory(id) {
@@ -36,8 +36,8 @@ export function addSubCategory(categoryID, payload) {
   return RequestHandler.post(`/categories/${categoryID}/sub_categories`, payload);
 }
 
-export function updateSubCategory(categoryID, payload) {
-  return RequestHandler.put(`/categories/${categoryID}/sub_categories`, payload);
+export function updateSubCategory(categoryID, subCategoryID, payload) {
+  return RequestHandler.put(`/categories/${categoryID}/sub_categories/${subCategoryID}`, payload);
 }
 
 export function deleteSubCategory(id) {

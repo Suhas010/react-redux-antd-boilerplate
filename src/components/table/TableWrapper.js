@@ -113,16 +113,14 @@ class TableWrapper extends Component {
     }
     if (!data.parent_id) {
       const payload = {
-        id: data.id,
         name: newValue,
       };
-      this.props.updateCategory(payload, oldValue, this.api);
+      this.props.updateCategory(data.id, payload, oldValue, this.api);
     } else {
       const payload = {
-        id: data.id,
         name: newValue,
       };
-      this.props.updateSubcategory(data.parent_id, payload, oldValue, this.api);
+      this.props.updateSubcategory(data.parent_id, data.id, payload, oldValue, this.api);
     }
   }
 

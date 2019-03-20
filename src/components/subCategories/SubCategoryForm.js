@@ -54,10 +54,10 @@ class SubCategoryForm extends Component {
       });
   }
 
-  updateSubCategory(payload) {
+  updateSubCategory(subCategoryID, payload) {
     this.setLoading('submitLoading', true);
     const { match } = this.props;
-    updateSubCategory(match.params.categoryID, { subcategory: payload })
+    updateSubCategory(match.params.categoryID, subCategoryID, { subcategory: payload })
       .then((respone) => {
         this.setLoading('submitLoading', true);
         showSuccessNotification('Sub- Category has been updated successfully.');
@@ -109,8 +109,7 @@ class SubCategoryForm extends Component {
       name: subCategory,
     };
     if (match.params.subCategoryID) {
-      payload.id = match.params.subCategoryID;
-      this.updateSubCategory(payload);
+      this.updateSubCategory(match.params.subCategoryID, payload);
       return 0;
     }
     this.addSubCategory(payload);

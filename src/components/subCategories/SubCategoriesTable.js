@@ -34,14 +34,14 @@ class SubCategoriesTable extends Component {
     history.push(`/admin/dashboard/category/${categoryID}/sub-categories-list`);
   }
 
-  updateSubcategory = (categoryID, payload, oldName, api) => {
-    updateSubCategory(categoryID, { subcategory: payload })
+  updateSubcategory = (categoryID, subCategoryId, payload, oldName, api) => {
+    updateSubCategory(categoryID, subCategoryId, { subcategory: payload })
       .then((response) => {
         showSuccessNotification('Sub- Category has been updated successfully.');
       })
       .catch((error) => {
         showFailureNotification('Oops! Something went wrong while updating sub-category. Resetting value to old one.');
-        const category = SubCategoryModel.get(payload.id);
+        const category = SubCategoryModel.get(subCategoryId);
         category.props.name = oldName;
         new SubCategoryModel(category.props).$save();
         api.refreshCells();
