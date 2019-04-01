@@ -1,8 +1,11 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon, Divider } from 'antd';
 import NAV_MENU from './Constants';
 import './Sidebar.scss';
+import routes from '../../utils/routes';
 
 const { Sider } = Layout;
 class Sidebar extends Component {
@@ -11,7 +14,9 @@ class Sidebar extends Component {
     const { open } = props;
     this.state = {
       open,
+      activeMenu: routes.targetGroupList,
     };
+    props.history.push(routes.targetGroupList);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,6 +26,9 @@ class Sidebar extends Component {
   }
 
   handleMenuChange = ({ key }) => {
+    this.setState({
+      activeMenu: key,
+    });
     this.props.history.push(key);
   }
 
@@ -36,21 +44,19 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { open } = this.state;
-    const { history } = this.props; 
+    const { open, activeMenu } = this.state;
     return (
       <Sider
         trigger={null}
         collapsible
         collapsed={open}
-        // collapsedWidth={10}
       >
         <div className="sidebar-logo"> AtCOI </div>
         <Divider />
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[history.location.pathname]}
+          defaultSelectedKeys={activeMenu}
           onClick={this.handleMenuChange}
         >
           {this.getMenu()}

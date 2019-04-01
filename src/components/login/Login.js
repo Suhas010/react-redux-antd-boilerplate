@@ -1,62 +1,45 @@
-import React, { Component } from 'react';
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox } from "antd";
+import {
+  Form, Icon, Input, Button,
+} from 'antd';
 import './Login.scss';
+
 class WrappedLogin extends React.Component {
-  handleSubmit = e => {
-    e.prevendDefault();
-    console.log(this.props);
+  handleSubmit = (e) => {
+    const { history } = this.props;
+    history.push('/admin/dashboard');
     // e.preventDefault();
     // this.props.form.validateFields((err, values) => {
     //   if (!err) {
-    //     console.log("Received values of form: ", values);
+    //     console.log('Received values of form: ', values);
     //   }
     // });
-  };
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { history } = this.props;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
     return (
       <div className="login-container">
-        <Form className="login-form">
+        <Form className="login-form" onSubmit={this.handleSubmit}>
           <Form.Item>
-            {getFieldDecorator("userName", {
-              rules: [{ required: true, message: "Please input your username!" }]
+            {getFieldDecorator('userName', {
+              rules: [{ required: true, message: 'Please input your mobile number!' }],
             })(
-              <Input
-                prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-                placeholder="Username"
-              />
+              <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Mobile Number" />,
             )}
           </Form.Item>
-          <Form.Item>
-            {getFieldDecorator("password", {
-              rules: [{ required: true, message: "Please input your Password!" }]
-            })(
-              <Input
-                prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-                type="password"
-                placeholder="Password"
-              />
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              onClick={() => history.push('/admin/dashboard/target-groups')}
-              style={{ width: '100%'}}
-            >
-              Log in
-            </Button>
-          </Form.Item>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            Log in
+          </Button>
         </Form>
       </div>
     );
   }
 }
 
-const Login = Form.create({ name: "normal_login" })(WrappedLogin);
+const Login = Form.create({ name: 'normal_login' })(WrappedLogin);
 export default withRouter(Login);
