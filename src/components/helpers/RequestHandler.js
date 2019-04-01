@@ -9,11 +9,8 @@ export default class RequestHandler {
   static getHeader(type, data = {}, isFile = false) {
     const header = {
       method: type,
-      // mode: 'cors',
-      // credentials: 'same-origin',
       headers: {
         Accept: 'application/vnd.questionbank.v1',
-        // 'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
     };
