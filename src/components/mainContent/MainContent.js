@@ -3,16 +3,24 @@ import React from 'react';
 import {
   Route, Switch, Redirect,
 } from 'react-router-dom';
-import TargetGroup from '../targetGroup/TargetGroupContainer';
-import QuestionContainer from '../question/QuestionContainer';
-import TargetGroupForm from '../targetGroup/TargetGroupForm';
+
 import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';
+
+import TargetGroup from '../targetGroup/TargetGroupContainer';
+import TargetGroupForm from '../targetGroup/TargetGroupForm';
+
+import QuestionContainer from '../question/QuestionContainer';
 import QuestionForm from '../question/QuestionForm';
+
 import CategoriesContainer from '../categories';
 import CategoryForm from '../categories/CategoryForm';
+
 import SubCategoryContainer from '../subCategories/SubCategoriesContainer';
 import SubCategoryForm from '../subCategories/SubCategoryForm';
+
+import UserContainer from '../user';
+import UserForm from '../user/UserForm'
 
 function isAuthenticated() {
   if (getItem('user')) {
@@ -60,6 +68,12 @@ const MainContent = () => (
     <PrivateRoute exact path={routes.subCategoriesList} component={SubCategoryContainer} />
     <PrivateRoute exact path={routes.subCategoriesAdd} component={SubCategoryForm} />
     <PrivateRoute exact path={routes.subCategoriesEdit} component={SubCategoryForm} />
+
+    <PrivateRoute exact path={routes.usersList} component={UserContainer} />
+    <PrivateRoute exact path={routes.usersAdd} component={UserForm} />
+    <PrivateRoute exact path={routes.usersEdit} component={UserForm} />
+    
+
     <Redirect to={routes.targetGroupList} />
     
 

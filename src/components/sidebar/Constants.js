@@ -13,6 +13,12 @@ const NAV_MENU = [
     path: routes.categoriesList,
     icon: 'setting',
   },
+  {
+    key: 3,
+    name: ' New User',
+    path: routes.usersList,
+    icon: 'plus',
+  },
 ];
 
 export default NAV_MENU;

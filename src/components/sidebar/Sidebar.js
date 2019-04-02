@@ -2,7 +2,9 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Layout, Menu, Icon, Divider } from 'antd';
+import {
+  Layout, Menu, Icon, Divider,
+} from 'antd';
 import NAV_MENU from './Constants';
 import './Sidebar.scss';
 import routes from '../../utils/routes';

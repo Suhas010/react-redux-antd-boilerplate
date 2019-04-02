@@ -6,6 +6,7 @@ import {
   Form, Icon, Input, Button,
 } from 'antd';
 import './Login.scss';
+import MobileNumber from '../reusable/PhoneInput';
 
 class WrappedLogin extends React.Component {
   handleSubmit = (e) => {
@@ -19,20 +20,18 @@ class WrappedLogin extends React.Component {
     // });
   }
 
+  setPhoneNumber = (n) => {
+    console.log(n);
+  }
+
   render() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
     return (
       <div className="login-container">
-        <Form className="login-form" onSubmit={this.handleSubmit}>
-          <Form.Item>
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your mobile number!' }],
-            })(
-              <Input prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Mobile Number" />,
-            )}
-          </Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+        <Form className="login-form" onSubmit={this.handleSubmit} autoComplete="off">
+          <MobileNumber
+            getNumber={this.setPhoneNumber}
+          />
+          <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: 20 }}>
             Log in
           </Button>
         </Form>

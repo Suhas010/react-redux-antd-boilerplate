@@ -17,6 +17,9 @@ const routes = {
   subCategoriesAdd: '/admin/dashboard/category/:categoryID/sub-categories-list/add',
   subCategoriesEdit: '/admin/dashboard/category/:categoryID/sub-categories-list/:subCategoryID/edit',
 
+  usersList: '/admin/dashboard/users',
+  usersAdd: '/admin/dashboard/users/add',
+  usersEdit: '/admin/dashboard/users/:userID/edit',
 
 };
 

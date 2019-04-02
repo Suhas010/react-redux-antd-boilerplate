@@ -48,3 +48,13 @@
     border-color: red; 
   }
 }
+.react-phone-number-input__row {
+  display: flex;
+  .rrui__select--compact {
+    width: 50px;
+    height: 37px;
+  }
+  .rrui__input-field {
+    padding: 6px !important;
+  }
+}

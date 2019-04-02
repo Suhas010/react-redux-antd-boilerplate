@@ -1,0 +1,41 @@
+.users-container {
+  .add-button {
+    position: fixed;
+    top: 9%;
+    right: 3%;
+    z-index: 1111;
+  }
+
+  .users-table-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.user-form-container {
+  margin: 1% 15%;
+  padding: 2% 2%;
+  border: solid 1px #928a8a;
+  border-radius: 11px;
+  background-color: #ffffff;
+  .form-header {
+    font-size: 18px;
+    -webkit-justify-content: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 3%;
+    
+  }
+  .fields {
+    margin: 1px 175px;
+  }
+
+}
