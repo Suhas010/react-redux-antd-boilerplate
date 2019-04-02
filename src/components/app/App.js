@@ -29,7 +29,7 @@ const App = () => {
       </div>
       <Router>
         <div>
-          <Route exact path="/" component={() => { window.location.href = '/admin' }} />
+          <Route exact path="/" component={() => { window.location.href = '/admin'; }} />
           <Route exact path="/admin" component={AppLayout} />
           <Route path="/admin/dashboard" component={DashBoardLayout} />
           {/* <Redirect to="/admin" /> */}

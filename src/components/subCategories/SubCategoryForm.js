@@ -133,7 +133,7 @@ class SubCategoryForm extends Component {
         </div>
         {/* <Divider /> */}
         <Row>
-          <Col span={12}>
+          <Col span={12} offset={6}>
             <JInput
               label="Sub-Category Name"
               type="text"

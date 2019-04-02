@@ -48,3 +48,12 @@ export function getConfigFor(key) {
   }
   return [];
 }
+
+export function getMobileNumber(number, dialCode) {
+  let mobileNumber = number.replace(`+${dialCode}`, '').trim();
+  mobileNumber = mobileNumber.replace(' ', '');
+  mobileNumber = mobileNumber.replace('-', '');
+  mobileNumber = mobileNumber.replace('(', '');
+  mobileNumber = mobileNumber.replace(')', '');
+  return mobileNumber;
+}

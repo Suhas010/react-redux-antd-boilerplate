@@ -7,6 +7,7 @@ import {
 } from 'antd';
 import './Login.scss';
 import MobileNumber from '../reusable/PhoneInput';
+import { getMobileNumber } from '../../utils/commonFunctions';
 
 class WrappedLogin extends React.Component {
   handleSubmit = (e) => {
@@ -20,8 +21,8 @@ class WrappedLogin extends React.Component {
     // });
   }
 
-  setPhoneNumber = (n) => {
-    console.log(n);
+  setPhoneNumber = ({ number, country: { dialCode } }) => {
+    console.log(dialCode, getMobileNumber(number, dialCode));
   }
 
   render() {

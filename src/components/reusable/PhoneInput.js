@@ -1,19 +1,20 @@
-import React, { Component, useState } from 'react';
-import PhoneInput from 'react-phone-number-input/react-responsive-ui';
-import 'react-responsive-ui/style.css'
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import ReactPhoneInput from 'react-phone-input-2';
 
-function changeState(v, setState, getNumber) {
-  getNumber(v);
-  setState(v);
+function changeState({ number, country }, setState, setNumberInProps = () => {}) {
+  
+  setNumberInProps({ number, country });
+  setState(number);
 }
 const MobileNumber = ({ getNumber }) => {
-  const [value, setState] = useState('+91');
+  const [value, setState] = useState();
   return (
-    <PhoneInput
-      country="IN"
-      placeholder="Enter phone number"
+    <ReactPhoneInput
+      defaultCountry="in"
+      enableSearchField
       value={value}
-      onChange={v => changeState(v, setState, getNumber)}
+      onChange={(number, country) => changeState({ number, country }, setState, getNumber)}
     />
   );
 };

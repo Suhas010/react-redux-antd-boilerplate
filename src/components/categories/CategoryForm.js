@@ -130,7 +130,7 @@ class CategoryForm extends Component {
         </div>
         {/* <Divider /> */}
         <Row>
-          <Col span={12}>
+          <Col span={12} offset={6}>
             <JInput
               label="Category Name"
               type="text"
