@@ -24,3 +24,11 @@ export function updateUser(targetID, payload) {
 export function deleteUser(targetID, payload) {
   return RequestHandler.put(`/target_groups/${targetID}`, payload);
 }
+
+export function login(payload) {
+  return RequestHandler.login('/login', payload);
+}
+
+export function verify(payload) {
+  return RequestHandler.verify('/login/verify', payload);
+}

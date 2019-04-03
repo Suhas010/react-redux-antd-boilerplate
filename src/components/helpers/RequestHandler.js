@@ -2,8 +2,10 @@
 import handleError from './handleError';
 import { showFailureNotification } from '../reusable/Notifications';
 
-const API_BASE_URL = process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : `${window.location.origin}/questionbank`;
-// const API_BASE_URL = 'http://af293494236ee11e9989602fe773b974-224893321.us-east-1.elb.amazonaws.com/questionbank';
+const QUESTION_BANK_API = process.env.REACT_APP_QUESTION_BANK_API ? process.env.REACT_APP_QUESTION_BANK_API : `${window.location.origin}/questionbank`;
+const PROFILES_API = process.env.REACT_APP_PROFILES_API ? process.env.REACT_APP_PROFILES_API : `${window.location.origin}/profiles`;
+
+// const QUESTION_BANK_API = 'http://af293494236ee11e9989602fe773b974-224893321.us-east-1.elb.amazonaws.com/questionbank';
 export default class RequestHandler {
   // returns header object
   static getHeader(type, data = {}, isFile = false) {
@@ -38,7 +40,7 @@ export default class RequestHandler {
   // HTTP Method get
   static get(action, params = '') {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}${action}${params}`, RequestHandler.getHeader('get'))
+      fetch(`${QUESTION_BANK_API}${action}${params}`, RequestHandler.getHeader('get'))
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
@@ -50,7 +52,7 @@ export default class RequestHandler {
   // HTTP Method post
   static post(action, data, isFile = false) {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}${action}`, RequestHandler.getHeader('post', data, isFile))
+      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('post', data, isFile))
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
@@ -62,7 +64,7 @@ export default class RequestHandler {
   // HTTP Method put
   static put(action, data, isFile = false) {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}${action}`, RequestHandler.getHeader('put', data, isFile))
+      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('put', data, isFile))
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
@@ -74,7 +76,45 @@ export default class RequestHandler {
   // HTTP Method delete
   static delete(action) {
     return new Promise((resolve, reject) => {
-      fetch(`${API_BASE_URL}${action}`, RequestHandler.getHeader('delete', {}))
+      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('delete', {}))
+        .then(RequestHandler.isSuccess)
+        .then(response => resolve(response.json()))
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static login(action, data) {
+    const header = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/vnd.profilemgr.v1',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return new Promise((resolve, reject) => {
+      fetch(`${PROFILES_API}${action}`, header)
+        .then(RequestHandler.isSuccess)
+        .then(response => resolve(response.json()))
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+  
+  static verify(action, data) {
+    const header = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/vnd.profilemgr.v1',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return new Promise((resolve, reject) => {
+      fetch(`${PROFILES_API}${action}`, header)
         .then(RequestHandler.isSuccess)
         .then(response => resolve(response.json()))
         .catch((error) => {
