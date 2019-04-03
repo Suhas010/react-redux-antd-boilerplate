@@ -5,6 +5,7 @@ import { deleteCategory, updateCategory } from '../../actions/appActions/AppConf
 import routes from '../../utils/routes';
 import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
 import CategoriesModel from '../../models/AppModel/Categories';
+import ErrorBoundary from '../reusable/ErrorBoundary';
 
 class CategoriesTable extends Component {
   constructor(props) {
@@ -56,14 +57,16 @@ class CategoriesTable extends Component {
     return (
       <div className="categories-table-container">
         <div>
-          <TableWrapper
-            data={categories}
-            headers={CATEGORIES_HEADER}
-            handleEditClick={this.handleEditClick}
-            handleViewClick={this.handleViewClick}
-            handleDeleteClick={this.handleDeleteClick}
-            updateCategory={this.updateCategory}
-          />
+          <ErrorBoundary name="Categories Table">
+            <TableWrapper
+              data={categories}
+              headers={CATEGORIES_HEADER}
+              handleEditClick={this.handleEditClick}
+              handleViewClick={this.handleViewClick}
+              handleDeleteClick={this.handleDeleteClick}
+              updateCategory={this.updateCategory}
+            />
+          </ErrorBoundary>
         </div>
       </div>
     );

@@ -59,7 +59,7 @@ class CategoriesContainer extends Component {
 
   render = () => (
     <div className="categories-container">
-      <div className="add-button" >
+      <div className="add-button">
         <Button icon="plus" onClick={this.handleAddCategoryClick} />
       </div>
       <div className="header">Categories List</div>
