@@ -19,6 +19,12 @@ const NAV_MENU = [
     path: routes.usersList,
     icon: 'plus',
   },
+  {
+    key: 4,
+    name: 'Log Out',
+    path: routes.logOut,
+    icon: 'plus',
+  },
 ];
 
 export default NAV_MENU;

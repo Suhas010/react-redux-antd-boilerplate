@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-undef */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React from 'react';
@@ -10,8 +12,8 @@ import MobileNumber from '../reusable/PhoneInput';
 import JInput from '../reusable/Input';
 import { getMobileNumber } from '../../utils/commonFunctions';
 import { login, verify } from '../../actions/appActions/UsersActions';
-import { showSuccessNotification } from '../reusable/Notifications';
-import UserModel from '../../models/AppModel/UserModel';
+import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
+import { setItem, clearStorage } from '../helpers/localStorage';
 
 class WrappedLogin extends React.Component {
   constructor(props) {
@@ -54,14 +56,20 @@ class WrappedLogin extends React.Component {
     verify({ user })
       .then((response) => {
         showSuccessNotification('One Time Password Verified Successfully.');
-        new UserModel({
-          id: response.user.id,
-          user: response.user,
-          config: response.config,
-        }).$save();
-        // console.log(response);
+        const { config, user } = response;
+        clearStorage();
+        Object.keys(config)
+          .forEach((key) => {
+            localStorage.setItem(key, user[key]);
+          });
+        Object.keys(user)
+          .forEach((key) => {
+            setItem(key, user[key]);
+          });
+        this.props.history.push('/admin/dashboard');
       })
       .catch((error) => {
+        showFailureNotification('Failed to verify OTP.');
         console.log(error);
       });
   }

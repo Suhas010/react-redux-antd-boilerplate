@@ -5,7 +5,7 @@ import { Layout, Icon } from 'antd';
 import Sidebar from '../sidebar/Sidebar';
 import MainContent from '../mainContent/MainContent';
 import { getConfig } from '../../actions/appActions/AppConfigActions';
-import { setItem, clearStorage } from '../helpers/localStorage';
+import { setItem } from '../helpers/localStorage';
 import './DashBoardLayout.scss';
 
 const { Header, Content } = Layout;
@@ -20,7 +20,6 @@ class DashBoardLayout extends Component {
   componentWillMount() {
     getConfig().then((data) => {
       const { difficulty_levels, question_types, genders } = data;
-      clearStorage();
       setItem('difficultyLevels', JSON.stringify(difficulty_levels));
       setItem('questionTypes', JSON.stringify(question_types));
       setItem('genders', JSON.stringify(genders));

@@ -20,14 +20,14 @@ import SubCategoryContainer from '../subCategories/SubCategoriesContainer';
 import SubCategoryForm from '../subCategories/SubCategoryForm';
 
 import UserContainer from '../user';
-import UserForm from '../user/UserForm'
+import UserForm from '../user/UserForm';
+import { showWarningNotification } from '../reusable/Notifications';
 
 function isAuthenticated() {
-  if (getItem('user')) {
-    console.log('true');
+  if (getItem('token')) {
     return true;
   }
-  return true;
+  return false;
 }
 
 function getComponent({ location, ...rest }, Component) {
@@ -35,13 +35,16 @@ function getComponent({ location, ...rest }, Component) {
     const props = { location, ...rest };
     return <Component {...props} />;
   }
+  showWarningNotification('Authentication Failed. Redirecting to login page.');
   return (
-    <Redirect
-      to={{
-        pathname: '/',
-        state: { from: location },
-      }}
-    />
+    <>
+      <Redirect
+        to={{
+          pathname: routes.root,
+          state: { from: location },
+        }}
+      />
+    </>
   );
 }
 
@@ -51,8 +54,6 @@ function PrivateRoute({ component: Component, ...rest }) {
 
 const MainContent = () => (
   <Switch>
-    {/* <PrivateRoute exact path={routes.dashboard} component={Dashboard} /> */}
-    
     <PrivateRoute exact path={routes.targetGroupList} component={TargetGroup} />
     <PrivateRoute exact path={routes.targetGroupAdd} component={TargetGroupForm} />
     <PrivateRoute exact path={routes.targetGroupEdit} component={TargetGroupForm} />

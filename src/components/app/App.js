@@ -5,6 +5,7 @@ import { Alert } from 'antd';
 import AppLayout from '../layout/AppLayout';
 import DashBoardLayout from '../layout/DashBoardLayout';
 import './App.scss';
+import routes from '../../utils/routes';
 
 
 const App = () => {
@@ -29,10 +30,9 @@ const App = () => {
       </div>
       <Router>
         <div>
-          <Route exact path="/" component={() => { window.location.href = '/admin'; }} />
+          <Route exact path="/" component={() => (<Redirect to={{ pathname: routes.root }} />)} />
           <Route exact path="/admin" component={AppLayout} />
           <Route path="/admin/dashboard" component={DashBoardLayout} />
-          {/* <Redirect to="/admin" /> */}
         </div>
       </Router>
     </div>

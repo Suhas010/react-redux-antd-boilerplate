@@ -1,12 +1,21 @@
 /* eslint-disable no-undef */
 import handleError from './handleError';
 import { showFailureNotification } from '../reusable/Notifications';
+import { getItem } from './localStorage';
 
 const QUESTION_BANK_API = process.env.REACT_APP_QUESTION_BANK_API ? process.env.REACT_APP_QUESTION_BANK_API : `${window.location.origin}/questionbank`;
 const PROFILES_API = process.env.REACT_APP_PROFILES_API ? process.env.REACT_APP_PROFILES_API : `${window.location.origin}/profiles`;
 
 // const QUESTION_BANK_API = 'http://af293494236ee11e9989602fe773b974-224893321.us-east-1.elb.amazonaws.com/questionbank';
 export default class RequestHandler {
+
+  static isAuthenticated() {
+    if (!getItem('token')) {
+      return false;
+    }
+    return true;
+  }
+
   // returns header object
   static getHeader(type, data = {}, isFile = false) {
     const header = {
@@ -39,6 +48,11 @@ export default class RequestHandler {
 
   // HTTP Method get
   static get(action, params = '') {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve, reject) => {
+
+      });
+    }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}${params}`, RequestHandler.getHeader('get'))
         .then(RequestHandler.isSuccess)
@@ -51,6 +65,11 @@ export default class RequestHandler {
 
   // HTTP Method post
   static post(action, data, isFile = false) {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve, reject) => {
+
+      });
+    }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('post', data, isFile))
         .then(RequestHandler.isSuccess)
@@ -63,6 +82,11 @@ export default class RequestHandler {
 
   // HTTP Method put
   static put(action, data, isFile = false) {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve, reject) => {
+
+      });
+    }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('put', data, isFile))
         .then(RequestHandler.isSuccess)
@@ -75,6 +99,10 @@ export default class RequestHandler {
 
   // HTTP Method delete
   static delete(action) {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve,reject) => {
+      });
+    }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('delete', {}))
         .then(RequestHandler.isSuccess)
@@ -124,10 +152,20 @@ export default class RequestHandler {
   }
 
   static fileUploadPost(action, payload) {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve, reject) => {
+
+      });
+    }
     return RequestHandler.post(action, payload, true);
   }
 
   static fileUploadPut(action, payload) {
+    if (!RequestHandler.isAuthenticated()) {
+      return new Promise((resolve, reject) => {
+
+      });
+    }
     return RequestHandler.put(action, payload, true);
   }
 }

@@ -20,7 +20,6 @@ class CategoriesContainer extends Component {
 
   componentDidMount() {
     this.setLoading('loading', true);
-    CategoriesModel.deleteAll();
     getCategories()
       .then((payload) => {
         this.setLoading('loading', false);
@@ -30,6 +29,10 @@ class CategoriesContainer extends Component {
         this.setLoading('loading', false);
         console.log(error);
       });
+  }
+
+  componentWillUnmount() {
+    CategoriesModel.deleteAll();
   }
 
   setLoading = (state, value) => {

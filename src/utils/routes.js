@@ -1,4 +1,5 @@
 const routes = {
+  root: '/admin',
   dashboard: '/admin/dashboard',
 
   targetGroupList: '/admin/dashboard/target-groups',
@@ -20,6 +21,8 @@ const routes = {
   usersList: '/admin/dashboard/users',
   usersAdd: '/admin/dashboard/users/add',
   usersEdit: '/admin/dashboard/users/:userID/edit',
+
+  logOut: '/log-out',
 
 };
 

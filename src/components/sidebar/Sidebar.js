@@ -8,6 +8,7 @@ import {
 import NAV_MENU from './Constants';
 import './Sidebar.scss';
 import routes from '../../utils/routes';
+import { clearStorage } from '../helpers/localStorage';
 
 const { Sider } = Layout;
 class Sidebar extends Component {
@@ -28,6 +29,11 @@ class Sidebar extends Component {
   }
 
   handleMenuChange = ({ key }) => {
+    if (key.includes('log-out')) {
+      clearStorage();
+      this.props.history.push(routes.root);
+      return 0;
+    }
     this.setState({
       activeMenu: key,
     });
@@ -58,7 +64,7 @@ class Sidebar extends Component {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={activeMenu}
+          defaultSelectedKeys={[activeMenu]}
           onClick={this.handleMenuChange}
         >
           {this.getMenu()}
