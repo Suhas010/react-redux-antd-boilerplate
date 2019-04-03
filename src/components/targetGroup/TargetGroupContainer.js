@@ -9,6 +9,7 @@ import TargetGroupModel from '../../models/AppModel/TargetGroup';
 import QuestionModel from '../../models/AppModel/Questions';
 import { getTargetGroups } from '../../actions/appActions/TargetGroupAction';
 import TargetGroup from './TargetGroup';
+import Filter from '../filter/'
 import './TargetGroup.scss';
 import { showFailureNotification } from '../reusable/Notifications';
 import routes from '../../utils/routes';
@@ -73,11 +74,23 @@ class TargetGroupContainer extends Component {
     );
   }
 
+  applyFilter = (filter) => {
+    console.log(filter);
+  }
+
+  getFilter = () => (
+    <Filter
+      name='target Group'
+      applayFilter={this.applyFilter}
+    />
+  );
+
   render() {
     const { loading } = this.state;
     return (
       <div className="target-group-container">
         <div className="header">Target Groups</div>
+        {this.getFilter()}
         {loading && <Skeleton active paragraph={{ row: 5 }} />}
         {!loading && this.getTargetGroups()}
       </div>
