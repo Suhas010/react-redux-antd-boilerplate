@@ -47,7 +47,7 @@ class CategoryForm extends Component {
         this.handleCancel();
       })
       .catch((error) => {
-        this.setLoading('submitLoading', true);
+        this.setLoading('submitLoading', false);
         console.log(error);
       });
   }
@@ -61,7 +61,7 @@ class CategoryForm extends Component {
         this.handleCancel();
       })
       .catch((error) => {
-        this.setLoading('submitLoading', true);
+        this.setLoading('submitLoading', false);
         console.log(error);
       });
   }

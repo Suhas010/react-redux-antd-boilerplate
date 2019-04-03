@@ -23,7 +23,7 @@ const NAV_MENU = [
     key: 4,
     name: 'Log Out',
     path: routes.logOut,
-    icon: 'plus',
+    icon: 'poweroff',
   },
 ];
 
