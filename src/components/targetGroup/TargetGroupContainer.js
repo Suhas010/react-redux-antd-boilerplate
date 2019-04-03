@@ -13,6 +13,7 @@ import Filter from '../filter/'
 import './TargetGroup.scss';
 import { showFailureNotification } from '../reusable/Notifications';
 import routes from '../../utils/routes';
+import { FILTERS } from '../../utils/constant';
 
 class TargetGroupContainer extends Component {
   constructor(props) {
@@ -80,8 +81,8 @@ class TargetGroupContainer extends Component {
 
   getFilter = () => (
     <Filter
-      name='target Group'
-      applayFilter={this.applyFilter}
+      name={FILTERS.TARGET_GROUP}
+      applyFilter={                                                                                                                                                                                                                                                                       this.applyFilter}
     />
   );
 

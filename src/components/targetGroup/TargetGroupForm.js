@@ -98,7 +98,6 @@ class TargetGroupForm extends Component {
   }
 
   getSubCategories = (id, categoryChanged = false) => {
-    console.log('getting sub categories');
     this.setLoading('subCategoryLoading', true);
     getSubCategories(id)
       .then((payload) => {
@@ -314,11 +313,9 @@ class TargetGroupForm extends Component {
                 labelClass="label"
                 className={error.subCategory ? 'select-error' : ''}
                 style={{ width: '100%' }}
-                // required
                 loading={subCategoryLoading}
                 disabled={!category ? true : subCategoryLoading}
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                // error={error.subCategory}
               />
             </Col>
           </Row>

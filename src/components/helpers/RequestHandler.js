@@ -38,12 +38,12 @@ export default class RequestHandler {
     return header;
   }
 
-  static isSuccess(response) {
-    if (!(response.ok || response.status === 200 || response.status === 201)) {
-      showFailureNotification(handleError(response));
-      throw Error(response.statusText);
+  static isSuccess(payload, status) {
+    if (!(status === 200 || status === 201)) {
+      showFailureNotification(payload.message);
+      throw Error(payload);
     }
-    return response;
+    return payload;
   }
 
   // HTTP Method get
@@ -55,9 +55,17 @@ export default class RequestHandler {
     }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}${params}`, RequestHandler.getHeader('get'))
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -72,9 +80,17 @@ export default class RequestHandler {
     }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('post', data, isFile))
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -89,9 +105,17 @@ export default class RequestHandler {
     }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('put', data, isFile))
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -105,9 +129,17 @@ export default class RequestHandler {
     }
     return new Promise((resolve, reject) => {
       fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('delete', {}))
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -124,9 +156,17 @@ export default class RequestHandler {
     };
     return new Promise((resolve, reject) => {
       fetch(`${PROFILES_API}${action}`, header)
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
@@ -143,9 +183,17 @@ export default class RequestHandler {
     };
     return new Promise((resolve, reject) => {
       fetch(`${PROFILES_API}${action}`, header)
-        .then(RequestHandler.isSuccess)
-        .then(response => resolve(response.json()))
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
         .catch((error) => {
+          console.log(error);
           reject(error);
         });
     });
