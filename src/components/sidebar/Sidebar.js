@@ -9,6 +9,7 @@ import NAV_MENU from './Constants';
 import './Sidebar.scss';
 import routes from '../../utils/routes';
 import { clearStorage } from '../helpers/localStorage';
+import AccessCheck from '../reusable/AccessCheck';
 
 const { Sider } = Layout;
 class Sidebar extends Component {
