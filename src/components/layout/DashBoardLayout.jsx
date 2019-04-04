@@ -26,6 +26,7 @@ class DashBoardLayout extends Component {
     }).catch((error) => {
       console.error(error);
     });
+    
   }
 
   toggleMenu = () => {

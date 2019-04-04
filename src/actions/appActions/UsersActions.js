@@ -26,9 +26,9 @@ export function deleteUser(targetID, payload) {
 }
 
 export function login(payload) {
-  return RequestHandler.login('/login', payload);
+  return RequestHandler.profilePost('/login', payload);
 }
 
 export function verify(payload) {
-  return RequestHandler.verify('/login/verify', payload);
+  return RequestHandler.profilePost('/login/profilePost', payload);
 }

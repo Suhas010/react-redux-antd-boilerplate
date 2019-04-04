@@ -144,7 +144,7 @@ export default class RequestHandler {
     });
   }
 
-  static login(action, data) {
+  static profilePost(action, data) {
     const header = {
       method: 'POST',
       headers: {
@@ -170,10 +170,10 @@ export default class RequestHandler {
         });
     });
   }
-  
-  static verify(action, data) {
+
+  static profileGet(action, data) {
     const header = {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/vnd.profilemgr.v1',
         'Content-Type': 'application/json',
