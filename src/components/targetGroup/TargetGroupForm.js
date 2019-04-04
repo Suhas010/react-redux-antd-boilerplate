@@ -19,7 +19,7 @@ import routes from '../../utils/routes';
 import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
 import { showWarningNotification, showSuccessNotification } from '../reusable/Notifications';
 
-const MAX_AGE = 60;
+const MAX_AGE = 100;
 const MIN_AGE = 0;
 
 class TargetGroupForm extends Component {
