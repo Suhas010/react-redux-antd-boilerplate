@@ -132,6 +132,7 @@ class CategoryForm extends Component {
         <Row>
           <Col span={12} offset={6}>
             <JInput
+              labelClass="j-label"
               label="Category Name"
               type="text"
               value={category}

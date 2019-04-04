@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import handleError from './handleError';
 import { showFailureNotification } from '../reusable/Notifications';
 import { getItem } from './localStorage';
 

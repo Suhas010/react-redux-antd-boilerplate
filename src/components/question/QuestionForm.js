@@ -212,7 +212,7 @@ class QuestionForm extends React.Component {
               value={option.body}
               onChange={e => this.handleOptionChange(e, index)}
               label={`Option ${index + 1}`}
-              labelClass="label"
+              labelClass="j-label"
               suffix={
                 index > 1 ? (
                   <Button
@@ -362,9 +362,9 @@ class QuestionForm extends React.Component {
   }
 
   renderCloseButton = () => {
-    return <Button type="primary" onClick={()=> this.setState({
-      openDatePicker: false,
-    })}>Ok </Button>;
+    return (
+      <Button type="primary" onClick={()=> this.setState({ openDatePicker: false })}>Ok </Button>
+    );
   }
 
   getForm = ({ questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
@@ -383,7 +383,7 @@ class QuestionForm extends React.Component {
                 onChange={e => this.handleSelectChange(e, 'questionType')}
                 options={questionTypes}
                 label="Question's Answer Type"
-                labelClass="label"
+                labelClass="j-label"
                 value={questionType}
                 style={{ width: '90%' }}
                 required
@@ -392,7 +392,7 @@ class QuestionForm extends React.Component {
             <Col span={11} offset={1}>
               <JSelect
                 label="Difficulty Level"
-                labelClass="label"
+                labelClass="j-label"
                 onChange={e => this.handleSelectChange(e, 'difficultyLevel')}
                 value={difficultyLevel}
                 options={difficultyLevels}
@@ -407,7 +407,7 @@ class QuestionForm extends React.Component {
             <Col span={24}>
               <JTextArea
                 label="Question"
-                labelClass="label"
+                labelClass="j-label"
                 value={question}
                 row={1}
                 onChange={e => this.handleChange(e.target.value, 'question')}
@@ -432,7 +432,7 @@ class QuestionForm extends React.Component {
                 unCheckedChildren={<Icon type="close" />}
                 onChange={e => this.handleChange(e, 'repeatThis')}
                 label="Repetition"
-                labelClass="label"
+                labelClass="j-label"
               />
             </Col>
           </Row>
@@ -443,7 +443,7 @@ class QuestionForm extends React.Component {
                   <JSelect
                     value={repeatTypeOption}
                     label="Trigger Date"
-                    labelClass="label"
+                    labelClass="j-label"
                     options={CONFIG.triggerDate}
                     onChange={e => this.handleSelectChange(e, 'repeatTypeOption')}
                     style={{ width: '90%' }}
@@ -467,19 +467,19 @@ class QuestionForm extends React.Component {
                   </span>
                   <DatePicker
                     value={triggerDate}
-                    onOpenChange={() => this.setState({ openDatePicker: true })}
+                    // onOpenChange={() => this.setState({ openDatePicker: true })}
                     onChange={this.handleDateChange}
                     disabledDate={this.disabledDate}
-                    renderExtraFooter={this.renderCloseButton}
+                    // renderExtraFooter={this.renderCloseButton}
                     format="DD-MM-YYYY"
-                    open={openDatePicker}
+                    // open={openDatePicker}
                   />
                 </Col>
               )}
               <Col span={7} offset={1}>
                 <JInput
                   label="Repeat Count"
-                  labelClass="label"
+                  labelClass="j-label"
                   type="number"
                   value={repeatCount}
                   min={0}
@@ -492,7 +492,7 @@ class QuestionForm extends React.Component {
               >
                 <JInput
                   label="Repeat Interval In Days"
-                  labelClass="label"
+                  labelClass="j-label"
                   value={interval}
                   type="number"
                   min={0}

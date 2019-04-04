@@ -1,0 +1,20 @@
+.filter-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+  .labeled-input {
+    padding-right: 4px;
+    width: 10%;
+  }
+  .ant-btn {
+    margin-top: 17px;
+  }
+  .reset-filter, .reset-filter:focus, .reset-filter:active, .reset-filter:hover{
+    background: #404040;
+    border-color: #404040;
+    margin-left: 4px;
+  }
+  .reset-filter:hover {
+    background: #5f5b5b;
+  }
+}

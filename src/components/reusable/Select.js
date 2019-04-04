@@ -6,9 +6,6 @@ const JSelect = ({ labelClass, label, options, required, placeholder, error, ...
   <div className="labeled-input">
     <span
       className={labelClass}
-      style={{
-        display: 'flex', top: '-11%', color: '#333333', fontSize: '14px', width: '192px', fontWeight: '500',
-      }}
     >
       {label}
       {required && <span style={{ color: 'red' }}> &nbsp;*</span>}

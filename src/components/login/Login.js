@@ -142,6 +142,7 @@ class WrappedLogin extends React.Component {
         <Col span={24}>
           <JInput
             label="Enter OTP"
+            labelClass="j-label"
             value={this.state.otp}
             placeholder="Enter OTP"
             disabled

@@ -294,7 +294,7 @@ class TargetGroupForm extends Component {
                 placeholder="Select category"
                 label="Category"
                 value={category || undefined}
-                labelClass="label"
+                labelClass="j-label"
                 style={{ width: '100%' }}
                 error={error.category}
                 filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -310,7 +310,7 @@ class TargetGroupForm extends Component {
                 placeholder="Select sub-category"
                 label="Sub Category"
                 value={subCategory || undefined}
-                labelClass="label"
+                labelClass="j-label"
                 className={error.subCategory ? 'select-error' : ''}
                 style={{ width: '100%' }}
                 loading={subCategoryLoading}
@@ -323,7 +323,7 @@ class TargetGroupForm extends Component {
             <Col span={8}>
               <JSelect
                 label="Gender"
-                labelClass="label"
+                labelClass="j-label"
                 options={getConfigFor('genders')}
                 value={gender}
                 onChange={e => this.handleChange(e, 'gender')}
@@ -333,7 +333,7 @@ class TargetGroupForm extends Component {
             <Col span={7} offset={1}>
               <JInput
                 label="Minimum Age"
-                labelClass="label"
+                labelClass="j-label"
                 options={CONFIG.genders}
                 value={minAge}
                 type="number"
@@ -346,7 +346,7 @@ class TargetGroupForm extends Component {
             <Col span={7} offset={1}>
               <JInput
                 label="Maximum Age"
-                labelClass="label"
+                labelClass="j-label"
                 options={CONFIG.genders}
                 value={maxAge}
                 type="number"
@@ -361,7 +361,7 @@ class TargetGroupForm extends Component {
             <Col span={10}>
               <JSwitch
                 label="Region specific?"
-                labelClass="label"
+                labelClass="j-label"
                 disabled
                 value={isRegionSpecific}
                 checkedChildren={<Icon type="check" />}
@@ -377,7 +377,7 @@ class TargetGroupForm extends Component {
               <Col span={5}>
                 <JSelect
                   label="Country"
-                  labelClass="label"
+                  labelClass="j-label"
                   value={country}
                   options={CONFIG.questionTypes}
                   onChange={e => this.handleChange(e, 'country')}
@@ -387,7 +387,7 @@ class TargetGroupForm extends Component {
               <Col span={5} offset={1}>
                 <JSelect
                   label="State"
-                  labelClass="label"
+                  labelClass="j-label"
                   value={state}
                   options={CONFIG.questionTypes}
                   onChange={e => this.handleChange(e, 'state')}
@@ -397,7 +397,7 @@ class TargetGroupForm extends Component {
               <Col span={5} offset={1}>
                 <JSelect
                   label="City"
-                  labelClass="label"
+                  labelClass="j-label"
                   value={city}
                   options={CONFIG.questionTypes}
                   onChange={e => this.handleChange(e, 'city')}
@@ -407,7 +407,7 @@ class TargetGroupForm extends Component {
               <Col span={5} offset={1}>
                 <JSelect
                   label="Tier"
-                  labelClass="label"
+                  labelClass="j-label"
                   value={tier}
                   options={CONFIG.questionTypes}
                   onChange={e => this.handleChange(e, 'tier')}

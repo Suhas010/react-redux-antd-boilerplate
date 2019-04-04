@@ -54,3 +54,21 @@
     width: 100% !important;
   }
 }
+
+.j-label {
+  display: flex;
+  top: -11%;
+  color: rgb(51, 51, 51);
+  font-size: 14px;
+  width: 192px;
+  font-weight: 500;
+}
+
+.filter-label {
+  display: flex;
+  top: -11%;
+  color: rgb(107, 99, 99);
+  font-size: 12px;
+  width: 192px;
+  letter-spacing: 2px
+}

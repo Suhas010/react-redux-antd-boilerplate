@@ -136,6 +136,7 @@ class SubCategoryForm extends Component {
           <Col span={12} offset={6}>
             <JInput
               label="Sub-Category Name"
+              labelClass="j-label"
               type="text"
               value={subCategory}
               error={error}

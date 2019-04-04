@@ -3,12 +3,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { FILTERS } from '../../utils/constant';
 import TargetGroupFilter from './TargetGroupFilter';
-
-const FilterContainer = styled.div`
-  display: flex;
-  width: 100%;
-  margin-bottom: 15px;
-`;
+import './Filter.scss';
 
 class Filter extends Component {
   constructor(props) {
@@ -31,9 +26,9 @@ class Filter extends Component {
   }
 
   render = () => (
-    <FilterContainer>
+    <div className="filter-container">
       {this.getFilter()}
-    </FilterContainer>
+    </div>
   )
 }
 
