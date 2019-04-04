@@ -1,8 +1,8 @@
 import RequestHandler from '../../components/helpers/RequestHandler';
 
 // get list of target groups
-export function getTargetGroups() {
-  return RequestHandler.get('/target_groups');
+export function getTargetGroups(filter = '') {
+  return RequestHandler.get(`/target_groups${filter}`);
 }
 
 // get target group

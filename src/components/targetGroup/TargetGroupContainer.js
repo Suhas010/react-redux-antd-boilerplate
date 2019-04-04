@@ -20,14 +20,23 @@ class TargetGroupContainer extends Component {
     super(props);
     this.state = {
       loading: false,
+      pageNumber: 1,
+      maxPerPage: 100,
     };
   }
 
   componentWillMount() {
-    this.setLoading(true);
+
+    this.getTargetGroupsAPI();
+  }
+
+  componentWillUnmount() {
     TargetGroupModel.deleteAll();
-    QuestionModel.deleteAll();
-    getTargetGroups()
+  }
+
+  getTargetGroupsAPI = (filter = '') => {
+    this.setLoading(true);
+    getTargetGroups(filter)
       .then(((data) => {
         TargetGroupModel.saveAll(data.target_groups.map(item => new TargetGroupModel(item)));
         this.setLoading(false);
@@ -75,14 +84,16 @@ class TargetGroupContainer extends Component {
     );
   }
 
-  applyFilter = (filter) => {
-    console.log(filter);
+  applyFilter = (filter = '') => {
+    TargetGroupModel.deleteAll();
+    this.getTargetGroupsAPI(filter);
   }
 
   getFilter = () => (
     <Filter
       name={FILTERS.TARGET_GROUP}
-      applyFilter={                                                                                                                                                                                                                                                                       this.applyFilter}
+      applyFilter={this.applyFilter}
+      clearFilter={() => this.applyFilter()}
     />
   );
 

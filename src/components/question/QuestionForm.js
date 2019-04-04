@@ -132,7 +132,6 @@ class QuestionForm extends React.Component {
   }
 
   handleTagsChange = (tags) => {
-    console.log(tags, "$$$$");
     this.setState({
       tags,
     });
@@ -188,6 +187,7 @@ class QuestionForm extends React.Component {
 
   handleOptionChange = ({ target }, index) => {
     const { value } = target;
+    console.log(value, index);
     this.state.options[index].body = value;
     this.setState({
       options: this.state.options,
@@ -202,11 +202,10 @@ class QuestionForm extends React.Component {
         marginLeft = 10;
       }
       return (
-        <React.Fragment key={`${option.body}${index}`}>
+        <React.Fragment key={`Option ${index + 1}`}>
           <Col
             span={index > 1 ? 10 : 11}
             style={{ marginLeft, marginTop: 5, marginBottom: 5 }}
-            key={option.body}
           >
             <JInput
               value={option.body}
@@ -232,7 +231,7 @@ class QuestionForm extends React.Component {
   getQuestionsOptions = () => (
     <>
       {this.getOptions()}
-      <Col span={1} style={{ marginTop: 29, marginLeft: 6 }}>
+      <Col span={1} style={{ marginTop: 26, marginLeft: 6 }}>
         <Button icon="plus" onClick={this.addOption} />
       </Col>
     </>

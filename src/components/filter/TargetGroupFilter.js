@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
@@ -113,6 +114,8 @@ class TargetGroupFilter extends Component {
 
   // Age
   handleAgeChange = (state, { target }) => {
+    console.log(target.value, isNaN(target.value))
+    if (isNaN(target.value) ||  target.value < 0 || target.value > 100) return 0;
     this.setState({
       [state]: target.value,
       filterChanged: false,
@@ -124,11 +127,26 @@ class TargetGroupFilter extends Component {
     this.setState({
       filterChanged: true,
     });
+    let filterString = '?';
     const { selectedCategory, selectedSubCategory, maxAge, minAge, gender } = this.state;
-    console.log(selectedCategory, selectedSubCategory, maxAge, minAge, gender);
+    if (selectedCategory !== 'all') {
+      filterString = filterString.concat(`category_id=${selectedCategory}&`);
+    }
+    if (selectedSubCategory !== 'all') {
+      filterString = filterString.concat(`subcategory_id=${selectedSubCategory}&`);
+    }
+    if (minAge > 0) {
+      filterString = filterString.concat(`minimum_age=${minAge}&`);
+    }
+    if (maxAge < 100) {
+      filterString = filterString.concat(`maximum_age=${maxAge}&`);
+    }
+    filterString = filterString.concat(`gender=${gender}`);
+    this.props.applyFilter(filterString);
   }
 
   resetFilter = () => {
+    this.props.clearFilter();
     this.setState({
       gender: 0,
       minAge: 0,

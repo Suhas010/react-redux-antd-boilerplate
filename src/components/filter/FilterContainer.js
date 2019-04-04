@@ -6,13 +6,15 @@ import TargetGroupFilter from './TargetGroupFilter';
 import './Filter.scss';
 
 class Filter extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    
   }
 
   getTargetGroupFilter = () => (
-    <TargetGroupFilter />
+    <TargetGroupFilter
+      applyFilter={this.props.applyFilter}
+      clearFilter={this.props.clearFilter}
+    />
   );
 
   getFilter = () => {
