@@ -59,7 +59,7 @@ class Sidebar extends Component {
         collapsible
         collapsed={open}
       >
-        <div className="sidebar-logo"> AtCOI </div>
+        <div className="sidebar-logo"> Question Bank </div>
         <Divider />
         <Menu
           theme="dark"
