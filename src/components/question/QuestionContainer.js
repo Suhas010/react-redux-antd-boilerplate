@@ -33,6 +33,10 @@ class QuestionContainer extends Component {
       });
   }
 
+  componentWillUnmount() {
+    QuestionModel.deleteAll();
+  }
+
   setLoader = (type, value) => {
     this.setState({
       [type]: value,

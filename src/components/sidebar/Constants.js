@@ -13,12 +13,12 @@ const NAV_MENU = [
     path: routes.categoriesList,
     icon: 'setting',
   },
-  {
-    key: 3,
-    name: ' New User',
-    path: routes.usersList,
-    icon: 'plus',
-  },
+  // {
+  //   key: 3,
+  //   name: ' New User',
+  //   path: routes.usersList,
+  //   icon: 'plus',
+  // },
   {
     key: 4,
     name: 'Log Out',

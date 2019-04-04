@@ -94,7 +94,7 @@ class WrappedLogin extends React.Component {
     const { number, dialCode } = this.state;
     if (!number || number.length <= 8 || !dialCode) {
       this.setState({
-        loginError: 'Invalid form submission.',
+        loginError: 'Invalid Number.',
       });
       return 0;
     }

@@ -16,7 +16,7 @@ const HeaderContainer = styled.div`
 
 const Header = () => (
   <HeaderContainer>
-    <span>AtCOI</span>
+    <span>Question Bank</span>
   </HeaderContainer>
 );
 
