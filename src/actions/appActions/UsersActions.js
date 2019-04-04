@@ -30,5 +30,5 @@ export function login(payload) {
 }
 
 export function verify(payload) {
-  return RequestHandler.profilePost('/login/profilePost', payload);
+  return RequestHandler.profilePost('/login/verify', payload);
 }

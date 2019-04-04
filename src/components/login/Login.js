@@ -57,7 +57,7 @@ class WrappedLogin extends React.Component {
       .then((response) => {
         showSuccessNotification('One Time Password Verified Successfully.');
         const { config, user } = response;
-        clearStorage();
+        // clearStorage();
         Object.keys(config)
           .forEach((key) => {
             localStorage.setItem(key, user[key]);

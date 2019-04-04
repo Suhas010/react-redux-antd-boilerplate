@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Layout, Icon } from 'antd';
 import Sidebar from '../sidebar/Sidebar';
 import MainContent from '../mainContent/MainContent';
-import { getConfig } from '../../actions/appActions/AppConfigActions';
+import { getConfig, getProfiles } from '../../actions/appActions/AppConfigActions';
 import { setItem } from '../helpers/localStorage';
 import './DashBoardLayout.scss';
 
@@ -26,7 +26,12 @@ class DashBoardLayout extends Component {
     }).catch((error) => {
       console.error(error);
     });
-    
+
+    getProfiles().then((data) => {
+      setItem('profiles', JSON.stringify(data.profiles));
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   toggleMenu = () => {

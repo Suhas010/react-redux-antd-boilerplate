@@ -4,6 +4,10 @@ export function getConfig() {
   return RequestHandler.get('/config');
 }
 
+export function getProfiles() {
+  return RequestHandler.profileGet('/config');
+}
+
 export function getCategory(categoryID) {
   return RequestHandler.get(`/categories/${categoryID}`);
 }

@@ -8,8 +8,7 @@ import {
 import NAV_MENU from './Constants';
 import './Sidebar.scss';
 import routes from '../../utils/routes';
-import { clearStorage } from '../helpers/localStorage';
-import AccessCheck from '../reusable/AccessCheck';
+import { setItem } from '../helpers/localStorage';
 
 const { Sider } = Layout;
 class Sidebar extends Component {
@@ -31,7 +30,7 @@ class Sidebar extends Component {
 
   handleMenuChange = ({ key }) => {
     if (key.includes('log-out')) {
-      clearStorage();
+      setItem('token', '');
       this.props.history.push(routes.root);
       return 0;
     }
@@ -42,7 +41,7 @@ class Sidebar extends Component {
   }
 
   getMenu = () => {
-    return NAV_MENU.map(({ path, name, icon }) => {
+    return NAV_MENU.map(({ path, name, icon, permission }) => {
       return (
         <Menu.Item key={`${path}`}>
           <Icon type={icon} />

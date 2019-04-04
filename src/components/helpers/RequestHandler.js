@@ -22,6 +22,7 @@ export default class RequestHandler {
       headers: {
         Accept: 'application/vnd.questionbank.v1',
         'Content-Type': 'application/json',
+        // Authorization: getItem('token'),
       },
     };
     if (!isFile) {

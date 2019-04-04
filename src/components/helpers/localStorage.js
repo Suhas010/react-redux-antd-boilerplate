@@ -1,4 +1,3 @@
-import { showFailureNotification } from '../reusable/Notifications';
 
 /* eslint-disable no-undef */
 
@@ -14,22 +13,10 @@ export function isExist(key) {
 }
 
 export function setItem(key, value) {
-  if (localStorage[key]) {
-    // showFailureNotification(`Item is already present with  key: ${key}`);
-  }
-  if (!value) {
-    // showFailureNotification('Value should not be empty.');
-  }
   localStorage[key] = value;
 }
 
 export function updateItem(key, value) {
-  if (!localStorage[key] || !key) {
-    // showFailureNotification('Key is not passed to getItem or Invalid key.');
-  }
-  if (!value) {
-    // showFailureNotification('Value should not be empty.');
-  }
   localStorage[key] = value;
 }
 
