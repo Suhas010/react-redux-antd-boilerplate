@@ -8,9 +8,9 @@ const routes = {
   targetGroupEdit: `${dashboard}/target-groups/edit/:targetID`,
   targetGroupAdd: `${dashboard}/target-groups/add`,
 
-  questionList: `${dashboard}:targetID/questions`,
-  questionAdd: `${dashboard}:targetID/questions/add`,
-  questionEdit: `${dashboard}:targetID/questions/edit/:questionID`,
+  questionList: `${dashboard}/:targetID/questions`,
+  questionAdd: `${dashboard}/:targetID/questions/add`,
+  questionEdit: `${dashboard}/:targetID/questions/edit/:questionID`,
 
   categoriesList: `${dashboard}/categories-list`,
   categoriesAdd: `${dashboard}/categories-list/add`,
@@ -24,7 +24,7 @@ const routes = {
   usersAdd: `${dashboard}/users/add`,
   usersEdit: `${dashboard}/users/:userID/edit`,
 
-  moderateQuestion: `${dashboard}/moderate-questiona`,
+  moderateQuestion: `${dashboard}/moderate-question`,
 
   logOut: '/log-out',
 

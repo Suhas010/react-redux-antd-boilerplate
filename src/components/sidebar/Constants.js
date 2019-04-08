@@ -16,13 +16,6 @@ const NAV_MENU = [
     permission: ['2', '4', '8'],
   },
   {
-    key: 5,
-    name: 'Moderate Questions ',
-    path: routes.categoriesList,
-    icon: 'setting',
-    permission: ['4', '8'],
-  },
-  {
     key: 3,
     name: ' New User',
     path: routes.usersList,

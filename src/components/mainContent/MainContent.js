@@ -72,8 +72,7 @@ const MainContent = () => (
 
     <PrivateRoute exact path={routes.usersList} component={UserContainer} />
     <PrivateRoute exact path={routes.usersAdd} component={UserForm} />
-    <PrivateRoute exact path={routes.usersEdit} component={UserForm} />
-    
+    <PrivateRoute exact path={routes.usersEdit} component={UserForm} />    
 
     <Redirect to={routes.targetGroupList} />
     
