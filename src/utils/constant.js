@@ -27,3 +27,10 @@ export const FILTERS = {
   CATEGORIES: 'categories',
   SUBCATEGORIES: 'subcategories',
 };
+
+export const ROLES = {
+  EndUser: 1,
+  DataEntry: 2,
+  Moderator: 4,
+  Admin: 8,
+};

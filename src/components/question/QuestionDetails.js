@@ -5,6 +5,9 @@ import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider } from 'antd';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import QuestionModel from '../../models/AppModel/Questions';
+import { ROLES } from '../../utils/constant';
+import { getItem } from '../helpers/localStorage';
+import routes from '../../utils/routes';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
@@ -101,26 +104,29 @@ class QuestionDetails extends Component {
     );
   }
 
+getExtras = (id) => {
+  const profile = getItem('profile');
+  const { history, match: { params } } = this.props;
+  const EditIcon = (
+    <Tooltip connect="Edit Question">
+      <Icon type="edit" onClick={() => history.push(`${routes.dashboard}/${params.targetID}/questions/edit/${id}`)} />
+    </Tooltip>
+  );
+
+  return EditIcon;
+}
+
   getQuestions = () => {
-    const { questions, history, match } = this.props;
-    const { params } = match;
+    const { questions } = this.props;
     return questions.map(({
       id, body, type, options, ...rest
     }) => (
       <Panel
         header={body}
         key={id}
-        style={{
-          borderRadius: 4,
-          overflow: 'hidden',
-        }}
+        extra={this.getExtras(id)}
       >
         <div className="question-body">
-          <Row className="edit-button">
-            <Tooltip connect="Edit Question">
-              <Icon type="edit" onClick={() => history.push(`/admin/dashboard/${params.targetID}/questions/edit/${id}`)} />
-            </Tooltip>
-          </Row>
           <Row>
             {this.getQuestionStatus(type, rest)}
           </Row>
