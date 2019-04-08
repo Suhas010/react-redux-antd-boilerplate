@@ -2,18 +2,25 @@ import routes from '../../utils/routes';
 
 const NAV_MENU = [
   {
-    key: 2,
+    key: 1,
     name: 'Questions',
     path: routes.targetGroupList,
     icon: 'fund',
     permission: ['2', '4', '8'],
   },
   {
-    key: 1,
+    key: 2,
     name: 'Categories',
     path: routes.categoriesList,
     icon: 'setting',
     permission: ['2', '4', '8'],
+  },
+  {
+    key: 5,
+    name: 'Moderate Questions ',
+    path: routes.categoriesList,
+    icon: 'setting',
+    permission: ['4', '8'],
   },
   {
     key: 3,
