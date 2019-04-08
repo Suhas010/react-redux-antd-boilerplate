@@ -10,6 +10,8 @@ import SubCategoriesTable from './SubCategoriesTable';
 
 import './SubCategories.scss';
 import routes from '../../utils/routes';
+import { FILTERS } from '../../utils/constant';
+import Filter from '../filter';
 
 class SubCategoriesContainer extends Component {
   constructor(props) {
@@ -63,6 +65,20 @@ class SubCategoriesContainer extends Component {
 
   getCategoryDetails = () => <CategoryDetails />
 
+  applyFilter = (filter = '') => {
+    // TargetGroupModel.deleteAll();
+    // this.getTargetGroupsAPI(filter);
+  }
+
+  getFilter = () => (
+    <Filter
+      name={FILTERS.CATEGORIES}
+      applyFilter={this.applyFilter}
+      clearFilter={() => this.applyFilter()}
+    />
+  );
+
+
   render = () => (
     <div className="categories-container">
       {this.getCategoryDetails()}
@@ -73,6 +89,7 @@ class SubCategoriesContainer extends Component {
         <Button icon="left" onClick={this.handleCancelButtonClick} />
       </div>
       <div className="header">Sub-Categories List</div>
+      {this.getFilter()}
       <ErrorBoundary name="Categories Table">
         {this.getSubCategoriesTable()}
       </ErrorBoundary>

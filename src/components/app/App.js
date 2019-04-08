@@ -11,9 +11,6 @@ import routes from '../../utils/routes';
 const App = () => {
   const [online, changeStatus] = useState(true);
 
-  function changeStatus(value) {
-    online= value;
-  }
   useEffect(() => {
     window.addEventListener('online', () => {
       changeStatus(navigator.onLine);

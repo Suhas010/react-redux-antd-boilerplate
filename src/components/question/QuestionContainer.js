@@ -8,6 +8,8 @@ import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
 import QuestionDetails from './QuestionDetails';
 import './Question.scss';
 import routes from '../../utils/routes';
+import Filter from '../filter/index';
+import { FILTERS } from '../../utils/constant';
 
 
 class QuestionContainer extends Component {
@@ -83,9 +85,22 @@ class QuestionContainer extends Component {
       <div className="title">
         Questions List
       </div>
+      {this.getFilter()}
       {this.getQuestionList()}
     </div>
-  )
+  );
+
+  applyFilter = (filter = '') => {
+    console.log('Question Filter', filter);
+  }
+
+  getFilter = () => (
+    <Filter
+      name={FILTERS.QUESTIONS}
+      applyFilter={this.applyFilter}
+      clearFilter={() => this.applyFilter()}
+    />
+  );
 
   render() {
     const { addQuestion, questionLoading } = this.state;

@@ -6,9 +6,10 @@ import CategoriesModel from '../../models/AppModel/Categories';
 import { getCategories } from '../../actions/appActions/AppConfigActions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import CategoriesTable from './CategoriesTable';
-
+import Filter from '../filter';
 import './Categories.scss';
 import routes from '../../utils/routes';
+import { FILTERS } from '../../utils/constant';
 
 class CategoriesContainer extends Component {
   constructor(props) {
@@ -57,6 +58,19 @@ class CategoriesContainer extends Component {
     history.push(routes.categoriesAdd);
   }
 
+  applyFilter = (filter = '') => {
+    // TargetGroupModel.deleteAll();
+    // this.getTargetGroupsAPI(filter);
+  }
+ 
+  getFilter = () => (
+    <Filter
+      name={FILTERS.CATEGORIES}
+      applyFilter={this.applyFilter}
+      clearFilter={() => this.applyFilter()}
+    />
+  );
+
   render = () => (
     <div className="categories-container">
       <div className="add-button">
@@ -64,6 +78,7 @@ class CategoriesContainer extends Component {
       </div>
       <div className="header">Categories List</div>
       <ErrorBoundary name="Categories Table">
+        {this.getFilter()}
         {this.getCategoriesTable()}
       </ErrorBoundary>
     </div>

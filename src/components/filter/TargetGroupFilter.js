@@ -23,7 +23,6 @@ class TargetGroupFilter extends Component {
       categories: [defaultCategory],
       subCategories: [defaultCategory],
       subcategoryLoading: false,
-      applyingFilter: false,
       filterChanged: false,
     };
   }
@@ -114,7 +113,6 @@ class TargetGroupFilter extends Component {
 
   // Age
   handleAgeChange = (state, { target }) => {
-    console.log(target.value, isNaN(target.value))
     if (isNaN(target.value) ||  target.value < 0 || target.value > 100) return 0;
     this.setState({
       [state]: target.value,
@@ -193,7 +191,6 @@ class TargetGroupFilter extends Component {
       />
       <Button
         type="primary"
-        loading={this.state.applyingFilter}
         onClick={this.applyFilter}
         disabled={this.state.filterChanged}
       >
