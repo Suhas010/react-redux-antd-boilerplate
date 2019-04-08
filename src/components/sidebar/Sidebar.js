@@ -8,7 +8,7 @@ import {
 import NAV_MENU from './Constants';
 import './Sidebar.scss';
 import routes from '../../utils/routes';
-import { setItem } from '../helpers/localStorage';
+import { setItem, getItem } from '../helpers/localStorage';
 
 const { Sider } = Layout;
 class Sidebar extends Component {
@@ -41,13 +41,16 @@ class Sidebar extends Component {
   }
 
   getMenu = () => {
+    const profile = getItem('profile');
     return NAV_MENU.map(({ path, name, icon, permission }) => {
-      return (
-        <Menu.Item key={`${path}`}>
-          <Icon type={icon} />
-          <span>{name}</span>
-        </Menu.Item>
-      );
+      if (permission.includes(profile)) {
+        return (
+          <Menu.Item key={`${path}`}>
+            <Icon type={icon} />
+            <span>{name}</span>
+          </Menu.Item>
+        );
+      }
     });
   }
 

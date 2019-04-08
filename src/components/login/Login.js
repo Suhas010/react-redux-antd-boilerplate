@@ -12,23 +12,24 @@ import MobileNumber from '../reusable/PhoneInput';
 import JInput from '../reusable/Input';
 import { getMobileNumber } from '../../utils/commonFunctions';
 import { login, verify } from '../../actions/appActions/UsersActions';
-import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
+import { showSuccessNotification, showFailureNotification, showWarningNotification } from '../reusable/Notifications';
 import { setItem, clearStorage } from '../helpers/localStorage';
+
+const initialState = {
+  verifyOTP: false,
+  loadingLogin: false,
+  loginError: '',
+  loadingOTP: false,
+  otpError: '',
+  otp:'',
+  number: '',
+  dialCode: '',
+}
 
 class WrappedLogin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      verifyOTP: false,
-      loadingLogin: false,
-      loginError: '',
-      loadingOTP: false,
-      otpError: '',
-      otp:'',
-      number: '',
-      dialCode: '',
-
-    };
+    this.state = initialState;
   }
 
   login = (user) => {
@@ -55,18 +56,24 @@ class WrappedLogin extends React.Component {
   verifyOTP = (user) => {
     verify({ user })
       .then((response) => {
-        showSuccessNotification('One Time Password Verified Successfully.');
         const { config, user } = response;
         // clearStorage();
-        Object.keys(config)
-          .forEach((key) => {
-            localStorage.setItem(key, user[key]);
-          });
-        Object.keys(user)
-          .forEach((key) => {
-            setItem(key, user[key]);
-          });
-        this.props.history.push('/admin/dashboard');
+        if (['2', '4', '8'].includes(user.profile.toString())) {
+          Object.keys(config)
+            .forEach((key) => {
+              localStorage.setItem(key, user[key]);
+            });
+          Object.keys(user)
+            .forEach((key) => {
+              setItem(key, user[key]);
+            });
+          this.props.history.push('/admin/dashboard');
+          showSuccessNotification('One Time Password Verified Successfully.');
+          return 0;
+        }
+        showWarningNotification('You are not authorised to access this page.');
+        this.setState(initialState);
+        this.props.history.push('/admin/');
       })
       .catch((error) => {
         showFailureNotification('Failed to verify OTP.');

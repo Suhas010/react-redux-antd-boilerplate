@@ -32,3 +32,7 @@ export function login(payload) {
 export function verify(payload) {
   return RequestHandler.profilePost('/login/verify', payload);
 }
+
+export function addUser(payload) {
+  return RequestHandler.profilePost('/admin/users', payload);
+}

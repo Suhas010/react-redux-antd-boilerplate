@@ -1,9 +1,22 @@
-import React, { Fragment } from 'react';
-import { Form, Row, Col, Button } from 'antd';
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { Row, Col, Button } from 'antd';
 import MobileNumber from '../reusable/PhoneInput';
-import { number } from 'prop-types';
+import routes from '../../utils/routes';
+import JSelect from '../reusable/Select';
+import { getConfigFor, getMobileNumber } from '../../utils/commonFunctions';
+import { showFailureNotification } from '../reusable/Notifications';
+import { addUser } from '../../actions/appActions/UsersActions';
 
 class User extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      profile: '',
+      number: '',
+      dialCode: '',
+    };
+  }
 
   getHeader = () => {
     const { match } = this.props;
@@ -12,9 +25,55 @@ class User extends React.Component {
     }
     return 'Add';
   }
-  
-  setPhoneNumber = (number) => {
-    console.log(number);
+
+  setPhoneNumber = ({ number, country: { dialCode } }) => {
+    this.setState({
+      dialCode: `+${dialCode}`,
+      number: getMobileNumber(number, dialCode),
+    });
+  }
+
+  handleAddUserAPI = (user) => {
+    addUser(user)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  validateForm = () => {
+    const { dialCode, number, profile } = this.state;
+    if (!profile) {
+      showFailureNotification('Select user profile.');
+      return 0;
+    }
+    // if (!dialCode) {
+    //   showFailureNotification('Select country code.');
+    //   return 0;
+    // }
+    if (number.length <= 8) {
+      showFailureNotification('Invalid phone number.');
+      return 0;
+    }
+    let user = {
+      country_code: dialCode,
+      mobile_no: number,
+      profile,
+    };
+    this.handleAddUserAPI(user);
+  }
+
+  handleAddUser = () => {
+    if (!this.validateForm()) return 0;
+    console.log(this.state);
+  }
+
+  handleProfileChange = (profile) => {
+    this.setState({
+      profile,
+    });
   }
 
   getUserForm = () => {
@@ -24,15 +83,43 @@ class User extends React.Component {
           {`${this.getHeader()} User`}
         </div>
         <Row>
-          <Col lg={{ span:11, offset:7 }}>
-            <Form className="form" onSubmit={this.handleSubmit}>
-              <MobileNumber
-                getNumber={this.setPhoneNumber}
-              />
-              <Button type="primary" htmlType="submit" style={{ width: '-webkit-fill-available', marginTop: 20 }}>
-                {`${this.getHeader()} User`}
-              </Button>
-            </Form>
+          <Col lg={{ span: 13, offset: 5 }}>
+            <JSelect
+              label="Select Profile"
+              labelClass="j-label"
+              placeholder="Select Profile"
+              options={getConfigFor('profiles')}
+              style={{ width: '100%' }}
+              onChange={this.handleProfileChange}
+              required
+            />
+          </Col>
+        </Row>
+        <Row style={{ marginTop: 20 }}>
+          <Col lg={{ span: 13, offset: 5 }}>
+            <MobileNumber
+              getNumber={this.setPhoneNumber}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={{ span: 6, offset: 5 }}>
+            <Button
+              type="primary"
+              style={{ width: '-webkit-fill-available', marginTop: 20 }}
+              onClick={this.handleAddUser}
+            >
+              {`${this.getHeader()} User`}
+            </Button>
+          </Col>
+          <Col lg={{ span:6, offset:1 }}>
+            <Button
+              type="default"
+              style={{ width: '-webkit-fill-available', marginTop: 20 }}
+              onClick={() => this.props.history.push(routes.usersList)}
+            >
+              Cancel
+            </Button>
           </Col>
         </Row>
       </>
@@ -48,5 +135,4 @@ class User extends React.Component {
   }
 }
 
-export default Form.create({ name: 'add_user' })(User);
-
+export default User;
