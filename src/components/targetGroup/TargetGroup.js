@@ -6,7 +6,7 @@ import ErrorBoundary from '../reusable/ErrorBoundary';
 import { TG_HEADER } from './Constants';
 
 const TargetGroup = ({
-  data, handleAddClick, handleEditClick, handleViewClick,
+  data, handleAddClick, handleEditClick, handleViewClick, handlePageChange, pageSize,
 }) => (
   <>
     <div className="add-button" >
@@ -15,6 +15,8 @@ const TargetGroup = ({
     <ErrorBoundary name="Target Group List">
       <TableWrapper
         data={data}
+        pageSize={pageSize}
+        handlePageChange={handlePageChange}
         headers={TG_HEADER}
         handleEditClick={handleEditClick}
         handleViewClick={handleViewClick}

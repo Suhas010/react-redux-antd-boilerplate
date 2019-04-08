@@ -124,8 +124,14 @@ class TableWrapper extends Component {
     }
   }
 
+  handlePageChange = () => {
+    if (this.api) {
+      console.log(this.api.paginationGetCurrentPage());
+    }
+  }
+
   render = () => {
-    const { data, headers } = this.props;
+    const { data, headers, pageSize } = this.props;
     return (
       <div className="table-container">
         <div className="ag-theme-balham table-layout">
@@ -143,7 +149,8 @@ class TableWrapper extends Component {
             rowData={data}
             onCellValueChanged={this.handleChange}
             pagination
-            paginationPageSize={10}
+            paginationPageSize={pageSize}
+            onPaginationChanged={this.handlePageChange}
             onGridReady={this.onGridReady}
             onFirstDataRendered={this.onFirstDataRendered}
             frameworkComponents={{

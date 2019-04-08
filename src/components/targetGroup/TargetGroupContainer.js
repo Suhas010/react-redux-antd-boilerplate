@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-undef */
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
@@ -21,12 +22,12 @@ class TargetGroupContainer extends Component {
     this.state = {
       loading: false,
       pageNumber: 1,
-      maxPerPage: 100,
+      maxPerPage: 10,
+      totalGroups: 0,
     };
   }
 
   componentWillMount() {
-
     this.getTargetGroupsAPI();
   }
 
@@ -39,6 +40,9 @@ class TargetGroupContainer extends Component {
     getTargetGroups(filter)
       .then(((data) => {
         TargetGroupModel.saveAll(data.target_groups.map(item => new TargetGroupModel(item)));
+        this.setState({
+          totalGroups: data.total,
+        });
         this.setLoading(false);
       }))
       .catch(() => {
@@ -69,14 +73,20 @@ class TargetGroupContainer extends Component {
     history.push(`/admin/dashboard/${id}/questions`);
   }
 
+  handlePageChange = (a, ...rest) => {
+    console.log(a, rest);
+  }
+
   getTargetGroups = () => {
-    const { targetGroup } = this.props;
+    const { targetGroup, totalGroups } = this.props;
     if (!targetGroup) {
       return <Empty description="No target groups" />;
     }
     return (
       <TargetGroup
         data={targetGroup}
+        handlePageChange={this.handlePageChange}
+        pageSize={100}
         handleEditClick={this.handleTGEditClick}
         handleViewClick={this.handleViewTargetGroupClick}
         handleAddClick={this.handleAddTGButtonClick}
