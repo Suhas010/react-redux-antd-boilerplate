@@ -68,7 +68,7 @@ class QuestionFilter extends Component {
           onClick={this.applyFilter}
           disabled={filterChanged}
         >
-          Apply Filter
+          Search
         </Button>
         <Button
           type="primary"
@@ -76,7 +76,7 @@ class QuestionFilter extends Component {
           onClick={this.resetFilter}
         >
           <Icon type="undo" />
-          Clear
+          Reset
         </Button>
       </>
     );

@@ -194,7 +194,7 @@ class TargetGroupFilter extends Component {
         onClick={this.applyFilter}
         disabled={this.state.filterChanged}
       >
-        Apply Filter
+        Search
       </Button>
       <Button
         type="primary"
@@ -202,7 +202,7 @@ class TargetGroupFilter extends Component {
         onClick={this.resetFilter}
       >
         <Icon type="undo" />
-        Clear
+          Reset
       </Button>
     </>
 

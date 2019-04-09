@@ -157,7 +157,6 @@ export default class RequestHandler {
     if (!action.includes('/login')) {
       header.headers.Authorization = getItem('token');
     }
-    console.log(header, "Post");
     return new Promise((resolve, reject) => {
       fetch(`${PROFILES_API}${action}`, header)
         .then(response => ({ promise: response.json(), status: response.status }))
@@ -182,14 +181,11 @@ export default class RequestHandler {
       headers: {
         Accept: 'application/vnd.profilemgr.v1',
         'Content-Type': 'application/json',
-        // Authorization: getItem('token'),
-
       },
     };
     if (!action.includes('/login') && !action.includes('/config')) {
       header.headers.Authorization = getItem('token');
     }
-    console.log(header, "Get");
     return new Promise((resolve, reject) => {
       fetch(`${PROFILES_API}${action}`, header)
         .then(response => ({ promise: response.json(), status: response.status }))

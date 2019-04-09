@@ -5,7 +5,7 @@ import MobileNumber from '../reusable/PhoneInput';
 import routes from '../../utils/routes';
 import JSelect from '../reusable/Select';
 import { getConfigFor, getMobileNumber } from '../../utils/commonFunctions';
-import { showFailureNotification } from '../reusable/Notifications';
+import { showFailureNotification, showSuccessNotification } from '../reusable/Notifications';
 import { addUser } from '../../actions/appActions/UsersActions';
 
 class User extends React.Component {
@@ -15,6 +15,7 @@ class User extends React.Component {
       profile: '',
       number: '',
       dialCode: '',
+      loading: false,
     };
   }
 
@@ -34,40 +35,46 @@ class User extends React.Component {
   }
 
   handleAddUserAPI = (user) => {
-    addUser(user)
+    this.setState({
+      loading: true,
+    });
+    addUser({ user })
       .then((data) => {
-        console.log(data);
+        this.setState({
+          loading: false,
+        });
+        showSuccessNotification(data.message);
       })
       .catch((error) => {
+        this.setState({
+          loading: false,
+        });
         console.log(error);
       });
   }
 
   validateForm = () => {
-    const { dialCode, number, profile } = this.state;
+    const { number, profile } = this.state;
     if (!profile) {
       showFailureNotification('Select user profile.');
       return 0;
     }
-    // if (!dialCode) {
-    //   showFailureNotification('Select country code.');
-    //   return 0;
-    // }
     if (number.length <= 8) {
       showFailureNotification('Invalid phone number.');
       return 0;
     }
-    let user = {
+    return true;
+  }
+
+  handleAddUser = () => {
+    const { dialCode, number, profile } = this.state;
+    if (!this.validateForm()) return 0;
+    const user = {
       country_code: dialCode,
       mobile_no: number,
       profile,
     };
     this.handleAddUserAPI(user);
-  }
-
-  handleAddUser = () => {
-    if (!this.validateForm()) return 0;
-    console.log(this.state);
   }
 
   handleProfileChange = (profile) => {
@@ -108,6 +115,7 @@ class User extends React.Component {
               type="primary"
               style={{ width: '-webkit-fill-available', marginTop: 20 }}
               onClick={this.handleAddUser}
+              loading={this.state.loading}
             >
               {`${this.getHeader()} User`}
             </Button>

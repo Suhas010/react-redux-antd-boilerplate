@@ -51,7 +51,7 @@ class DashBoardLayout extends Component {
       <Layout style={{ height: '100vh' }}>
         {this.getSideBarMenu(open)}
         <Layout>
-          <Header style={{ background: '#f0f2f5', height: 18, padding: 0, display: 'flex' }}>
+          <Header style={{ background: '#f0f2f500', height: 18, padding: 0, display: 'flex', zIndex: 1 }}>
             <Icon
               className="trigger"
               type={open ? 'menu-unfold' : 'menu-fold'}
@@ -60,7 +60,7 @@ class DashBoardLayout extends Component {
             />
           </Header>
           <Content style={{
-            margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280, flex: 'none'
+            margin: '-24px 0px', padding: 20, background: '#fff', minHeight: 280, flex: 'none'
           }}
           >
             <MainContent />

@@ -1,25 +1,29 @@
 .question-container {
   .target-group {
     position: fixed;
-    width: 56%;
-    top: 15px;
-    background: #001529cf;
+    width: 67%;
+    top: 7px;
+    background: #8f8f90;
     justify-content: space-around;
     display: flex;
     border-radius: 12px;
     padding: 7px;
     z-index: 10000;
-    margin: 0px 11%;
-    box-shadow: 0px 14px 16px 0px #c7c7c7a6;
+    margin: 0px 7%;
+    // box-shadow: 0px 14px 16px 0px #c7c7c7a6;
     div {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      padding-left: 5px;
     }
     .tg-label {
       color: #ffffff;
       font-size: 14px;
       font-weight: 400;
       text-align: center
+    }
+    .tg-label::after {
+      content: ':'
     }
     .tg-data {
       color: #ffffff;
@@ -31,6 +35,8 @@
   .buttons {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    top: 43px;
   }
   .add-button {
     position: fixed;
@@ -41,14 +47,14 @@
   .questions {
     overflow-x: hidden;
     height: 435px;
-    margin: 20px 0px;
+    margin: 0px 0px;
     .title {
       text-align: center;
       font-size: 18px;
       font-weight: 600;
       letter-spacing: 2px;
       text-decoration: underline;
-      padding: 2% 0%;
+      padding: 1% 0%;
     }
     .ant-collapse-content-box {
       background-color: #f0f2f5;
@@ -127,7 +133,7 @@
 }
 
 .question-form-container {
-  margin: 2% 20%;
+  margin: 4% 20%;
   padding: 2% 2%;
   border: 1px solid #928a8a;
   background-color: #ffffff;
@@ -143,6 +149,7 @@
   .form {
     .divider {
       padding: 0px 0px;
+      margin: 15px;
       color: #8c867fa6;
     }
     .ant-input-affix-wrapper .ant-input-suffix {

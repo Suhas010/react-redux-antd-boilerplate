@@ -49,7 +49,7 @@ class NameFilter extends Component {
           onClick={this.applyFilter}
           disabled={this.state.filterChanged}
         >
-          Apply Filter
+          Search
         </Button>
         <Button
           type="primary"
@@ -57,7 +57,7 @@ class NameFilter extends Component {
           onClick={this.resetFilter}
         >
           <Icon type="undo" />
-          Clear
+            Reset
         </Button>
       </>
     );
