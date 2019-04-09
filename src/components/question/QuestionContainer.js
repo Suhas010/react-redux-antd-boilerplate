@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Button, Tooltip, BackTop, Skeleton } from 'antd';
@@ -24,6 +25,7 @@ class QuestionContainer extends Component {
   componentWillMount() {
     const { match } = this.props;
     this.setLoader('questionLoading', true);
+    QuestionModel.deleteAll();
     getQuestions(match.params.targetID)
       .then((payload) => {
         this.setLoader('questionLoading', false);
@@ -76,7 +78,13 @@ class QuestionContainer extends Component {
     </div>
   );
 
-  getQuestionList = () => <QuestionDetails {...this.props} />;
+  getQuestionList = () => (
+    <QuestionDetails
+      isSimilar={false}
+      questions={this.props.questions}
+      {...this.props}
+    />
+  );
 
   getAffix = () => <TargetGroupDetails />
 

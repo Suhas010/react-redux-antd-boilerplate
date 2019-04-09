@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
+import { Button, Icon } from 'antd';
+
 import JSelect from '../reusable/Select';
 import { getItem } from '../helpers/localStorage';
-import { Button, Icon } from 'antd';
 
 const defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
 defaultQuestionTypes.push({ id: 'all', name: 'All' });

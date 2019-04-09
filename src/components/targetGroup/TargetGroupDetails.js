@@ -17,10 +17,6 @@ class TargetGroupDetails extends Component {
 
   componentWillMount() {
     const { match } = this.props;
-    if (TargetGroupModel.list().length > 0) {
-      this.setTargetGroupData(TargetGroupModel.get(match.params.targetID).props);
-      return 0;
-    }
     getTargetGroup(match.params.targetID)
       .then((payload) => {
         this.setTargetGroupData(payload.target_group);

@@ -369,7 +369,7 @@ class QuestionForm extends React.Component {
   getForm = ({ questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
     repeatTypeOption, repeatCount, interval, tags, triggerDate, error, submitLoading, openDatePicker,
   }) => (
-    <div className="question-form-container">
+    <>
       <Row className="header">
         {`${this.getHeader()} Question`}
       </Row>
@@ -524,7 +524,7 @@ class QuestionForm extends React.Component {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 
   render() {
@@ -532,7 +532,9 @@ class QuestionForm extends React.Component {
     return (
       <ErrorBoundary name="Question Form">
         {this.getAffix()}
-        {!loading && this.getForm(rest)}
+        <div className="question-form-container">
+          {!loading && this.getForm(rest)}
+        </div>
         {loading && <Skeleton active paragraph={{ row: 5 }} />}
       </ErrorBoundary>
     );
