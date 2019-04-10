@@ -3,7 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 import React from 'react';
-import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon } from 'antd';
+import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon, Tag, Modal } from 'antd';
 import moment from 'moment';
 import { showSuccessNotification, showWarningNotification } from '../reusable/Notifications';
 import JSelect from '../reusable/Select';
@@ -18,6 +18,7 @@ import { getConfig } from '../../actions/appActions/AppConfigActions';
 import { getQuestion, updateQuestion, saveQuestion } from '../../actions/appActions/QuestionActions';
 import { getIDOf } from '../../utils/commonFunctions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
+import QuestionDetailsModel from './QuestionDetailsModel';
 
 const { Option } = Select;
 
@@ -41,6 +42,8 @@ class QuestionForm extends React.Component {
       error: {},
       questionTypes: [],
       difficultyLevels: [],
+      showSimilar: false,
+      showSimilarModal: false,
     };
   }
 
@@ -366,11 +369,57 @@ class QuestionForm extends React.Component {
     );
   }
 
-  getForm = ({ questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
+  handleBlur = ({ target }) => {
+    if (target) {
+      this.setState({
+        showSimilar: true,
+      });
+    }
+  }
+
+  showSimilarModal = () => {
+    this.setState({
+      showSimilarModal: true,
+    });
+  }
+
+  handleCloseModal = () => {
+    this.setState({
+      showSimilarModal: false,
+      questionsID: '',
+    });
+  }
+
+  getModel = (body) => {
+    const { showSimilarModal, questionsID } = this.state;
+    if (showSimilarModal) {
+      return (
+        <Modal
+          title={`Followings are similar of "${body}"`}
+          centered
+          visible={showSimilarModal}
+          onCancel={this.handleCloseModal}
+          onOk={this.handleCloseModal}
+          width={1000}
+          className="question-details-model"
+        >
+          <QuestionDetailsModel
+            questionsID={questionsID}
+          />
+        </Modal>
+      );
+    }
+    return null;
+  }
+
+
+  getForm = ({
+    showSimilar, questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
     repeatTypeOption, repeatCount, interval, tags, triggerDate, error, submitLoading, openDatePicker,
   }) => (
     <>
       <Row className="header">
+        {this.getModel()}
         {`${this.getHeader()} Question`}
       </Row>
       <div className="form">
@@ -410,6 +459,7 @@ class QuestionForm extends React.Component {
                 value={question}
                 row={1}
                 onChange={e => this.handleChange(e.target.value, 'question')}
+                onBlur={this.handleBlur}
                 required
                 error={error.question}
               />
@@ -506,6 +556,11 @@ class QuestionForm extends React.Component {
           <Row>{this.getTags(tags)}</Row>
         </ErrorBoundary>
       </div>
+      {showSimilar && (
+        <div className="similar" onClick={this.showSimilarModal}>
+          <Tag color="red">9 Similar</Tag>
+        </div>
+      )}
       <div className="action">
         <div>
           <Button
