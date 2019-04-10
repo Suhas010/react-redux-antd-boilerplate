@@ -7,10 +7,10 @@ import QuestionModel from '../../models/AppModel/Questions';
 import { getQuestions } from '../../actions/appActions/QuestionActions';
 import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
 import QuestionDetails from './QuestionDetails';
-import './Question.scss';
 import routes from '../../utils/routes';
 import Filter from '../filter/index';
 import { FILTERS } from '../../utils/constant';
+import './Question.scss';
 
 
 class QuestionContainer extends Component {

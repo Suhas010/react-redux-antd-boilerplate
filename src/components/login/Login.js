@@ -117,6 +117,7 @@ class WrappedLogin extends React.Component {
     this.setState({
       dialCode: `+${dialCode}`,
       number: getMobileNumber(number, dialCode),
+      loginError: '',
     });
   }
 

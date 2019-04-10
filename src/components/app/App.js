@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { Alert } from 'antd';
-import AppLayout from '../layout/AppLayout';
-import DashBoardLayout from '../layout/DashBoardLayout';
+import { Alert, Skeleton } from 'antd';
 import './App.scss';
 import routes from '../../utils/routes';
-
+import AppLayout from '../layout/AppLayout';
+import DashBoardLayout from '../layout/DashBoardLayout';
 
 const App = () => {
   const [online, changeStatus] = useState(true);
