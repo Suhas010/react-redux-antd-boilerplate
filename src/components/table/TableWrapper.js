@@ -46,7 +46,6 @@ class TableWrapper extends Component {
     this.api = params.api;
     this.columnApi = params.columnApi;
     params.api.sizeColumnsToFit();
-    // this.props.onGridReady && this.props.onGridReady(params, this.props.groupId);
   };
 
   onFirstDataRendered = (params) => {
@@ -80,9 +79,9 @@ class TableWrapper extends Component {
     </Popconfirm>
   );
 
-  renderAgeRange = ({value, data }) => {
-    return <span>{`${value} to ${data.maximum_age}`}</span>;
-  }
+  renderAgeRange = ({ value, data }) => (
+    <span>{`${value} to ${data.maximum_age}`}</span>
+  );
 
   renderGender = ({ value }) => <span>{value}</span>;
 
@@ -100,7 +99,7 @@ class TableWrapper extends Component {
     new SubCategoriesModel(category.props).$save();
   });
 
-  handleChange = ({ oldValue, newValue, colDef, data, node }) => {
+  handleChange = ({ oldValue, newValue, data }) => {
     if (!newValue.trim()) {
       if (!data.parent_id) {
         this.resetCategory(data.id, oldValue);
@@ -124,12 +123,6 @@ class TableWrapper extends Component {
     }
   }
 
-  handlePageChange = () => {
-    if (this.api) {
-      console.log(this.api.paginationGetCurrentPage());
-    }
-  }
-
   render = () => {
     const { data, headers, pageSize } = this.props;
     return (
@@ -147,10 +140,9 @@ class TableWrapper extends Component {
             domLayout="autoHeight"
             columnDefs={headers}
             rowData={data}
-            onCellValueChanged={this.handleChange}
             pagination
-            paginationPageSize={pageSize}
-            onPaginationChanged={this.handlePageChange}
+            paginationPageSize={pageSize || 15}
+            onCellValueChanged={this.handleChange}
             onGridReady={this.onGridReady}
             onFirstDataRendered={this.onFirstDataRendered}
             frameworkComponents={{

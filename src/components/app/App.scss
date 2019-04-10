@@ -72,3 +72,18 @@
   width: 192px;
   letter-spacing: 2px
 }
+
+.ag-paging-row-summary-panel {
+  display: none !important;
+
+}
+.ag-paging-page-summary-panel{
+  display: none !important;
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}

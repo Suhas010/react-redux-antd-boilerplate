@@ -3,45 +3,48 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Empty, Skeleton } from 'antd';
 import { withRouter } from 'react-router-dom';
 import propTypes from 'prop-types';
-import { Empty, Skeleton } from 'antd';
 import TargetGroupModel from '../../models/AppModel/TargetGroup';
-import QuestionModel from '../../models/AppModel/Questions';
-import { getTargetGroups } from '../../actions/appActions/TargetGroupAction';
 import TargetGroup from './TargetGroup';
-import Filter from '../filter/'
-import './TargetGroup.scss';
-import { showFailureNotification } from '../reusable/Notifications';
+import Filter from '../filter';
 import routes from '../../utils/routes';
-import { FILTERS } from '../../utils/constant';
 
+import { showFailureNotification } from '../reusable/Notifications';
+import { getTargetGroups } from '../../actions/appActions/TargetGroupAction';
+import { FILTERS } from '../../utils/constant';
+import './TargetGroup.scss';
+
+
+const defaultFilter = '?max_per_page=15';
 class TargetGroupContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      pageNumber: 1,
-      maxPerPage: 10,
-      totalGroups: 0,
+      currentPage: 1,
+      maxPerPage: 15,
+      totalRecords: 0,
+      filter: defaultFilter,
     };
   }
 
   componentWillMount() {
-    this.getTargetGroupsAPI();
+    this.getTargetGroupsAPI(this.state.filter.concat(`&&page_number=${this.state.currentPage}`));
   }
 
   componentWillUnmount() {
     TargetGroupModel.deleteAll();
   }
 
-  getTargetGroupsAPI = (filter = '') => {
+  getTargetGroupsAPI = (filter) => {
     this.setLoading(true);
     getTargetGroups(filter)
       .then(((data) => {
         TargetGroupModel.saveAll(data.target_groups.map(item => new TargetGroupModel(item)));
         this.setState({
-          totalGroups: data.total,
+          totalRecords: data.total,
         });
         this.setLoading(false);
       }))
@@ -73,30 +76,36 @@ class TargetGroupContainer extends Component {
     history.push(`/admin/dashboard/${id}/questions`);
   }
 
-  handlePageChange = (a, ...rest) => {
-    console.log(a, rest);
-  }
-
   getTargetGroups = () => {
-    const { targetGroup, totalGroups } = this.props;
+    const { targetGroup } = this.props;
+    const { totalRecords, currentPage, maxPerPage } = this.state;
     if (!targetGroup) {
       return <Empty description="No target groups" />;
     }
     return (
       <TargetGroup
         data={targetGroup}
-        handlePageChange={this.handlePageChange}
-        pageSize={100}
+        pageSize={maxPerPage}
+        currentPage={currentPage}
+        totalRecords={totalRecords}
         handleEditClick={this.handleTGEditClick}
         handleViewClick={this.handleViewTargetGroupClick}
         handleAddClick={this.handleAddTGButtonClick}
+        onPageChange={this.onPageChange}
       />
     );
   }
 
   applyFilter = (filter = '') => {
     TargetGroupModel.deleteAll();
-    this.getTargetGroupsAPI(filter);
+    filter = defaultFilter.concat(filter);
+    this.getTargetGroupsAPI(filter.concat(`&&page_number=${this.state.currentPage}`));
+  }
+
+  onPageChange = (currentPage) => {
+    this.setState({
+      currentPage,
+    }, this.applyFilter());
   }
 
   getFilter = () => (
