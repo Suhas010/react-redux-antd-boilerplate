@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import React, { lazy, Suspense} from 'react';
+import React, { lazy, Suspense } from 'react';
 import {
   Route, Switch, Redirect,
 } from 'react-router-dom';
+import { Skeleton } from 'antd';
 
 import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';
 import { showWarningNotification } from '../reusable/Notifications';
-import { Skeleton } from 'antd';
 
 const TargetGroup = lazy(() => import('../targetGroup/TargetGroupContainer'));
 const TargetGroupForm = lazy(() => import('../targetGroup/TargetGroupForm'));
@@ -20,6 +20,13 @@ const CategoryForm = lazy(() => import('../categories/CategoryForm'));
 
 const SubCategoryContainer = lazy(() => import('../subCategories/SubCategoriesContainer'));
 const SubCategoryForm = lazy(() => import('../subCategories/SubCategoryForm'));
+
+const InterestsContainer = lazy(() => import('../interest'));
+const InterestForm = lazy(() => import('../interest/InterestsForm'));
+
+const SubInterestsContainer = lazy(() => import('../subInterest'));
+const SubInterestForm = lazy(() => import('../subInterest/SubInterestsForm'));
+
 
 const UserContainer = lazy(() => import('../user'));
 const UserForm = lazy(() => import('../user/UserForm'));
@@ -73,9 +80,18 @@ const MainContent = () => (
       <PrivateRoute exact path={routes.subCategoriesAdd} component={SubCategoryForm} />
       <PrivateRoute exact path={routes.subCategoriesEdit} component={SubCategoryForm} />
 
+      <PrivateRoute exact path={routes.interestList} component={InterestsContainer} />
+      <PrivateRoute exact path={routes.interestAdd} component={InterestForm} />
+      <PrivateRoute exact path={routes.interestEdit} component={InterestForm} />
+
+      <PrivateRoute exact path={routes.subInterestList} component={SubInterestsContainer} />
+      <PrivateRoute exact path={routes.subInterestAdd} component={SubInterestForm} />
+      <PrivateRoute exact path={routes.subInterestEdit} component={SubInterestForm} />
+
+
       <PrivateRoute exact path={routes.usersList} component={UserContainer} />
       <PrivateRoute exact path={routes.usersAdd} component={UserForm} />
-      <PrivateRoute exact path={routes.usersEdit} component={UserForm} />    
+      <PrivateRoute exact path={routes.usersEdit} component={UserForm} />
 
       <Redirect to={routes.targetGroupList} />
       
