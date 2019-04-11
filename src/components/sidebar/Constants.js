@@ -1,5 +1,4 @@
 import routes from '../../utils/routes';
-import ROLES from '../../utils/constant';
 
 const NAV_MENU = [
   {
@@ -15,6 +14,13 @@ const NAV_MENU = [
     path: routes.categoriesList,
     icon: 'setting',
     permission: ['2', '4', '8'],
+  },
+  {
+    key: 2,
+    name: 'Interest',
+    path: routes.interestList,
+    icon: 'heart',
+    permission: ['4', '8'],
   },
   {
     key: 3,
