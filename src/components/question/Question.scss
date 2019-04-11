@@ -51,14 +51,6 @@
     overflow-x: hidden;
     height: 435px;
     margin: 0px 0px;
-    .title {
-      text-align: center;
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-decoration: underline;
-      padding: 1% 0%;
-    }
     .ant-collapse-content-box {
       background-color: #f0f2f5;
       border-top: 0;
@@ -87,14 +79,7 @@
     justify-content: center;
     padding-top: 10px;
   }
-  .header {
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    // padding: 0% 1% 5%;
-    text-decoration: underline;
-  }
+  
   .form {
     .divider {
       padding: 0px 0px;

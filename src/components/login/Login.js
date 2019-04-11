@@ -54,9 +54,15 @@ class WrappedLogin extends React.Component {
   }
 
   verifyOTP = (user) => {
+    this.setState({
+      loadingOTP: true,
+    });
     verify({ user })
       .then((response) => {
         const { config, user } = response;
+        this.setState({
+          loadingOTP: false,
+        });
         // clearStorage();
         if (['2', '4', '8'].includes(user.profile.toString())) {
           Object.keys(config)
@@ -78,6 +84,9 @@ class WrappedLogin extends React.Component {
       .catch((error) => {
         showFailureNotification('Failed to verify OTP.');
         console.log(error);
+        this.setState({
+          loadingOTP: false,
+        });
       });
   }
 
@@ -177,7 +186,7 @@ class WrappedLogin extends React.Component {
           <Button
             type="default"
             size="small"
-            onClick={() => this.setState({ verifyOTP: false })}
+            onClick={() => this.setState(initialState)}
             style={{
               marginTop: '15%',
               height: 30,
