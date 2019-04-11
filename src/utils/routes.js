@@ -20,6 +20,15 @@ const routes = {
   subCategoriesAdd: `${dashboard}/category/:categoryID/sub-categories-list/add`,
   subCategoriesEdit: `${dashboard}/category/:categoryID/sub-categories-list/:subCategoryID/edit`,
 
+  interestList: `${dashboard}/interest`,
+  interestAdd: `${dashboard}/interest/add`,
+  interestEdit: `${dashboard}/interest/:interestID/edit`,
+
+  subInterestList: `${dashboard}/interest/:interestID/sub-interest`,
+  subInterestAdd: `${dashboard}/interest/:interestID/sub-interest/add`,
+  subInterestEdit: `${dashboard}/interest/:interestID/sub-interest/:subInterestID/edit`,
+
+
   usersList: `${dashboard}/users`,
   usersAdd: `${dashboard}/users/add`,
   usersEdit: `${dashboard}/users/:userID/edit`,
