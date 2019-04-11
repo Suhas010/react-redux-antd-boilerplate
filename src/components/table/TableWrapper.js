@@ -65,9 +65,11 @@ class TableWrapper extends Component {
 
   renderViewSubcategories = ({ value }) => <a onClick={() => this.props.handleViewClick(value)}>View Sub-Categories</a>;
 
+  renderViewSubcategories = ({ value }) => <a onClick={() => this.props.handleViewClick(value)}>View Sub-Interest</a>;
+
   renderEditLink = ({ value }) => <a onClick={() => this.props.handleEditClick(value)}><Icon type="edit" /></a>;
   
-  renderDeleteIcon = ({ value }) => (
+  renderDeleteWithConfirm = ({ value }) => (
     <Popconfirm
       title={<CategoryMessage />}
       onConfirm={() => this.props.handleDeleteClick(value)}
@@ -78,6 +80,8 @@ class TableWrapper extends Component {
       <a><Icon type="close" /></a>
     </Popconfirm>
   );
+
+  renderDeleteIcon = ({ value }) =>  <div style={{ cursor: 'pointer' }} onClick={() => this.props.handleDeleteClick(value)}><Icon type="close" /></div>
 
   renderAgeRange = ({ value, data }) => (
     <span>{`${value} to ${data.maximum_age}`}</span>
@@ -106,7 +110,7 @@ class TableWrapper extends Component {
       } else {
         this.resetSubCategory(data.id, oldValue);
       }
-      showWarningNotification('Category Name should not be empty.');
+      showWarningNotification('Name should not be empty.');
       this.api.refreshCells();
       return;
     }
@@ -153,6 +157,7 @@ class TableWrapper extends Component {
               renderData: this.renderData,
               renderAgeRange: this.renderAgeRange,
               renderViewSubcategories: this.renderViewSubcategories,
+              renderDeleteWithConfirm: this.renderDeleteWithConfirm,
               renderDelete: this.renderDeleteIcon,
             }}
           />

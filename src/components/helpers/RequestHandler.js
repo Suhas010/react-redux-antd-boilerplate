@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
-import { showFailureNotification } from '../reusable/Notifications';
-import { getItem } from './localStorage';
+import { showFailureNotification, showNotification } from '../reusable/Notifications';
+import { getItem, setItem } from './localStorage';
+import routes from '../../utils/routes';
 
 const QUESTION_BANK_API = process.env.REACT_APP_QUESTION_BANK_API ? process.env.REACT_APP_QUESTION_BANK_API : `${window.location.origin}/questionbank`;
 const PROFILES_API = process.env.REACT_APP_PROFILES_API ? process.env.REACT_APP_PROFILES_API : `${window.location.origin}/profiles`;
@@ -39,6 +40,11 @@ export default class RequestHandler {
   }
 
   static isSuccess(payload, status) {
+    if (status === 401) {
+      showNotification('Unauthorised access.');
+      setItem('token', '');
+      window.location.href = routes.root;
+    }
     if (!(status === 200 || status === 201)) {
       showFailureNotification(payload.message);
       throw Error(payload);
@@ -186,6 +192,61 @@ export default class RequestHandler {
     if (!action.includes('/login') && !action.includes('/config')) {
       header.headers.Authorization = getItem('token');
     }
+    return new Promise((resolve, reject) => {
+      fetch(`${PROFILES_API}${action}`, header)
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  }
+
+  static profilePut(action, data) {
+    const header = {
+      method: 'Put',
+      headers: {
+        Accept: 'application/vnd.profilemgr.v1',
+        'Content-Type': 'application/json',
+        Authorization: getItem('token'),
+      },
+      body: JSON.stringify(data),
+    };
+    return new Promise((resolve, reject) => {
+      fetch(`${PROFILES_API}${action}`, header)
+        .then(response => ({ promise: response.json(), status: response.status }))
+        .then(({ promise, status }) => {
+          promise.then((payload) => {
+            resolve(RequestHandler.isSuccess(payload, status));
+          })
+            .catch((innerError) => {
+              reject(innerError);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  }
+
+  static profileDelete(action) {
+    const header = {
+      method: 'Delete',
+      headers: {
+        Accept: 'application/vnd.profilemgr.v1',
+        'Content-Type': 'application/json',
+        Authorization: getItem('token'),
+      },
+    };
     return new Promise((resolve, reject) => {
       fetch(`${PROFILES_API}${action}`, header)
         .then(response => ({ promise: response.json(), status: response.status }))

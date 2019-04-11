@@ -111,7 +111,7 @@ class QuestionContainer extends Component {
   );
 
   render() {
-    const { addQuestion, questionLoading } = this.state;
+    const { questionLoading } = this.state;
 
     return (
       <div
@@ -119,7 +119,7 @@ class QuestionContainer extends Component {
       >
         <BackTop />
         {this.getAffix()}
-        {this.getAddBackButtons(addQuestion)}
+        {this.getAddBackButtons()}
         {!questionLoading && this.getQuestions()}
         {questionLoading && <Skeleton active paragraph={{ row: 4 }} />}
       </div>
