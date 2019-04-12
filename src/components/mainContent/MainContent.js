@@ -9,6 +9,8 @@ import routes from '../../utils/routes';
 import { getItem } from '../helpers/localStorage';
 import { showWarningNotification } from '../reusable/Notifications';
 
+const Search = lazy(() => import('../search'));
+
 const TargetGroup = lazy(() => import('../targetGroup/TargetGroupContainer'));
 const TargetGroupForm = lazy(() => import('../targetGroup/TargetGroupForm'));
 
@@ -64,6 +66,9 @@ function PrivateRoute({ component: Component, ...rest }) {
 const MainContent = () => (
   <Suspense fallback={<Skeleton active paragraph />}>
     <Switch>
+
+      <PrivateRoute exact path={routes.search} component={Search} />
+      
       <PrivateRoute exact path={routes.targetGroupList} component={TargetGroup} />
       <PrivateRoute exact path={routes.targetGroupAdd} component={TargetGroupForm} />
       <PrivateRoute exact path={routes.targetGroupEdit} component={TargetGroupForm} />

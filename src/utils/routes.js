@@ -4,6 +4,8 @@ const routes = {
   root,
   dashboard,
 
+  search: `${dashboard}/search`,
+
   targetGroupList: `${dashboard}/target-groups`,
   targetGroupEdit: `${dashboard}/target-groups/edit/:targetID`,
   targetGroupAdd: `${dashboard}/target-groups/add`,

@@ -3,6 +3,13 @@ import routes from '../../utils/routes';
 const NAV_MENU = [
   {
     key: 1,
+    name: 'Search',
+    path: routes.search,
+    icon: 'file-search',
+    permission: ['2', '4', '8'],
+  },
+  {
+    key: 1,
     name: 'Questions',
     path: routes.targetGroupList,
     icon: 'fund',

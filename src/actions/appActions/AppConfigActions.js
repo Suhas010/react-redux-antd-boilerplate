@@ -47,3 +47,7 @@ export function updateSubCategory(categoryID, subCategoryID, payload) {
 export function deleteSubCategory(id) {
   return RequestHandler.delete(`/categories/${id}`);
 }
+
+export function fetchSearchData(targetGroupID) {
+  return RequestHandler.get(`/target_groups/${targetGroupID}/questions`)
+}
