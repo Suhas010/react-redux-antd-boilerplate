@@ -68,52 +68,54 @@
   }
 }
 
-.question-form-container {
-  margin: 4% 20%;
-  padding: 2% 2%;
-  border: 1px solid #928a8a;
-  background-color: #ffffff;
-  border-radius: 10px;
-  .similar {
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-  }
-  
-  .form {
-    .divider {
-      padding: 0px 0px;
-      margin: 15px;
-      color: #8c867fa6;
+.container {
+  margin: 5% 0%;
+  .question-form-container {
+    padding: 2% 2%;
+    border: 1px solid #928a8a;
+    background-color: #ffffff;
+    border-radius: 10px;
+    .similar {
+      display: flex;
+      justify-content: center;
+      padding-top: 10px;
     }
-    .ant-input-affix-wrapper .ant-input-suffix {
-      right: 0px !important;
-    }
-    .remove-button {
-      background: #d1d5d8;
-      border: none;
-    }
-    .tags {
-      header {
-        display: flex;
-        top: -11%;
-        color: rgb(142, 139, 139);
-        font-size: 14px;
-        width: 192px;
-        font-weight: 500;
-        padding-bottom: 3px;
-
+    
+    .form {
+      .divider {
+        padding: 0px 0px;
+        margin: 15px;
+        color: #8c867fa6;
       }
+      .ant-input-affix-wrapper .ant-input-suffix {
+        right: 0px !important;
+      }
+      .remove-button {
+        background: #d1d5d8;
+        border: none;
+      }
+      .tags {
+        header {
+          display: flex;
+          top: -11%;
+          color: rgb(142, 139, 139);
+          font-size: 14px;
+          width: 192px;
+          font-weight: 500;
+          padding-bottom: 3px;
+  
+        }
+      }
+  
     }
-
-  }
-  .action {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    padding-top: 5%;
-    div {
-      padding: 5px;
+    .action {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding-top: 5%;
+      div {
+        padding: 5px;
+      }
     }
   }
 }

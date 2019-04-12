@@ -26,7 +26,7 @@ class QuestionContainer extends Component {
     const { match } = this.props;
     this.setLoader('questionLoading', true);
     QuestionModel.deleteAll();
-    getQuestions(match.params.targetID)
+    getQuestions(match.params.targetID, {})
       .then((payload) => {
         this.setLoader('questionLoading', false);
         QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));

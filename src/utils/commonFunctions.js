@@ -57,3 +57,12 @@ export function getMobileNumber(number, dialCode) {
   mobileNumber = mobileNumber.replace(')', '');
   return mobileNumber;
 }
+
+export function sort(array, key) {
+  array.sort((first, second) => {
+    if (first[key] < second[key]) return -1;
+    if (first[key] > second[key]) return 1;
+    return 0;
+  });
+  return array;
+}

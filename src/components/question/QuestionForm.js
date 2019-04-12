@@ -582,15 +582,32 @@ class QuestionForm extends React.Component {
     </>
   );
 
+  getDuplicateQuestions = () => {
+    return (
+      <div className="duplicate-container">
+          asdasd
+      </div>
+    );
+  }
+
   render() {
     const { loading, ...rest } = this.state;
     return (
       <ErrorBoundary name="Question Form">
         {this.getAffix()}
-        <div className="question-form-container">
-          {!loading && this.getForm(rest)}
-        </div>
         {loading && <Skeleton active paragraph={{ row: 5 }} />}
+        <div className="container">
+          <Row>
+            <Col span={16}>
+              <div className="question-form-container">
+                {!loading && this.getForm(rest)}
+              </div>
+            </Col>
+            <Col span={8}>
+              {this.getDuplicateQuestions()}
+            </Col>
+          </Row>
+        </div>
       </ErrorBoundary>
     );
   }

@@ -6,10 +6,12 @@ import Categories from '../reusable/Categories';
 import JSelect from '../reusable/Select';
 import JInput from '../reusable/Input';
 import { getCategories, getSubCategories } from '../../actions/appActions/AppConfigActions';
-import { getConfigFor } from '../../utils/commonFunctions';
+import { getConfigFor, sort } from '../../utils/commonFunctions';
 
 const defaultCategory = { id: 'all', name: 'All' };
-
+let GENDERS = getConfigFor('genders');
+GENDERS.push({ value: 0, name: 'All' });
+GENDERS = sort(GENDERS, 'value');
 class TargetGroupFilter extends Component {
   constructor(props) {
     super(props);
@@ -159,8 +161,8 @@ class TargetGroupFilter extends Component {
       <Categories
         handleCategoryChange={this.handleCategoryChange}
         handleSubCategoryChange={this.handleSubCategoryChange}
-        categories={this.state.categories}
-        subCategories={this.state.subCategories}
+        categories={sort(this.state.categories, 'name')}
+        subCategories={sort(this.state.subCategories, 'name')}
         selectedCategory={this.state.selectedCategory}
         selectedSubCategory={this.state.selectedSubCategory}
         categoriesLoading={this.state.categoriesLoading}
@@ -170,7 +172,7 @@ class TargetGroupFilter extends Component {
       <JSelect
         label="Gender"
         labelClass="filter-label"
-        options={getConfigFor('genders')}
+        options={GENDERS}
         value={this.state.gender}
         onChange={this.handleGenderChange}
         style={{ width: '100%' }}

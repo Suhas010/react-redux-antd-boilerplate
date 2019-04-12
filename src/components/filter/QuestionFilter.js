@@ -5,11 +5,14 @@ import { Button, Icon } from 'antd';
 
 import JSelect from '../reusable/Select';
 import { getItem } from '../helpers/localStorage';
+import { sort } from '../../utils/commonFunctions';
 
-const defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
+let defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
 defaultQuestionTypes.push({ id: 'all', name: 'All' });
-const defaultDifficultyLevels = JSON.parse(getItem('difficultyLevels'));
+let defaultDifficultyLevels = JSON.parse(getItem('difficultyLevels'));
 defaultDifficultyLevels.push({ id: 'all', name: 'All' });
+defaultDifficultyLevels = sort(defaultDifficultyLevels, 'name');
+defaultQuestionTypes = sort(defaultQuestionTypes, 'name');
 
 const initialState = {
   questionTypes: defaultQuestionTypes,

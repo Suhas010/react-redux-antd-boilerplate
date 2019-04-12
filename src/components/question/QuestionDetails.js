@@ -7,6 +7,7 @@ import moment from 'moment';
 import QuestionDetailsModel from './QuestionDetailsModel';
 import { getItem } from '../helpers/localStorage';
 import routes from '../../utils/routes';
+import ErrorBoundary from '../reusable/ErrorBoundary';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
@@ -52,8 +53,17 @@ class QuestionDetails extends Component {
   }
 
   getTags = (tags) => {
-    const tagsArray = tags.split(',');
-    return tagsArray.map(tag => <Tag color={colorArray[this.getRandomInt(0, 8)]} key={tag}>{tag}</Tag>);
+    return tags.map((tag) => {
+      if (!tag) return null;
+      return (
+        <Tag
+          color={colorArray[this.getRandomInt(0, 8)]}
+          key={tag}
+        >
+          {tag}
+        </Tag>
+      );
+    });
   }
 
 
@@ -95,9 +105,14 @@ class QuestionDetails extends Component {
           <span className="label">Tags</span>
         </Col>
         <Col span={23}>
-          <div className="tags">
-            {tags && this.getTags(tags)}
-          </div>
+          <ErrorBoundary name="Show Tags">
+            { tags && tags.length > 0 && (
+              <div className="tags">
+                {this.getTags(tags)}
+              </div>
+            )}
+
+          </ErrorBoundary>
         </Col>
       </Row>
     </div>

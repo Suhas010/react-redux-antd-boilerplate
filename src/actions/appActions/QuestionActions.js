@@ -1,8 +1,8 @@
 import RequestHandler from '../../components/helpers/RequestHandler';
 
 // get list of target groups
-export function getQuestions(targetGroupID) {
-  return RequestHandler.get(`/target_groups/${targetGroupID}/questions`);
+export function getQuestions(targetGroupID, payload) {
+  return RequestHandler.post(`/target_groups/${targetGroupID}/questions/search`, payload);
 }
 
 // get target group
