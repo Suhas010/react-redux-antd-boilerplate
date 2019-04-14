@@ -32,20 +32,13 @@ class QuestionDetailsModal extends Component {
 
   render = () => {
     const { questions } = this.props;
-    const { loading } = this.state;
     return (
       <div className="body">
-        {loading && <Skeleton paragraph active />}
-        {!loading && this.getSimilarQuestions()}
+        {/* { && <Skeleton paragraph active />} */}
+        {this.getSimilarQuestions()}
       </div>
     );
   }
 }
 
-function mapStateToProps() {
-  return {
-    questions: QuestionModel.list()[0] ? QuestionModel.list().map(item => item[1].props) : [],
-  };
-}
-
-export default connect(mapStateToProps)(QuestionDetailsModal);
+export default QuestionDetailsModal;

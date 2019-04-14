@@ -1,13 +1,18 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal } from 'antd';
+import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Button, Skeleton } from 'antd';
 import moment from 'moment';
 import QuestionDetailsModel from './QuestionDetailsModel';
+import { changeQuestionState, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
 import { getItem } from '../helpers/localStorage';
 import routes from '../../utils/routes';
 import ErrorBoundary from '../reusable/ErrorBoundary';
+import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
+import QuestionModel from '../../models/AppModel/Questions';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
@@ -17,10 +22,52 @@ class QuestionDetails extends Component {
     this.state = {
       questionsID: '',
       showSimilarModal: false,
+      similarLoading: false,
+      similarQuestions: [],
     };
   }
 
-  getQuestionOptions = options => options.map((option, index) => (
+  updateQuestionStatus = (questionsID, newState, available_transitions) => {
+    const question = QuestionModel.get(questionsID);
+    question.props.status = newState;
+    question.props.available_transitions = available_transitions;
+    new QuestionModel(question.props).$save();
+  }
+
+  changeQuestionState = (targetID, questionsID, newState) => {
+    changeQuestionState(targetID, questionsID, newState)
+      .then((payload) => {
+        showSuccessNotification(payload.message);
+        this.updateQuestionStatus(questionsID, payload.status, payload.available_transitions);
+      })
+      .catch((error) => {
+        showFailureNotification('Something went wrong while changing question status.');
+        console.log(error);
+      });
+  }
+
+  getSimilarQuestionsAPI = (questionID) => {
+    this.setState({
+      similarLoading: true,
+    });
+    const { props: { body } } = QuestionModel.get(questionID);
+    const { match: { params } } = this.props;
+    getSimilarQuestions(params.targetID, { filters: { body } })
+      .then((payload) => {
+        this.setState({
+          similarLoading: false,
+          similarQuestions: payload.questions,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          similarLoading: false,
+          similarQuestions: [],
+        });
+      });
+  }
+
+  getOptions = options => options.map((option, index) => (
     <Row className="options-container" key={option.body+index}>
       <Col span={2}>
         <span>{`Option ${index + 1}`}</span>
@@ -31,14 +78,14 @@ class QuestionDetails extends Component {
     </Row>
   ));
 
-  getQuestionTypeAndOptions = (type, options) => {
+  getQuestionsAllOptions = (type, options) => {
     const ifOptions = type === 'Select' || type === 'MultiSelect';
     return (
       <>
         <Divider style={{ margin: '8px 0px' }} />
         {ifOptions && (
           <>
-            {this.getQuestionOptions(options)}
+            {this.getOptions(options)}
           </>
         )
         }
@@ -66,8 +113,31 @@ class QuestionDetails extends Component {
     });
   }
 
+  handleTransition = (questionsID, transition) => {
+    const { match: { params } } = this.props;
+    this.changeQuestionState(params.targetID, questionsID, transition.toLocaleLowerCase());
+  }
 
-  getUpdated = (type, time, status, diff) => (
+  // returns actionable buttons
+  getAvailableTransitions = (id, transitions) => {
+    return transitions.map((transition) => {
+      return (
+        <Tooltip title={`Move question to ${transition.toLocaleLowerCase()} state.`} key={transition}>
+          <Button
+            onClick={() => this.handleTransition(id, transition)}
+            style={{
+              color: 'white',
+              background: this.getTransitionColor(transition),
+            }}
+          >
+            {`${this.getCamelCase(transition)} Question`}
+          </Button>
+        </Tooltip>
+      );
+    });
+  }
+
+  get_TYPE_UPDATED_DIFF_TRANSITION = (id, type, time, diff, availableTransitions, isSimilar) => (
     <>
       <Row>
         <Col span={3}>
@@ -84,21 +154,28 @@ class QuestionDetails extends Component {
             <span>{diff}</span>
           </div>
         </Col>
-        <Col span={3}>
+        <Col span={5}>
           <div className="data-container">
             <span className="label">Updated</span>
             <span>{moment(time).from(moment())}</span>
           </div>
         </Col>
+        { availableTransitions && !isSimilar && (
+          <Col span={12}>
+            <div className="transition">
+              {this.getAvailableTransitions(id, availableTransitions)}
+            </div>
+          </Col>
+        )}
       </Row>
     </>
   )
 
-  getQuestionTagsAndUpdatedAt = (type, status, {
-    updated_at, difficulty_level, tags,
+  getPrimaryInformation = (id, type, isSimilar, {
+    updated_at, difficulty_level, tags, available_transitions,
   }) => (
     <div className="details-container">
-      {this.getUpdated(type, updated_at, status, difficulty_level)}
+      {this.get_TYPE_UPDATED_DIFF_TRANSITION(id, type, updated_at, difficulty_level, available_transitions, isSimilar)}
       <Divider style={{ margin: '8px 0px' }} />
       <Row>
         <Col span={1}>
@@ -118,26 +195,42 @@ class QuestionDetails extends Component {
     </div>
   );
 
-  handleSimilarClick = (id) => {
-    this.setState({
-      showSimilarModal: true,
-      questionsID: id,
-    });
+  getTransitionColor = (status) => {
+    switch (status) {
+    case 'NEW': return '#108ee9';
+    case 'SUBMIT': return '#3a8a61';
+    case 'DRAFT': return '#2db7f5';
+    case 'PUBLISH':
+    case 'PUBLISHED': return '#87d068';
+    case 'REJECT':
+    case 'REJECTED': return '#ffbf00';
+    case 'DEACTIVATE':
+    case 'DEACTIVATED': return '#ff0202';
+    default: return '#108ee9';
+    }
+  }
+
+  getCamelCase = (string) => {
+    return string[0].toLocaleUpperCase().concat(string.slice(1, string.length).toLocaleLowerCase());
   }
 
   getExtras = (id, status) => {
     const profile = getItem('profile');
     const { history, match: { params } } = this.props;
     const EditIcon = (
-      <Tooltip connect="Edit Question">
+      <Tooltip connect="Edit Question" key={id}>
         <Icon type="edit" onClick={() => history.push(`${routes.dashboard}/${params.targetID}/questions/edit/${id}`)} />
       </Tooltip>
     );
 
     return (
       <div className="extras-container">
-        <span className="similar" onClick={ () => this.handleSimilarClick(id)}> Similar </span>
-        <Tag className="status" color={status === 'accepted' ? 'green' : 'red'}>{status}</Tag>
+        <Tag
+          className="status"
+          color={this.getTransitionColor(status)}
+        >
+          {this.getCamelCase(status)}
+        </Tag>
         <span className="edit">{EditIcon}</span>
       </div>
     );
@@ -150,9 +243,16 @@ class QuestionDetails extends Component {
     });
   }
 
+
+  showSimilarModal = (id) => {
+    this.setState({
+      showSimilarModal: true,
+    });
+  }
+
   // Shows similar question of particular question on modal.
   getModel = (body) => {
-    const { showSimilarModal, questionsID } = this.state;
+    const { showSimilarModal, questionsID, similarQuestions } = this.state;
     if (showSimilarModal) {
       return (
         <Modal
@@ -165,7 +265,8 @@ class QuestionDetails extends Component {
           className="question-details-model"
         >
           <QuestionDetailsModel
-            questionsID={questionsID}
+            questions={similarQuestions}
+            isSimilar
           />
         </Modal>
       );
@@ -175,8 +276,18 @@ class QuestionDetails extends Component {
 
   getStatus = (status) => {
     return (
-      <Tag className="status" color={status === 'accepted' ? 'green' : 'red'}>{status}</Tag>
+      <Tag className="status" color={this.getTransitionColor(status)}>{status}</Tag>
     );
+  }
+
+  handlePanelClick = (clickedID) => {
+    this.setState({
+      clickedID,
+      // similarQuestions: [],
+    });
+    if (clickedID && !this.props.isSimilar) {
+      this.getSimilarQuestionsAPI(clickedID);
+    }
   }
 
   getQuestions = () => {
@@ -192,10 +303,10 @@ class QuestionDetails extends Component {
         <div className="question-body">
           {!isSimilar && this.getModel(body)}
           <Row>
-            {this.getQuestionTagsAndUpdatedAt(type, status, rest)}
+            {this.getPrimaryInformation(id, type, isSimilar, rest)}
           </Row>
           <Row>
-            {this.getQuestionTypeAndOptions(
+            {this.getQuestionsAllOptions(
               type,
               options,
             )}
@@ -205,15 +316,54 @@ class QuestionDetails extends Component {
     ));
   }
 
+  getSimilarQuestions = () => {
+    const { similarLoading, similarQuestions } = this.state;
+    if (similarLoading) return <Skeleton active paragraph />;
+    if (!similarQuestions || similarQuestions.length === 0) {
+      return <Empty description="No similar questions found." />;
+    }
+    return  (
+      <div className="duplicate-container">
+        <span className="header">Similar Questions</span>
+        <>
+          {similarQuestions.map(({ id, body }, index) => (
+            <div className="q-container" key={id}>
+              <span>{index + 1}</span>
+              <div className="question">{body}</div>
+            </div>
+          ))}
+        </>
+        <Button onClick={this.showSimilarModal} type="danger">
+          View Details
+        </Button>
+      </div>
+    );
+  }
+
   getQuestionPanel = () => {
-    const { questions } = this.props;
+    const { questions, isSimilar } = this.props;
+    const { clickedID } = this.state;
     if (!questions || questions.length === 0) {
       return <Empty />;
     }
     return (
-      <Collapse bordered={false} accordion>
-        {this.getQuestions()}
-      </Collapse>
+      <Row>
+        <Col span={clickedID && !isSimilar ? 16 : 24}>
+          <Collapse
+            onChange={this.handlePanelClick}
+            bordered={false}
+            accordion
+          >
+            {this.getQuestions()}
+          </Collapse>
+        </Col>
+        { clickedID && !isSimilar && (
+          <Col span={8}>
+            {this.getSimilarQuestions()}
+          </Col>
+        )}
+      </Row>
+
     );
   }
 

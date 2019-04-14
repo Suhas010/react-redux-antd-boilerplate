@@ -19,3 +19,11 @@ export function saveQuestion(targetGroupID, payload) {
 export function updateQuestion(targetGroupID, questionID, payload) {
   return RequestHandler.put(`/target_groups/${targetGroupID}/questions/${questionID}`, payload);
 }
+
+export function getSimilarQuestions(targetGroupID, payload) {
+  return RequestHandler.post(`/target_groups/${targetGroupID}/questions/similar`, payload);
+}
+
+export function changeQuestionState(targetGroupID, questionID, state) {
+  return RequestHandler.put(`/target_groups/${targetGroupID}/questions/${questionID}/${state}`);
+}

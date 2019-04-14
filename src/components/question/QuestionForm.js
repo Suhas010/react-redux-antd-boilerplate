@@ -3,7 +3,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 import React from 'react';
-import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon, Tag, Modal } from 'antd';
+import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon, Tag, Modal, Empty } from 'antd';
 import moment from 'moment';
 import { showSuccessNotification, showWarningNotification } from '../reusable/Notifications';
 import JSelect from '../reusable/Select';
@@ -15,7 +15,7 @@ import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
 import './Question.scss';
 import QuestionModel from '../../models/AppModel/Questions';
 import { getConfig } from '../../actions/appActions/AppConfigActions';
-import { getQuestion, updateQuestion, saveQuestion } from '../../actions/appActions/QuestionActions';
+import { getQuestion, updateQuestion, saveQuestion, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
 import { getIDOf } from '../../utils/commonFunctions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import QuestionDetailsModel from './QuestionDetailsModel';
@@ -43,6 +43,8 @@ class QuestionForm extends React.Component {
       questionTypes: [],
       difficultyLevels: [],
       showSimilar: false,
+      similarLoading: false,
+      similarQuestions: [],
       showSimilarModal: false,
     };
   }
@@ -98,6 +100,7 @@ class QuestionForm extends React.Component {
       loading: false,
       options: questionOptions,
     });
+    this.getSimilarQuestions({ body });
   }
 
   updateQuestion = (questionID, payload) => {
@@ -125,6 +128,25 @@ class QuestionForm extends React.Component {
       .catch((error) => {
         this.setLoading('submitLoading', false);
         console.log(error);
+      });
+  }
+
+  getSimilarQuestions = (body) => {
+    this.setState({
+      similarLoading: true,
+    });
+    const { match : { params } } = this.props;
+    getSimilarQuestions(params.targetID, { filters: body })
+      .then((payload) => {
+        this.setState({
+          similarLoading: false,
+          similarQuestions: payload.questions,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          similarLoading: false,
+        });
       });
   }
 
@@ -370,11 +392,10 @@ class QuestionForm extends React.Component {
   }
 
   handleBlur = ({ target }) => {
-    if (target) {
-      this.setState({
-        showSimilar: true,
-      });
+    if (!target.value.trim()) {
+      return 0;
     }
+    this.getSimilarQuestions({ body: target.value });
   }
 
   showSimilarModal = () => {
@@ -386,16 +407,15 @@ class QuestionForm extends React.Component {
   handleCloseModal = () => {
     this.setState({
       showSimilarModal: false,
-      questionsID: '',
     });
   }
 
-  getModel = (body) => {
-    const { showSimilarModal, questionsID } = this.state;
+  getModel = () => {
+    const { showSimilarModal, similarQuestions } = this.state;
     if (showSimilarModal) {
       return (
         <Modal
-          title={`Followings are similar of "${body}"`}
+          title="Similar questions"
           centered
           visible={showSimilarModal}
           onCancel={this.handleCloseModal}
@@ -404,7 +424,9 @@ class QuestionForm extends React.Component {
           className="question-details-model"
         >
           <QuestionDetailsModel
-            questionsID={questionsID}
+            questions={similarQuestions}
+            isSimilar
+
           />
         </Modal>
       );
@@ -556,11 +578,11 @@ class QuestionForm extends React.Component {
           <Row>{this.getTags(tags)}</Row>
         </ErrorBoundary>
       </div>
-      {showSimilar && (
+      {/* {showSimilar && (
         <div className="similar" onClick={this.showSimilarModal}>
           <Tag color="red">9 Similar</Tag>
         </div>
-      )}
+      )} */}
       <div className="action">
         <div>
           <Button
@@ -583,9 +605,27 @@ class QuestionForm extends React.Component {
   );
 
   getDuplicateQuestions = () => {
+    const { similarLoading, similarQuestions } = this.state;
+    if (similarLoading) {
+      return <Skeleton active paragraph />;
+    }
+    if (!similarQuestions || similarQuestions.length === 0) {
+      return <Empty description="No similar questions found." />;
+    }
     return (
       <div className="duplicate-container">
-          asdasd
+        <span className="header">Similar Questions</span>
+        <>
+          {similarQuestions.map(({ id, body }, index) => (
+            <div className="q-container" key={id}>
+              <span>{index + 1}</span>
+              <div className="question">{body}</div>
+            </div>
+          ))}
+        </>
+        <Button onClick={this.showSimilarModal} type="danger">
+          View Details
+        </Button>
       </div>
     );
   }
