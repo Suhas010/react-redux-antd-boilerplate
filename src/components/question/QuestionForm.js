@@ -19,6 +19,7 @@ import { getQuestion, updateQuestion, saveQuestion, getSimilarQuestions } from '
 import { getIDOf } from '../../utils/commonFunctions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import QuestionDetailsModel from './QuestionDetailsModel';
+import SimilarQuestionPanel from './SimilarQuestionPanel';
 
 const { Option } = Select;
 
@@ -50,9 +51,7 @@ class QuestionForm extends React.Component {
   }
 
   componentWillMount() {
-    const { match } = this.props;
-    const { questionID, targetID } = match.params;
-
+    const { match: { params: { questionID, targetID } } } = this.props;
     getConfig().then((data) => {
       const { difficulty_levels, question_types } = data;
       this.setState({
@@ -130,12 +129,13 @@ class QuestionForm extends React.Component {
         console.log(error);
       });
   }
-
+  
+  // Get Similar Questions API
   getSimilarQuestions = (body) => {
     this.setState({
       similarLoading: true,
     });
-    const { match : { params } } = this.props;
+    const { match: { params } } = this.props;
     getSimilarQuestions(params.targetID, { filters: body })
       .then((payload) => {
         this.setState({
@@ -212,7 +212,6 @@ class QuestionForm extends React.Component {
 
   handleOptionChange = ({ target }, index) => {
     const { value } = target;
-    console.log(value, index);
     this.state.options[index].body = value;
     this.setState({
       options: this.state.options,
@@ -283,7 +282,6 @@ class QuestionForm extends React.Component {
         openDatePicker: true,
       });
     }
-    
     this.setState({
       [type]: value,
     });
@@ -322,7 +320,7 @@ class QuestionForm extends React.Component {
     return true;
   };
 
-  handleSubmit = () => {
+  handleFormSubmit = () => {
     if (!this.validateForm()) {
       return 0;
     }
@@ -381,17 +379,20 @@ class QuestionForm extends React.Component {
   };
 
   disabledDate = (currentDate) => {
-    // Can not select days before today and today
     return currentDate && currentDate < moment().subtract(1, 'd').endOf('day');
   }
 
-  renderCloseButton = () => {
-    return (
-      <Button type="primary" onClick={()=> this.setState({ openDatePicker: false })}>Ok </Button>
-    );
-  }
+  renderCloseButton = () => (
+    <Button
+      type="primary"
+      onClick={()=> this.setState({ openDatePicker: false })}
+    >
+      Ok
+    </Button>
+  );
 
-  handleBlur = ({ target }) => {
+
+  handleQuestionBlur = ({ target }) => {
     if (!target.value.trim()) {
       return 0;
     }
@@ -436,7 +437,7 @@ class QuestionForm extends React.Component {
 
 
   getForm = ({
-    showSimilar, questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
+    questionTypes, difficultyLevels, questionType, question, difficultyLevel, repeatThis,
     repeatTypeOption, repeatCount, interval, tags, triggerDate, error, submitLoading, openDatePicker,
   }) => (
     <>
@@ -481,7 +482,7 @@ class QuestionForm extends React.Component {
                 value={question}
                 row={1}
                 onChange={e => this.handleChange(e.target.value, 'question')}
-                onBlur={this.handleBlur}
+                onBlur={this.handleQuestionBlur}
                 required
                 error={error.question}
               />
@@ -578,15 +579,10 @@ class QuestionForm extends React.Component {
           <Row>{this.getTags(tags)}</Row>
         </ErrorBoundary>
       </div>
-      {/* {showSimilar && (
-        <div className="similar" onClick={this.showSimilarModal}>
-          <Tag color="red">9 Similar</Tag>
-        </div>
-      )} */}
       <div className="action">
         <div>
           <Button
-            onClick={this.handleSubmit}
+            onClick={this.handleFormSubmit}
             loading={submitLoading}
             type="primary"
           >
@@ -606,27 +602,15 @@ class QuestionForm extends React.Component {
 
   getDuplicateQuestions = () => {
     const { similarLoading, similarQuestions } = this.state;
-    if (similarLoading) {
-      return <Skeleton active paragraph />;
-    }
+    if (similarLoading) return <Skeleton active paragraph />;
     if (!similarQuestions || similarQuestions.length === 0) {
       return <Empty description="No similar questions found." />;
     }
     return (
-      <div className="duplicate-container">
-        <span className="header">Similar Questions</span>
-        <>
-          {similarQuestions.map(({ id, body }, index) => (
-            <div className="q-container" key={id}>
-              <span>{index + 1}</span>
-              <div className="question">{body}</div>
-            </div>
-          ))}
-        </>
-        <Button onClick={this.showSimilarModal} type="danger">
-          View Details
-        </Button>
-      </div>
+      <SimilarQuestionPanel
+        questions={similarQuestions}
+        handleViewDetailsClick={this.showSimilarModal}
+      />
     );
   }
 

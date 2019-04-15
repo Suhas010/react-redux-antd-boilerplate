@@ -13,6 +13,7 @@ import routes from '../../utils/routes';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
 import QuestionModel from '../../models/AppModel/Questions';
+import SimilarQuestionPanel from './SimilarQuestionPanel';
 
 const { Panel } = Collapse;
 const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
@@ -68,7 +69,7 @@ class QuestionDetails extends Component {
   }
 
   getOptions = options => options.map((option, index) => (
-    <Row className="options-container" key={option.body+index}>
+    <Row className="options-container" key={option.body + index}>
       <Col span={2}>
         <span>{`Option ${index + 1}`}</span>
       </Col>
@@ -92,7 +93,7 @@ class QuestionDetails extends Component {
       </>
     );
   }
-  
+
   getRandomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -322,21 +323,11 @@ class QuestionDetails extends Component {
     if (!similarQuestions || similarQuestions.length === 0) {
       return <Empty description="No similar questions found." />;
     }
-    return  (
-      <div className="duplicate-container">
-        <span className="header">Similar Questions</span>
-        <>
-          {similarQuestions.map(({ id, body }, index) => (
-            <div className="q-container" key={id}>
-              <span>{index + 1}</span>
-              <div className="question">{body}</div>
-            </div>
-          ))}
-        </>
-        <Button onClick={this.showSimilarModal} type="danger">
-          View Details
-        </Button>
-      </div>
+    return (
+      <SimilarQuestionPanel
+        questions={similarQuestions}
+        handleViewDetailsClick={this.showSimilarModal}
+      />
     );
   }
 
@@ -344,7 +335,7 @@ class QuestionDetails extends Component {
     const { questions, isSimilar } = this.props;
     const { clickedID } = this.state;
     if (!questions || questions.length === 0) {
-      return <Empty />;
+      return <Empty description="No question found in selected target group." />;
     }
     return (
       <Row>
