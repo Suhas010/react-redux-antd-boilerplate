@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Layout, Icon } from 'antd';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Sidebar from '../sidebar/Sidebar';
 import MainContent from '../mainContent/MainContent';
 import { getConfig, getProfiles } from '../../actions/appActions/AppConfigActions';
@@ -60,10 +61,12 @@ class DashBoardLayout extends Component {
             />
           </Header>
           <Content style={{
-            margin: '-24px 0px', padding: 20, background: '#fff', minHeight: 280, flex: 'none'
+            margin: '-24px 0px', padding: '3px 20px', background: '#fff', minHeight: 280, flex: 'none'
           }}
           >
-            <MainContent />
+            <Scrollbars style={{ height: '100vh' }}>
+              <MainContent />
+            </Scrollbars>
           </Content>
         </Layout>
       </Layout>

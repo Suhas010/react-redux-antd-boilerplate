@@ -4,6 +4,7 @@
   justify-content: center;
   text-align: center;
   align-items: center;
+  padding-top: 1%;
   .ant-skeleton {
     margin-top: 2%;
     .ant-skeleton-content {
@@ -54,22 +55,23 @@
     }
   }
 }
-
-.target-group-form {
-  margin: 1% 15%;
-  padding: 2% 2%;
-  border: solid 1px #928a8a;
-  border-radius: 11px;
-  background-color: #ffffff;
-  .row-padding {
-    padding-top: 2%; 
-  }
-  .actions {
-    display: flex;
-    justify-content: center;
-    padding: 7% 1px 0px;
-    div {
-      padding: 5px;
+.target-group-form-container {
+  padding-top: 7%;
+  .target-group-form {
+    margin: 1% 15%;
+    padding: 2% 2%;
+    border: solid 1px #928a8a;
+    background-color: #ffffff;
+    .row-padding {
+      padding-top: 2%; 
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      padding: 7% 1px 0px;
+      div {
+        padding: 5px;
+      }
     }
   }
 }

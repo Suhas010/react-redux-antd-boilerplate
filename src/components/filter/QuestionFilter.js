@@ -80,7 +80,7 @@ class QuestionFilter extends Component {
           onClick={this.resetFilter}
         >
           <Icon type="undo" />
-          Reset
+          Clear
         </Button>
       </>
     );

@@ -6,9 +6,9 @@
 import React, { Component } from 'react';
 import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Button, Skeleton } from 'antd';
 import moment from 'moment';
+import { Scrollbars } from 'react-custom-scrollbars';
 import QuestionDetailsModel from './QuestionDetailsModel';
 import { changeQuestionState, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
-import { getItem } from '../helpers/localStorage';
 import routes from '../../utils/routes';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
@@ -16,15 +16,14 @@ import QuestionModel from '../../models/AppModel/Questions';
 import SimilarQuestionPanel from './SimilarQuestionPanel';
 
 const { Panel } = Collapse;
-const colorArray = ['magenta', 'red', 'volcano', 'orange', 'cyan', 'blue', 'geekblue', 'purple'];
 class QuestionDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionsID: '',
       showSimilarModal: false,
       similarLoading: false,
       similarQuestions: [],
+      isSimilarExist: false,
     };
   }
 
@@ -50,6 +49,7 @@ class QuestionDetails extends Component {
   getSimilarQuestionsAPI = (questionID) => {
     this.setState({
       similarLoading: true,
+      isSimilarExist: true,
     });
     const { props: { body } } = QuestionModel.get(questionID);
     const { match: { params } } = this.props;
@@ -57,6 +57,7 @@ class QuestionDetails extends Component {
       .then((payload) => {
         this.setState({
           similarLoading: false,
+          isSimilarExist: payload.questions.length >0 ? true : false,
           similarQuestions: payload.questions,
         });
       })
@@ -94,18 +95,12 @@ class QuestionDetails extends Component {
     );
   }
 
-  getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
   getTags = (tags) => {
     return tags.map((tag) => {
       if (!tag) return null;
       return (
         <Tag
-          color={colorArray[this.getRandomInt(0, 8)]}
+          color="blue"
           key={tag}
         >
           {tag}
@@ -126,10 +121,11 @@ class QuestionDetails extends Component {
         <Tooltip title={`Move question to ${transition.toLocaleLowerCase()} state.`} key={transition}>
           <Button
             onClick={() => this.handleTransition(id, transition)}
-            style={{
-              color: 'white',
-              background: this.getTransitionColor(transition),
-            }}
+            type="primary"
+            // style={{
+            //   color: 'white',
+            //   background: this.getTransitionColor(transition),
+            // }}
           >
             {`${this.getCamelCase(transition)} Question`}
           </Button>
@@ -162,7 +158,7 @@ class QuestionDetails extends Component {
           </div>
         </Col>
         { availableTransitions && !isSimilar && (
-          <Col span={12}>
+          <Col span={13}>
             <div className="transition">
               {this.getAvailableTransitions(id, availableTransitions)}
             </div>
@@ -212,27 +208,43 @@ class QuestionDetails extends Component {
   }
 
   getCamelCase = (string) => {
+    if (!string) return 0;
     return string[0].toLocaleUpperCase().concat(string.slice(1, string.length).toLocaleLowerCase());
   }
 
-  getExtras = (id, status) => {
-    const profile = getItem('profile');
-    const { history, match: { params } } = this.props;
-    const EditIcon = (
-      <Tooltip connect="Edit Question" key={id}>
-        <Icon type="edit" onClick={() => history.push(`${routes.dashboard}/${params.targetID}/questions/edit/${id}`)} />
-      </Tooltip>
-    );
+  getStatusStyleClass = (status) => {
+    switch (status) {
+    case 'NEW': return 'new';
+    case 'SUBMIT': return 'submit';
+    case 'DRAFT': return 'new';
+    case 'PUBLISH':
+    case 'PUBLISHED': return 'publish';
+    case 'REJECT':
+    case 'REJECTED': return 'reject';
+    case 'DEACTIVATE':
+    case 'DEACTIVATED': return 'deactivated';
+    default: return 'new';
+    }
+  }
 
+  getExtras = (id, status) => {
+    const { history, match: { params } } = this.props;
     return (
       <div className="extras-container">
-        <Tag
-          className="status"
-          color={this.getTransitionColor(status)}
+        <div
+          className={`status ${this.getStatusStyleClass(status)}`}
         >
           {this.getCamelCase(status)}
-        </Tag>
-        <span className="edit">{EditIcon}</span>
+        </div>
+        <Tooltip title="Edit Question">
+          <span
+            className="edit"
+            role="button"
+            onClick={() => history.push(`${routes.dashboard}/${params.targetID}/questions/edit/${id}`)}
+          >
+            <Icon type="edit" theme="twoTone" />
+          </span>
+        </Tooltip>
       </div>
     );
   }
@@ -240,7 +252,6 @@ class QuestionDetails extends Component {
   handleCloseModal = () => {
     this.setState({
       showSimilarModal: false,
-      questionsID: '',
     });
   }
 
@@ -248,12 +259,13 @@ class QuestionDetails extends Component {
   showSimilarModal = (id) => {
     this.setState({
       showSimilarModal: true,
+      selectedSimilarQuestion: id,
     });
   }
 
   // Shows similar question of particular question on modal.
   getModel = (body) => {
-    const { showSimilarModal, questionsID, similarQuestions } = this.state;
+    const { showSimilarModal, selectedSimilarQuestion, similarQuestions } = this.state;
     if (showSimilarModal) {
       return (
         <Modal
@@ -267,18 +279,13 @@ class QuestionDetails extends Component {
         >
           <QuestionDetailsModel
             questions={similarQuestions}
+            selectedSimilarQuestion={selectedSimilarQuestion}
             isSimilar
           />
         </Modal>
       );
     }
     return null;
-  }
-
-  getStatus = (status) => {
-    return (
-      <Tag className="status" color={this.getTransitionColor(status)}>{status}</Tag>
-    );
   }
 
   handlePanelClick = (clickedID) => {
@@ -299,7 +306,7 @@ class QuestionDetails extends Component {
       <Panel
         header={body}
         key={id}
-        extra={isSimilar ? this.getStatus(status) : this.getExtras(id, status)}
+        extra={!isSimilar && this.getExtras(id, status)}
       >
         <div className="question-body">
           {!isSimilar && this.getModel(body)}
@@ -332,23 +339,28 @@ class QuestionDetails extends Component {
   }
 
   getQuestionPanel = () => {
-    const { questions, isSimilar } = this.props;
-    const { clickedID } = this.state;
+    const { questions, isSimilar, selectedSimilarQuestion } = this.props;
+    const { clickedID, isSimilarExist } = this.state;
     if (!questions || questions.length === 0) {
       return <Empty description="No question found in selected target group." />;
     }
     return (
       <Row>
-        <Col span={clickedID && !isSimilar ? 16 : 24}>
-          <Collapse
-            onChange={this.handlePanelClick}
-            bordered={false}
-            accordion
+        <Col span={clickedID && !isSimilar && isSimilarExist ? 16 : 24}>
+          <Scrollbars
+            style={{ height: 470 }}
           >
-            {this.getQuestions()}
-          </Collapse>
+            <Collapse
+              onChange={this.handlePanelClick}
+              bordered={false}
+              defaultActiveKey={isSimilar ? selectedSimilarQuestion : ''}
+              accordion
+            >
+              {this.getQuestions()}
+            </Collapse>
+          </Scrollbars>
         </Col>
-        { clickedID && !isSimilar && (
+        { clickedID && !isSimilar && isSimilarExist && (
           <Col span={8}>
             {this.getSimilarQuestions()}
           </Col>

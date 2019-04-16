@@ -43,7 +43,7 @@ class QuestionForm extends React.Component {
       error: {},
       questionTypes: [],
       difficultyLevels: [],
-      showSimilar: false,
+      similarQuestionID: '',
       similarLoading: false,
       similarQuestions: [],
       showSimilarModal: false,
@@ -399,9 +399,10 @@ class QuestionForm extends React.Component {
     this.getSimilarQuestions({ body: target.value });
   }
 
-  showSimilarModal = () => {
+  showSimilarModal = (questionID) => {
     this.setState({
       showSimilarModal: true,
+      similarQuestionID: questionID,
     });
   }
 
@@ -412,7 +413,7 @@ class QuestionForm extends React.Component {
   }
 
   getModel = () => {
-    const { showSimilarModal, similarQuestions } = this.state;
+    const { showSimilarModal, similarQuestions, similarQuestionID } = this.state;
     if (showSimilarModal) {
       return (
         <Modal
@@ -426,6 +427,7 @@ class QuestionForm extends React.Component {
         >
           <QuestionDetailsModel
             questions={similarQuestions}
+            selectedSimilarQuestion={similarQuestionID}
             isSimilar
 
           />

@@ -90,9 +90,9 @@ class QuestionContainer extends Component {
 
   getQuestions = () => (
     <div className="questions">
-      <div className="header">
+      {/* <div className="header">
         Questions List
-      </div>
+      </div> */}
       {this.getFilter()}
       {this.getQuestionList()}
     </div>

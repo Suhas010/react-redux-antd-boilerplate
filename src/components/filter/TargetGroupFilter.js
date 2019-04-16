@@ -204,7 +204,7 @@ class TargetGroupFilter extends Component {
         onClick={this.resetFilter}
       >
         <Icon type="undo" />
-          Reset
+          Clear
       </Button>
     </>
 
