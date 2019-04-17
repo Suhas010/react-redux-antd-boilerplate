@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Button, Row, Col } from 'antd';
+import { Button } from 'antd';
 import propTypes from 'prop-types';
 import TableWrapper from '../table/TableWrapper';
 import ErrorBoundary from '../reusable/ErrorBoundary';

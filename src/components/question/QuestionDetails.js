@@ -4,16 +4,20 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Button, Skeleton } from 'antd';
 import moment from 'moment';
+import {
+  Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Button, Skeleton,
+} from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import QuestionDetailsModel from './QuestionDetailsModel';
-import { changeQuestionState, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
-import routes from '../../utils/routes';
-import ErrorBoundary from '../reusable/ErrorBoundary';
-import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
 import QuestionModel from '../../models/AppModel/Questions';
 import SimilarQuestionPanel from './SimilarQuestionPanel';
+import ErrorBoundary from '../reusable/ErrorBoundary';
+import Pagination from '../reusable/Pagination';
+import routes from '../../utils/routes';
+import { changeQuestionState, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
+import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
+
 
 const { Panel } = Collapse;
 class QuestionDetails extends Component {
@@ -24,6 +28,8 @@ class QuestionDetails extends Component {
       similarLoading: false,
       similarQuestions: [],
       isSimilarExist: false,
+      selectedSimilarQuestionBody: '',
+      selectedSimilarQuestion: '',
     };
   }
 
@@ -252,6 +258,7 @@ class QuestionDetails extends Component {
   handleCloseModal = () => {
     this.setState({
       showSimilarModal: false,
+      selectedSimilarQuestion: '',
     });
   }
 
@@ -264,12 +271,12 @@ class QuestionDetails extends Component {
   }
 
   // Shows similar question of particular question on modal.
-  getModel = (body) => {
-    const { showSimilarModal, selectedSimilarQuestion, similarQuestions } = this.state;
+  getModel = () => {
+    const { showSimilarModal, selectedSimilarQuestion, selectedSimilarQuestionBody, similarQuestions } = this.state;
     if (showSimilarModal) {
       return (
         <Modal
-          title={`Followings are similar of "${body}"`}
+          title={`Followings are published similar questions of "${selectedSimilarQuestionBody}" question.`}
           centered
           visible={showSimilarModal}
           onCancel={this.handleCloseModal}
@@ -291,9 +298,10 @@ class QuestionDetails extends Component {
   handlePanelClick = (clickedID) => {
     this.setState({
       clickedID,
-      // similarQuestions: [],
+      selectedSimilarQuestionBody: clickedID ? QuestionModel.get(clickedID).props.body : '',
     });
     if (clickedID && !this.props.isSimilar) {
+      console.log();
       this.getSimilarQuestionsAPI(clickedID);
     }
   }
@@ -309,7 +317,7 @@ class QuestionDetails extends Component {
         extra={!isSimilar && this.getExtras(id, status)}
       >
         <div className="question-body">
-          {!isSimilar && this.getModel(body)}
+          {!isSimilar && this.getModel()}
           <Row>
             {this.getPrimaryInformation(id, type, isSimilar, rest)}
           </Row>
@@ -370,9 +378,23 @@ class QuestionDetails extends Component {
     );
   }
 
+  getPagination = () => {
+    const { currentPage, totalRecords, pageSize, onPageChange, questions, isSimilar } = this.props;
+    if (!questions || questions.length === 0 || isSimilar) return null;
+    return (
+      <Pagination
+        currentPage={currentPage}
+        totalRecords={totalRecords}
+        maxPerPage={pageSize}
+        onPageChange={onPageChange}
+      />
+    );
+  }
+
   render = () => (
     <>
       {this.getQuestionPanel()}
+      {this.getPagination()}
     </>
   );
 }

@@ -36,7 +36,7 @@ class InterestDetails extends Component {
   render() {
     const { loading, name } = this.state;
     const InterestContainer = styled.div`
-        background: #8f8f90;
+        background: #1a76c5;
         color: white;
         font-weight: 600;
         text-align: center;
@@ -52,7 +52,6 @@ class InterestDetails extends Component {
         padding: 2px 37px;
         width: 20%;
         top: 3%;
-        border-radius: 14px;
         font-size: 12px;
         justify-content: center;
     `;

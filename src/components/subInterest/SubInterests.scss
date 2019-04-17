@@ -2,16 +2,16 @@
   padding-top: 4%;
   .add-button {
     position: fixed;
-    top: 17%;
-    right: 3%;
+    top: 3%;
+    right: 21px;
     z-index: 1111;
   }
   .back-button {
     position: fixed;
-    top: 15%;
-    left: 17%;
+    top: 3%;
+    left: 16%;
+    z-index: 1111;
   }
-
   .sub-interest-table-container {
     display: flex;
     justify-content: center;

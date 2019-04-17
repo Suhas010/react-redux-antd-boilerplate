@@ -53,12 +53,12 @@ class DashBoardLayout extends Component {
         {this.getSideBarMenu(open)}
         <Layout>
           <Header style={{ background: '#f0f2f500', height: 18, padding: 0, display: 'flex', zIndex: 1 }}>
-            <Icon
+            {/* <Icon
               className="trigger"
               type={open ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggleMenu}
               style={{ paddingTop: 2 }}
-            />
+            /> */}
           </Header>
           <Content style={{
             margin: '-24px 0px', padding: '3px 20px', background: '#fff', minHeight: 280, flex: 'none'

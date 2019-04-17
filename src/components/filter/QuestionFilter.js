@@ -11,6 +11,8 @@ let defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
 defaultQuestionTypes.push({ id: 'all', name: 'All' });
 let defaultDifficultyLevels = JSON.parse(getItem('difficultyLevels'));
 defaultDifficultyLevels.push({ id: 'all', name: 'All' });
+const defaultStatus = [{ id: 'all', name: 'All' }, { id: 'new', name: 'New' }, { id: 'draft', name: 'Draft' }, { id: 'publish', name: 'Published' }, { id: 'rejected', name: 'Rejected' }, { id: 'deactivated', name: 'Deactivated' }];
+
 defaultDifficultyLevels = sort(defaultDifficultyLevels, 'name');
 defaultQuestionTypes = sort(defaultQuestionTypes, 'name');
 
@@ -19,6 +21,8 @@ const initialState = {
   questionType: 'all',
   difficultyLevels: defaultDifficultyLevels,
   difficultyLevel: 'all',
+  status: defaultStatus,
+  statusValue: 'all',
   filterChanged: false,
 };
 
@@ -48,7 +52,7 @@ class QuestionFilter extends Component {
   }
 
   render() {
-    const { questionTypes, questionType, difficultyLevels, difficultyLevel, filterChanged } = this.state;
+    const { questionTypes, questionType, difficultyLevels, difficultyLevel, status, statusValue, filterChanged } = this.state;
     return (
       <>
         <JSelect
@@ -65,6 +69,14 @@ class QuestionFilter extends Component {
           onChange={value => this.handleChange(value, 'difficultyLevel')}
           style={{ width: '100%' }}
           label="Difficulty Level"
+          labelClass="filter-label"
+        />
+        <JSelect
+          options={status}
+          value={statusValue}
+          onChange={value => this.handleChange(value, 'statusValue')}
+          style={{ width: '100%' }}
+          label="Status"
           labelClass="filter-label"
         />
         <Button

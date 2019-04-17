@@ -1,11 +1,13 @@
 .filter-container {
-  display: flex;
-  width: 100%;
-  margin: 15px;
-  justify-content: center;
+    display: flex;
+    // width: 96%;
+    background: #00000014;
+    margin: 15px 0px;
+    padding: 7px 0px;
+    justify-content: center;
   .labeled-input {
-    padding-right: 4px;
-    width: 10%;
+    padding-right: 11px;
+    width: 12%;
   }
   .ant-btn {
     margin-top: 17px;

@@ -11,15 +11,15 @@ class SimilarQuestionPanel extends React.Component {
     const { questions } = this.props;
     return (
       <div className="duplicate-container">
-        <span className="header">Similar Questions</span>
-        <Divider />
+        <span className="header" style={{ margin: '10px 0px' }}>Similar Questions</span>
+        {/* <Divider /> */}
         <>
           {questions.map(({ id, body }, index) => (
             <div
               key={id}
               className="q-container"
               role="button"
-              style={index%2===0 ? {background: '#f5d4a9'} : {background: '#ffe6c0'}}
+              style={index%2===0 ? {background: '#173F5F'} : {background: '#20639B'}}
               onClick={() => this.props.handleViewDetailsClick(id)}
             >
               <div className="question">{body}</div>
