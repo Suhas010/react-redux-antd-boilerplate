@@ -8,9 +8,6 @@ import { showSuccessNotification, showFailureNotification } from '../reusable/No
 class SubCategoriesTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
   }
 
   handleEditClick = (subCategoryId) => {

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 
 import SubCategoriesModel from '../../models/AppModel/SubCategories';
 import CategoryDetails from '../categories/CategoryDetails';
 import { getSubCategories } from '../../actions/appActions/AppConfigActions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
+import JButton from '../reusable/JButton';
 import SubCategoriesTable from './SubCategoriesTable';
 
 import './SubCategories.scss';
@@ -82,11 +83,11 @@ class SubCategoriesContainer extends Component {
   render = () => (
     <div className="categories-container">
       {this.getCategoryDetails()}
-      <div className="add-button" >
-        <Button icon="plus" onClick={this.handleAddSubCategoryClick} />
+      <div className="add-button">
+        <JButton icon="plus" onClick={this.handleAddSubCategoryClick} />
       </div>
-      <div className="back-button" >
-        <Button icon="left" onClick={this.handleCancelButtonClick} />
+      <div className="back-button">
+        <JButton icon="left" onClick={this.handleCancelButtonClick} />
       </div>
       <div className="header">Sub-Categories List</div>
       {this.getFilter()}

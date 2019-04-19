@@ -1,9 +1,10 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 
-import { Divider, Row, Col, Button } from 'antd';
-import { addInterest, updateInterest, getInterests } from '../../actions/appActions/InterestActions'
+import { Row, Col } from 'antd';
+import { addInterest, updateInterest } from '../../actions/appActions/InterestActions'
 import JInput from '../reusable/Input';
+import JButton from '../reusable/JButton';
 import routes from '../../utils/routes';
 import { showSuccessNotification } from '../reusable/Notifications';
 import './Interests.scss';
@@ -147,12 +148,18 @@ class InterestForm extends Component {
           <Col span={24}>
             <div className="actions">
               <div>
-                <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
-                  {this.getHeader()}
-                </Button>
+                <JButton
+                  onClick={this.handleSubmitClick}
+                  type="primary"
+                  loading={submitLoading}
+                  name={this.getHeader()}
+                />
               </div>
               <div style={{ paddingLeft: '3%' }}>
-                <Button onClick={this.handleCancel}>Cancel</Button>
+                <JButton
+                  onClick={this.handleCancel}
+                  name="Cancel"
+                />
               </div>
             </div>
           </Col>

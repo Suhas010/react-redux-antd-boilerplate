@@ -5,15 +5,16 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-  Form, Button, Row, Col,
+  Form, Row, Col,
 } from 'antd';
 import './Login.scss';
 import MobileNumber from '../reusable/PhoneInput';
+import JButton from '../reusable/JButton';
 import JInput from '../reusable/Input';
 import { getMobileNumber } from '../../utils/commonFunctions';
 import { login, verify } from '../../actions/appActions/UsersActions';
 import { showSuccessNotification, showFailureNotification, showWarningNotification } from '../reusable/Notifications';
-import { setItem, clearStorage } from '../helpers/localStorage';
+import { setItem } from '../helpers/localStorage';
 
 const initialState = {
   verifyOTP: false,
@@ -21,10 +22,10 @@ const initialState = {
   loginError: '',
   loadingOTP: false,
   otpError: '',
-  otp:'',
+  otp: '',
   number: '',
   dialCode: '',
-}
+};
 
 class WrappedLogin extends React.Component {
   constructor(props) {
@@ -136,19 +137,18 @@ class WrappedLogin extends React.Component {
         getNumber={this.setPhoneNumber}
       />
       {this.state.loginError && <span className="error">{this.state.loginError}</span>}
-      <Button
+      <JButton
         type="primary"
         size="small"
         loading={this.state.loadingLogin}
         onClick={this.handleLoginSubmit}
+        name="Login"
         style={{
           marginTop: '8%',
           height: 30,
           width: '100%',
         }}
-      >
-        Log In
-      </Button>
+      />
     </>
   );
 
@@ -168,33 +168,32 @@ class WrappedLogin extends React.Component {
       </Row>
       <Row>
         <Col span={11}>
-          <Button
+          <JButton
             type="primary"
             size="small"
             loading={this.state.loadingOTP}
             onClick={this.handleOtpSubmit}
+            name="Verify OTP"
             style={{
               marginTop: '15%',
               height: 30,
               width: '100%',
             }}
-          >
-            Verify OTP
-          </Button>
+          />
         </Col>
         <Col span={11} offset={2}>
-          <Button
+          <JButton
             type="default"
             size="small"
             onClick={() => this.setState(initialState)}
+            name="Cancel"
             style={{
               marginTop: '15%',
               height: 30,
               width: '100%',
             }}
-          >
-            Cancel
-          </Button>
+
+          />
         </Col>
       </Row>
     </>

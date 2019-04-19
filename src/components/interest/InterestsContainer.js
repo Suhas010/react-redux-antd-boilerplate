@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Skeleton, Tooltip } from 'antd';
-
+import { Skeleton, Tooltip } from 'antd';
 import InterestsModel from '../../models/AppModel/Interest';
 import { getInterests } from '../../actions/appActions/InterestActions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
+import JButton from '../reusable/JButton';
 import InterestsTable from './InterestsTable';
 import Filter from '../filter';
 import './Interests.scss';
@@ -75,9 +75,11 @@ class InterestContainer extends Component {
   render = () => (
     <div className="interest-container">
       <div className="add-button">
-        <Tooltip title="Add new interest">
-          <Button icon="plus" onClick={this.handleAddCategoryClick} />
-        </Tooltip>
+        <JButton
+          icon="plus"
+          tooltip="Add Interest."
+          onClick={this.handleAddCategoryClick} 
+        />
       </div>
       <div className="header">Interests List</div>
       <ErrorBoundary name="Interests Table">

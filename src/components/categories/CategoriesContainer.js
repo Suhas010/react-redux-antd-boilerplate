@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 
 import CategoriesModel from '../../models/AppModel/Categories';
 import { getCategories } from '../../actions/appActions/AppConfigActions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
+import JButton from '../reusable/JButton';
 import CategoriesTable from './CategoriesTable';
 import Filter from '../filter';
 import './Categories.scss';
@@ -74,7 +75,7 @@ class CategoriesContainer extends Component {
   render = () => (
     <div className="categories-container">
       <div className="add-button">
-        <Button icon="plus" onClick={this.handleAddCategoryClick} />
+        <JButton icon="plus" onClick={this.handleAddCategoryClick} />
       </div>
       <div className="header">Categories List</div>
       <ErrorBoundary name="Categories Table">

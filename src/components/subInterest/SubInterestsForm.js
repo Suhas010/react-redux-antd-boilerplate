@@ -1,12 +1,12 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 
-import { Divider, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { addSubInterest, updateSubInterest, getSubInterests } from '../../actions/appActions/SubInterest';
 import JInput from '../reusable/Input';
-import routes from '../../utils/routes';
 import { showSuccessNotification } from '../reusable/Notifications';
 import './SubInterests.scss';
+import JButton from '../reusable/JButton';
 
 
 class SubInterestForm extends Component {
@@ -148,12 +148,18 @@ class SubInterestForm extends Component {
           <Col span={24}>
             <div className="actions">
               <div>
-                <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
-                  {this.getHeader()}
-                </Button>
+                <JButton
+                  onClick={this.handleSubmitClick}
+                  type="primary"
+                  loading={submitLoading}
+                  name={this.getHeader()}
+                />
               </div>
               <div style={{ paddingLeft: '3%' }}>
-                <Button onClick={this.handleCancel}>Cancel</Button>
+                <JButton
+                  onClick={this.handleCancel}
+                  name="Cancel"
+                />
               </div>
             </div>
           </Col>

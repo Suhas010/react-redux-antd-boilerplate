@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {
-  Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Button, Skeleton,
+  Collapse, Row, Col, Icon, Empty, Tooltip, Tag, Divider, Modal, Skeleton,
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import QuestionDetailsModel from './QuestionDetailsModel';
@@ -14,6 +14,7 @@ import QuestionModel from '../../models/AppModel/Questions';
 import SimilarQuestionPanel from './SimilarQuestionPanel';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import Pagination from '../reusable/Pagination';
+import JButton from '../reusable/JButton';
 import routes from '../../utils/routes';
 import { changeQuestionState, getSimilarQuestions } from '../../actions/appActions/QuestionActions';
 import { showSuccessNotification, showFailureNotification } from '../reusable/Notifications';
@@ -124,14 +125,13 @@ class QuestionDetails extends Component {
   getAvailableTransitions = (id, transitions) => {
     return transitions.map((transition) => {
       return (
-        <Tooltip title={`Move question to ${transition.toLocaleLowerCase()} state.`} key={transition}>
-          <Button
-            onClick={() => this.handleTransition(id, transition)}
-            type="primary"
-          >
-            {`${this.getCamelCase(transition)} Question`}
-          </Button>
-        </Tooltip>
+        <JButton
+          onClick={() => this.handleTransition(id, transition)}
+          type="primary"
+          tooltip={`Move question to ${transition.toLocaleLowerCase()} state.`}
+          name={`${this.getCamelCase(transition)} Question`}
+          key={transition}
+        />
       );
     });
   }

@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import JInput from '../reusable/Input';
-import { Button, Icon } from 'antd';
+import JButton from '../reusable/JButton';
 
 class NameFilter extends Component {
   constructor(props) {
@@ -44,21 +44,20 @@ class NameFilter extends Component {
           labelClass="filter-label"
           label="Name"
         />
-        <Button
+        <JButton
           type="primary"
           onClick={this.applyFilter}
           disabled={this.state.filterChanged}
-        >
-          Search
-        </Button>
-        <Button
+          name="Search"
+          icon="search"
+        />
+        <JButton
           type="primary"
           className="reset-filter"
           onClick={this.resetFilter}
-        >
-          <Icon type="undo" />
-            Clear
-        </Button>
+          name="Clear"
+          icon="undo"
+        />
       </>
     );
   }

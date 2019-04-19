@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { Button, Icon, Select } from 'antd';
-
+import { Select } from 'antd';
 import JSelect from '../reusable/Select';
+import JButton from '../reusable/JButton';
 import JMSelect from '../reusable/MultipleSelect';
 
 import { getItem } from '../helpers/localStorage';
@@ -64,7 +64,6 @@ class QuestionFilter extends Component {
   }
 
   handleChange = (value, state) => {
-    console.log(value, state);
     this.setState({
       [state]: value,
       filterChanged: false,
@@ -122,21 +121,20 @@ class QuestionFilter extends Component {
           label="Status"
           labelClass="filter-label"
         />
-        <Button
+        <JButton
           type="primary"
           onClick={this.applyFilter}
           disabled={filterChanged}
-        >
-          Search
-        </Button>
-        <Button
+          name="Search"
+          icon="search"
+        />
+        <JButton
           type="primary"
           className="reset-filter"
           onClick={this.resetFilter}
-        >
-          <Icon type="undo" />
-          Clear
-        </Button>
+          name="Clear"
+          icon="undo"
+        />
       </>
     );
   }

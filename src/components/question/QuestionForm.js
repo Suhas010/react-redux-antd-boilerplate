@@ -3,13 +3,14 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
 import React from 'react';
-import { Button, Row, Col, Divider, Select, DatePicker, Skeleton, Icon, Tag, Modal, Empty } from 'antd';
+import { Row, Col, Divider, Select, DatePicker, Skeleton, Icon, Modal, Empty } from 'antd';
 import moment from 'moment';
 import { showSuccessNotification, showWarningNotification } from '../reusable/Notifications';
 import JSelect from '../reusable/Select';
 import JTextArea from '../reusable/TextArea';
 import { CONFIG, DEFAULT_DATE } from '../targetGroup/Constants';
 import JInput from '../reusable/Input';
+import JButton from '../reusable/JButton';
 import JSwitch from '../reusable/Switch';
 import TargetGroupDetails from '../targetGroup/TargetGroupDetails';
 import './Question.scss';
@@ -238,7 +239,7 @@ class QuestionForm extends React.Component {
               labelClass="j-label"
               suffix={
                 index > 1 ? (
-                  <Button
+                  <JButton
                     icon="minus"
                     className="remove-button"
                     onClick={() => this.handleRemoveOption(index)}
@@ -256,7 +257,7 @@ class QuestionForm extends React.Component {
     <>
       {this.getOptions()}
       <Col span={1} style={{ marginTop: 26, marginLeft: 6 }}>
-        <Button icon="plus" onClick={this.addOption} />
+        <JButton icon="plus" onClick={this.addOption} />
       </Col>
     </>
   );
@@ -383,12 +384,11 @@ class QuestionForm extends React.Component {
   }
 
   renderCloseButton = () => (
-    <Button
+    <JButton
       type="primary"
       onClick={()=> this.setState({ openDatePicker: false })}
-    >
-      Ok
-    </Button>
+      name="Ok"
+    />
   );
 
 
@@ -583,20 +583,18 @@ class QuestionForm extends React.Component {
       </div>
       <div className="action">
         <div>
-          <Button
+          <JButton
             onClick={this.handleFormSubmit}
             loading={submitLoading}
             type="primary"
-          >
-            {this.getHeader()}
-          </Button>
+            name={this.getHeader()}
+          />
         </div>
         <div>
-          <Button
+          <JButton
             onClick={this.handleCancelClick}
-          >
-            Cancel
-          </Button>
+            name="Cancel"
+          />
         </div>
       </div>
     </>

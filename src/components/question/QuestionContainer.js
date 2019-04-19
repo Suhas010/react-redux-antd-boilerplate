@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Button, Tooltip, BackTop, Skeleton } from 'antd';
+import { Tooltip, BackTop, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import QuestionModel from '../../models/AppModel/Questions';
 import { getQuestions } from '../../actions/appActions/QuestionActions';
@@ -10,6 +10,7 @@ import QuestionDetails from './QuestionDetails';
 import routes from '../../utils/routes';
 import Filter from '../filter/index';
 import { FILTERS } from '../../utils/constant';
+import JButton from '../reusable/JButton';
 import './Question.scss';
 
 const defaultFilter = {
@@ -74,7 +75,7 @@ class QuestionContainer extends Component {
     <div className="buttons">
       <div>
         <Tooltip title="Target Group">
-          <Button
+          <JButton
             onClick={this.handleBackClick}
             icon="arrow-left"
           />
@@ -82,7 +83,7 @@ class QuestionContainer extends Component {
       </div>
       <div>
         <Tooltip title="Add question">
-          <Button
+          <JButton
             onClick={this.handleAddQuestionClick}
             icon="plus"
           />

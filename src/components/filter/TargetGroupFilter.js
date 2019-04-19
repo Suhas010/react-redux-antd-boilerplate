@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { Button, Icon } from 'antd';
 import Categories from '../reusable/Categories';
 import JSelect from '../reusable/Select';
 import JInput from '../reusable/Input';
 import { getCategories, getSubCategories } from '../../actions/appActions/AppConfigActions';
 import { getConfigFor, sort } from '../../utils/commonFunctions';
+import JButton from '../reusable/JButton';
 
 const defaultCategory = { id: 'all', name: 'All' };
 let GENDERS = getConfigFor('genders');
@@ -191,21 +191,21 @@ class TargetGroupFilter extends Component {
         type="number"
         onChange={value => this.handleAgeChange('maxAge', value)}
       />
-      <Button
+      <JButton
         type="primary"
         onClick={this.applyFilter}
         disabled={this.state.filterChanged}
-      >
-        Search
-      </Button>
-      <Button
+        name="Search"
+        icon="search"
+        tooltip="Search"
+      />
+      <JButton
         type="primary"
         className="reset-filter"
         onClick={this.resetFilter}
-      >
-        <Icon type="undo" />
-          Clear
-      </Button>
+        name="Clear"
+        icon="undo"
+      />
     </>
 
   );

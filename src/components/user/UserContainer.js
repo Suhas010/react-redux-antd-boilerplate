@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 
 import UserModel from '../../models/AppModel/UserModel';
-import { getUsers } from '../../actions/appActions/UsersActions';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import UsersTable from './UserTable';
 import './User.scss';
 import routes from '../../utils/routes';
+import JButton from '../reusable/JButton';
 
 class UserContainer extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class UserContainer extends Component {
   render = () => (
     <div className="users-container">
       <div className="add-button" >
-        <Button icon="plus" onClick={this.handleAddUserClick} />
+        <JButton icon="plus" onClick={this.handleAddUserClick} />
       </div>
       <div className="header">Users List</div>
       <ErrorBoundary name="users Table">

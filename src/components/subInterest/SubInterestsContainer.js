@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Skeleton, Tooltip } from 'antd';
+import { Skeleton, Tooltip } from 'antd';
 
 import SubInterestsModel from '../../models/AppModel/SubInterest';
 import { getSubInterests } from '../../actions/appActions/SubInterest';
@@ -12,6 +12,7 @@ import Filter from '../filter';
 import './SubInterests.scss';
 import { FILTERS } from '../../utils/constant';
 import routes from '../../utils/routes';
+import JButton from '../reusable/JButton';
 
 class InterestContainer extends Component {
   constructor(props) {
@@ -85,12 +86,12 @@ class InterestContainer extends Component {
       {this.getInterestDetails()}
       <div className="add-button">
         <Tooltip title="Add New Sub-Interest">
-          <Button icon="plus" onClick={this.handleAddCategoryClick} />
+          <JButton icon="plus" onClick={this.handleAddCategoryClick} />
         </Tooltip>
       </div>
       <div className="back-button">
         <Tooltip title="Back to Interest List">
-          <Button icon="left" onClick={this.handleCancelButtonClick} />
+          <JButton icon="left" onClick={this.handleCancelButtonClick} />
         </Tooltip>
       </div>
       <div className="header">Sub Interests List</div>

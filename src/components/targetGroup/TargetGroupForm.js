@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Row, Col, Button, Icon, Skeleton, Divider } from 'antd';
+import { Row, Col, Icon, Skeleton, Divider } from 'antd';
 import { connect } from 'react-redux';
 import { CONFIG } from './Constants';
 import JInput from '../reusable/Input';
@@ -18,6 +18,7 @@ import { getCategories, getSubCategories } from '../../actions/appActions/AppCon
 import routes from '../../utils/routes';
 import { getConfigFor, getIDOf } from '../../utils/commonFunctions';
 import { showWarningNotification, showSuccessNotification } from '../reusable/Notifications';
+import JButton from '../reusable/JButton';
 
 const MAX_AGE = 100;
 const MIN_AGE = 0;
@@ -421,12 +422,18 @@ class TargetGroupForm extends Component {
           <Col span={24}>
             <div className="actions">
               <div>
-                <Button onClick={this.handleSubmitClick} type="primary" loading={submitLoading}>
-                  {this.getHeader()}
-                </Button>
+                <JButton
+                  onClick={this.handleSubmitClick}
+                  type="primary"
+                  loading={submitLoading}
+                  name={this.getHeader()}
+                />
               </div>
               <div>
-                <Button onClick={this.handleCancel}>Cancel</Button>
+                <JButton
+                  onClick={this.handleCancel}
+                  name="Cancel"
+                />
               </div>
             </div>
           </Col>

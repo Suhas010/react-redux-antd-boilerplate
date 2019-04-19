@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import MobileNumber from '../reusable/PhoneInput';
 import routes from '../../utils/routes';
 import JSelect from '../reusable/Select';
 import { getConfigFor, getMobileNumber } from '../../utils/commonFunctions';
 import { showFailureNotification, showSuccessNotification } from '../reusable/Notifications';
 import { addUser } from '../../actions/appActions/UsersActions';
+import JButton from '../reusable/JButton';
 
 class User extends React.Component {
   constructor(props) {
@@ -111,23 +112,21 @@ class User extends React.Component {
         </Row>
         <Row>
           <Col lg={{ span: 6, offset: 5 }}>
-            <Button
+            <JButton
               type="primary"
               style={{ width: '-webkit-fill-available', marginTop: 20 }}
               onClick={this.handleAddUser}
               loading={this.state.loading}
-            >
-              {`${this.getHeader()} User`}
-            </Button>
+              name={`${this.getHeader()} User`}
+            />
           </Col>
           <Col lg={{ span:6, offset:1 }}>
-            <Button
+            <JButton
               type="default"
               style={{ width: '-webkit-fill-available', marginTop: 20 }}
               onClick={() => this.props.history.push(routes.usersList)}
-            >
-              Cancel
-            </Button>
+              name="Cancel"
+            />
           </Col>
         </Row>
       </>

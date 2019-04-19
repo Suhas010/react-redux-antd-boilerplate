@@ -1,18 +1,18 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Button } from 'antd';
 import propTypes from 'prop-types';
 import TableWrapper from '../table/TableWrapper';
 import ErrorBoundary from '../reusable/ErrorBoundary';
 import { TG_HEADER } from './Constants';
 import Pagination from '../reusable/Pagination';
+import JButton from '../reusable/JButton';
 
 const TargetGroup = ({
   data, handleAddClick, handleEditClick, handleViewClick, onPageChange, totalRecords, pageSize, currentPage,
 }) => (
   <>
     <div className="add-button">
-      <Button icon="plus" onClick={handleAddClick} />
+      <JButton icon="plus" onClick={handleAddClick} />
     </div>
     <ErrorBoundary name="Target Group List">
       <TableWrapper
