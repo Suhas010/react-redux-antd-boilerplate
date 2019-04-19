@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-undef */
 /* eslint-disable react/forbid-prop-types */
@@ -16,15 +17,15 @@ import { getTargetGroups } from '../../actions/appActions/TargetGroupAction';
 import { FILTERS } from '../../utils/constant';
 import './TargetGroup.scss';
 
-
-const defaultFilter = '?max_per_page=15';
+const MAX_PER_PAGE = 15;
+const defaultFilter = `?max_per_page=${MAX_PER_PAGE}`;
 class TargetGroupContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       currentPage: 1,
-      maxPerPage: 15,
+      maxPerPage: MAX_PER_PAGE,
       totalRecords: 0,
       filter: defaultFilter,
     };
@@ -76,6 +77,27 @@ class TargetGroupContainer extends Component {
     history.push(`/admin/dashboard/${id}/questions`);
   }
 
+  handleFilterPaginationChange(filter, currentPage) {
+    TargetGroupModel.deleteAll();
+    this.getTargetGroupsAPI(filter.concat(`&&page_number=${currentPage}`));
+  }
+
+  applyFilter = (filter = '') => {
+    this.setState({
+      filter,
+    });
+    filter = defaultFilter.concat(filter);
+    this.handleFilterPaginationChange(filter, this.state.currentPage);
+  }
+
+  onPageChange = (currentPage) => {
+    console.log(currentPage);
+    this.handleFilterPaginationChange(this.state.filter, currentPage);
+    this.setState({
+      currentPage,
+    });
+  }
+
   getTargetGroups = () => {
     const { targetGroup } = this.props;
     const { totalRecords, currentPage, maxPerPage } = this.state;
@@ -94,18 +116,6 @@ class TargetGroupContainer extends Component {
         onPageChange={this.onPageChange}
       />
     );
-  }
-
-  applyFilter = (filter = '') => {
-    TargetGroupModel.deleteAll();
-    filter = defaultFilter.concat(filter);
-    this.getTargetGroupsAPI(filter.concat(`&&page_number=${this.state.currentPage}`));
-  }
-
-  onPageChange = (currentPage) => {
-    this.setState({
-      currentPage,
-    }, this.applyFilter());
   }
 
   getFilter = () => (

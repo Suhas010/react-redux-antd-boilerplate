@@ -1,29 +1,32 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Select } from 'antd';
 
 import JSelect from '../reusable/Select';
+import JMSelect from '../reusable/MultipleSelect';
+
 import { getItem } from '../helpers/localStorage';
 import { sort } from '../../utils/commonFunctions';
 
-let defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
-defaultQuestionTypes.push({ id: 'all', name: 'All' });
+const defaultQuestionTypes = JSON.parse(getItem('questionTypes'));
+// defaultQuestionTypes.push({ id: 'all', name: 'All' });
 let defaultDifficultyLevels = JSON.parse(getItem('difficultyLevels'));
-defaultDifficultyLevels.push({ id: 'all', name: 'All' });
-const defaultStatus = [{ id: 'all', name: 'All' }, { id: 'new', name: 'New' }, { id: 'draft', name: 'Draft' }, { id: 'publish', name: 'Published' }, { id: 'rejected', name: 'Rejected' }, { id: 'deactivated', name: 'Deactivated' }];
+defaultDifficultyLevels.push({ value: 'all', name: 'All' });
+const defaultStatus = [{ value: 'all', name: 'All' }, { id: 'new', name: 'New' }, { id: 'draft', name: 'Draft' }, { id: 'published', name: 'Published' }, { id: 'rejected', name: 'Rejected' }, { id: 'deactivated', name: 'Deactivated' }];
 
 defaultDifficultyLevels = sort(defaultDifficultyLevels, 'name');
-defaultQuestionTypes = sort(defaultQuestionTypes, 'name');
+// defaultQuestionTypes = sort(defaultQuestionTypes, 'name');
 
 const initialState = {
   questionTypes: defaultQuestionTypes,
-  questionType: 'all',
+  questionType: [],
   difficultyLevels: defaultDifficultyLevels,
   difficultyLevel: 'all',
   status: defaultStatus,
-  statusValue: 'all',
+  statusValue: 'draft',
   filterChanged: false,
+  tags: [],
 };
 
 class QuestionFilter extends Component {
@@ -36,7 +39,23 @@ class QuestionFilter extends Component {
     this.setState({
       filterChanged: true,
     });
-    this.props.applyFilter(this.state);
+    const { tags, difficultyLevel, statusValue, questionType } = this.state;
+    const type = [];
+    if (questionType || questionType.length > 0) {
+      questionType.map((qType) => {
+        type.push(defaultQuestionTypes[defaultQuestionTypes.findIndex(type => type.value === qType)].name);
+      });
+    }
+    const filter = {};
+    if (type) {
+      filter.types = type;
+    }
+    // if difficulty level and status value is set all do not add it in filter
+    if (tags || tags.length > 0) filter.tags = tags;
+    if (difficultyLevel !== 'all') filter.difficulty_level = defaultDifficultyLevels[defaultDifficultyLevels.findIndex(difficulty => difficulty.value === difficultyLevel)].name;
+    if (statusValue !== 'all') filter.status = statusValue;
+
+    this.props.applyFilter(filter);
   }
 
   resetFilter = () => {
@@ -45,24 +64,48 @@ class QuestionFilter extends Component {
   }
 
   handleChange = (value, state) => {
+    console.log(value, state);
     this.setState({
       [state]: value,
       filterChanged: false,
     });
   }
 
+  getSelectedTag = (options) => {
+    if (!options || options.length === 0) {
+      return [];
+    }
+    return options.map((item) => {
+      if (item) return <Select.Option key={item}>{item}</Select.Option>;
+    });
+  };
+
   render() {
-    const { questionTypes, questionType, difficultyLevels, difficultyLevel, status, statusValue, filterChanged } = this.state;
+    const { questionTypes, questionType, tags, difficultyLevels, difficultyLevel, status, statusValue, filterChanged } = this.state;
     return (
       <>
-        <JSelect
+        <JMSelect
+          mode="multiple"
           options={questionTypes}
           value={questionType}
           onChange={value => this.handleChange(value, 'questionType')}
           style={{ width: '100%' }}
           label="Question Type"
           labelClass="filter-label"
+          placeholder="All"
         />
+        <div className="tags">
+        <header className="filter-label">Tags</header>
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder="Tags Mode"
+            onChange={value => this.handleChange(value, 'tags')}
+            defaultValue={tags}
+          >
+            {this.getSelectedTag(tags)}
+          </Select>
+        </div>
         <JSelect
           options={difficultyLevels}
           value={difficultyLevel}

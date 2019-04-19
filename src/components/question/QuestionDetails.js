@@ -59,7 +59,7 @@ class QuestionDetails extends Component {
     });
     const { props: { body } } = QuestionModel.get(questionID);
     const { match: { params } } = this.props;
-    getSimilarQuestions(params.targetID, { filters: { body } })
+    getSimilarQuestions(params.targetID, { filters: { body, id: questionID } })
       .then((payload) => {
         this.setState({
           similarLoading: false,
@@ -128,10 +128,6 @@ class QuestionDetails extends Component {
           <Button
             onClick={() => this.handleTransition(id, transition)}
             type="primary"
-            // style={{
-            //   color: 'white',
-            //   background: this.getTransitionColor(transition),
-            // }}
           >
             {`${this.getCamelCase(transition)} Question`}
           </Button>
@@ -191,27 +187,11 @@ class QuestionDetails extends Component {
                 {this.getTags(tags)}
               </div>
             )}
-
           </ErrorBoundary>
         </Col>
       </Row>
     </div>
   );
-
-  getTransitionColor = (status) => {
-    switch (status) {
-    case 'NEW': return '#108ee9';
-    case 'SUBMIT': return '#3a8a61';
-    case 'DRAFT': return '#2db7f5';
-    case 'PUBLISH':
-    case 'PUBLISHED': return '#87d068';
-    case 'REJECT':
-    case 'REJECTED': return '#ffbf00';
-    case 'DEACTIVATE':
-    case 'DEACTIVATED': return '#ff0202';
-    default: return '#108ee9';
-    }
-  }
 
   getCamelCase = (string) => {
     if (!string) return 0;
@@ -262,7 +242,6 @@ class QuestionDetails extends Component {
     });
   }
 
-
   showSimilarModal = (id) => {
     this.setState({
       showSimilarModal: true,
@@ -271,7 +250,7 @@ class QuestionDetails extends Component {
   }
 
   // Shows similar question of particular question on modal.
-  getModel = () => {
+  getSimilarQuestionsModal = () => {
     const { showSimilarModal, selectedSimilarQuestion, selectedSimilarQuestionBody, similarQuestions } = this.state;
     if (showSimilarModal) {
       return (
@@ -301,7 +280,6 @@ class QuestionDetails extends Component {
       selectedSimilarQuestionBody: clickedID ? QuestionModel.get(clickedID).props.body : '',
     });
     if (clickedID && !this.props.isSimilar) {
-      console.log();
       this.getSimilarQuestionsAPI(clickedID);
     }
   }
@@ -317,7 +295,7 @@ class QuestionDetails extends Component {
         extra={!isSimilar && this.getExtras(id, status)}
       >
         <div className="question-body">
-          {!isSimilar && this.getModel()}
+          {!isSimilar && this.getSimilarQuestionsModal()}
           <Row>
             {this.getPrimaryInformation(id, type, isSimilar, rest)}
           </Row>

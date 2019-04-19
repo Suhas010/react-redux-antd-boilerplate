@@ -12,21 +12,38 @@ import Filter from '../filter/index';
 import { FILTERS } from '../../utils/constant';
 import './Question.scss';
 
+const defaultFilter = {
+  status: 'Draft',
+};
+const MAX_PER_PAGE = 1;
+const CURRENT_PAGE = 1;
 
+const defaultPagination = `?max_per_page=${MAX_PER_PAGE}&&page_number${CURRENT_PAGE}`;
 class QuestionContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addQuestion: false,
       questionLoading: false,
+      filter: defaultFilter,
+      maxPerPage: MAX_PER_PAGE,
+      currentPage: CURRENT_PAGE,
+      totalPage: 0,
     };
   }
 
   componentWillMount() {
+    this.getQuestionsAPI(this.state.filter);
+  }
+
+  componentWillUnmount() {
+    QuestionModel.deleteAll();
+  }
+
+  getQuestionsAPI(filter, pagination = defaultPagination) {
     const { match } = this.props;
     this.setLoader('questionLoading', true);
     QuestionModel.deleteAll();
-    getQuestions(match.params.targetID, {})
+    getQuestions(match.params.targetID, { filter }, defaultPagination)
       .then((payload) => {
         this.setLoader('questionLoading', false);
         QuestionModel.saveAll(payload.questions.map(question => new QuestionModel(question)));
@@ -35,10 +52,6 @@ class QuestionContainer extends Component {
         this.setLoader('questionLoading', false);
         // console.log(e);
       });
-  }
-
-  componentWillUnmount() {
-    QuestionModel.deleteAll();
   }
 
   setLoader = (type, value) => {
@@ -88,20 +101,6 @@ class QuestionContainer extends Component {
 
   getAffix = () => <TargetGroupDetails />
 
-  getQuestions = () => (
-    <div className="questions">
-      {/* <div className="header">
-        Questions List
-      </div> */}
-      {this.getFilter()}
-      {this.getQuestionList()}
-    </div>
-  );
-
-  applyFilter = (filter = '') => {
-    console.log('Question Filter', filter);
-  }
-
   getFilter = () => (
     <Filter
       name={FILTERS.QUESTIONS}
@@ -109,6 +108,20 @@ class QuestionContainer extends Component {
       clearFilter={() => this.applyFilter()}
     />
   );
+
+  getQuestions = () => (
+    <div className="questions">
+      {/* <div className="header">
+        Questions List
+      </div> */}
+      {this.getQuestionList()}
+    </div>
+  );
+
+  applyFilter = (filter = defaultFilter) => {
+    console.log(filter);
+    this.getQuestionsAPI(filter);
+  }
 
   render() {
     const { questionLoading } = this.state;
@@ -120,6 +133,7 @@ class QuestionContainer extends Component {
         <BackTop />
         {this.getAffix()}
         {this.getAddBackButtons()}
+        {this.getFilter()}
         {!questionLoading && this.getQuestions()}
         {questionLoading && <Skeleton active paragraph={{ row: 4 }} />}
       </div>

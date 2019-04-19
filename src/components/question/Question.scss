@@ -59,6 +59,8 @@
     }
     .ant-collapse-header{
       padding: 5px 15px 3px 39px !important;
+      display: flex;
+      justify-content: space-between;
     }
     .ant-collapse-content-box {
       background-color: #f0f2f5;
@@ -164,7 +166,7 @@
     }
   }
   .q-container:hover {
-    color: #060202;
+    color: #fffbfc;
     font-weight: 500;
     cursor: pointer;
     text-decoration: underline;

@@ -24,14 +24,12 @@ const TargetGroup = ({
       />
     </ErrorBoundary>
     <ErrorBoundary name="Pagination">
-      <div className="pagination">
-        <Pagination
-          currentPage={currentPage}
-          totalRecords={totalRecords}
-          maxPerPage={pageSize}
-          onPageChange={onPageChange}
-        />
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalRecords={totalRecords}
+        maxPerPage={pageSize}
+        onPageChange={onPageChange}
+      />
     </ErrorBoundary>
   </>
 );

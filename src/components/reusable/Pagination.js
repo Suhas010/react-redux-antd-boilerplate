@@ -6,12 +6,14 @@ const Pagination = ({
   totalRecords, maxPerPage, onPageChange, currentPage,
 }) => {
   return (
-    <Page
-      defaultCurrent={currentPage}
-      pageSize={maxPerPage || 1}
-      total={totalRecords}
-      onChange={page => onPageChange(page)}
-    />
+    <div className="pagination">
+      <Page
+        defaultCurrent={currentPage}
+        pageSize={maxPerPage || 1}
+        total={totalRecords}
+        onChange={page => onPageChange(page)}
+      />
+    </div>
   );
 };
 
