@@ -20,17 +20,3 @@ export const HTTP_STANDARD_ERRORS = {
   503: 'Service unavailable',
   504: 'Gateway timeout',
 };
-
-export const FILTERS = {
-  TARGET_GROUP: 'target_group',
-  QUESTIONS: 'questions',
-  CATEGORIES: 'categories',
-  SUBCATEGORIES: 'subcategories',
-};
-
-export const ROLES = {
-  EndUser: 1,
-  DataEntry: 2,
-  Moderator: 4,
-  Admin: 8,
-};
