@@ -3,38 +3,31 @@ import routes from '../../utils/routes';
 const NAV_MENU = [
   {
     key: 1,
-    name: 'Search',
+    name: 'Menu 1',
     path: routes.dashboard,
     icon: 'file-search',
     permission: ['2', '4', '8'],
   },
   {
     key: 1,
-    name: 'Questions',
+    name: 'Menu 2',
     path: routes.dashboard,
     icon: 'fund',
     permission: ['2', '4', '8'],
   },
   {
     key: 2,
-    name: 'Categories',
+    name: 'Menu 3',
     path: routes.dashboard,
     icon: 'setting',
     permission: ['2', '4', '8'],
   },
   {
     key: 2,
-    name: 'Interest',
+    name: 'Menu 4',
     path: routes.dashboard,
     icon: 'heart',
     permission: ['4', '8'],
-  },
-  {
-    key: 3,
-    name: ' New User',
-    path: routes.dashboard,
-    icon: 'plus',
-    permission: ['8'],
   },
   {
     key: 4,
