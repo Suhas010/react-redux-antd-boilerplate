@@ -5,15 +5,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-  Form, Row, Col,
+  Form,
 } from 'antd';
 import './Login.scss';
 import MobileNumber from '../reusable/PhoneInput';
 import Button from '../reusable/JButton';
-import JInput from '../reusable/Input';
 import { getMobileNumber } from '../../utils/commonFunctions';
-import { showSuccessNotification, showFailureNotification, showWarningNotification } from '../reusable/Notifications';
-import { setItem } from '../helpers/localStorage';
+import 'react-phone-input-2/dist/style.css'
 
 const initialState = {
   verifyOTP: false,
