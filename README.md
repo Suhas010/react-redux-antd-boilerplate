@@ -1,4 +1,4 @@
-# react-redux-and-boilerplate
+# react-redux-antd-boilerplate
 This is a open sourced boiler plate code repo for react, ant and redux stack.
 
 ## Stack includes
