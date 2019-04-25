@@ -10,7 +10,7 @@ This is a open sourced boiler plate code repo for react, ant and redux stack.
 
 ## Repo consist
   * React and basic layout with react-router 4
-  * Redux intigration with 
+  * Redux intigration with ORM like implimentation
   * ant-design with side bar navigation and basic resusable components in resuable folder
   * Request handler and error boundaries in helper folder
   * ant-design notification and common local storage operations in helper folder
