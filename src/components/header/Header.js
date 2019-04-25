@@ -16,7 +16,7 @@ const HeaderContainer = styled.div`
 
 const Header = () => (
   <HeaderContainer>
-    <span>Question Bank</span>
+    <span>App Header</span>
   </HeaderContainer>
 );
 

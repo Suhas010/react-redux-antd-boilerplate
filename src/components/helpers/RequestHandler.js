@@ -3,14 +3,11 @@ import { showFailureNotification, showNotification } from '../reusable/Notificat
 import { getItem, setItem } from './localStorage';
 import routes from '../../utils/routes';
 
-const QUESTION_BANK_API = process.env.REACT_APP_QUESTION_BANK_API ? process.env.REACT_APP_QUESTION_BANK_API : `${window.location.origin}/questionbank`;
-const PROFILES_API = process.env.REACT_APP_PROFILES_API ? process.env.REACT_APP_PROFILES_API : `${window.location.origin}/profiles`;
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL ? process.env.REACT_APP_BASE_URL : `${window.location.origin}/questionbank`;
 
-// const QUESTION_BANK_API = 'http://af293494236ee11e9989602fe773b974-224893321.us-east-1.elb.amazonaws.com/questionbank';
 export default class RequestHandler {
-
   static isAuthenticated() {
-    if (!getItem('token')) {
+    if (true) {
       return false;
     }
     return true;
@@ -60,7 +57,7 @@ export default class RequestHandler {
       });
     }
     return new Promise((resolve, reject) => {
-      fetch(`${QUESTION_BANK_API}${action}${params}`, RequestHandler.getHeader('get'))
+      fetch(`${REACT_APP_BASE_URL}${action}${params}`, RequestHandler.getHeader('get'))
         .then(response => ({ promise: response.json(), status: response.status }))
         .then(({ promise, status }) => {
           promise.then((payload) => {
@@ -85,7 +82,7 @@ export default class RequestHandler {
       });
     }
     return new Promise((resolve, reject) => {
-      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('post', data, isFile))
+      fetch(`${REACT_APP_BASE_URL}${action}`, RequestHandler.getHeader('post', data, isFile))
         .then(response => ({ promise: response.json(), status: response.status }))
         .then(({ promise, status }) => {
           promise.then((payload) => {
@@ -110,7 +107,7 @@ export default class RequestHandler {
       });
     }
     return new Promise((resolve, reject) => {
-      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('put', data, isFile))
+      fetch(`${REACT_APP_BASE_URL}${action}`, RequestHandler.getHeader('put', data, isFile))
         .then(response => ({ promise: response.json(), status: response.status }))
         .then(({ promise, status }) => {
           promise.then((payload) => {
@@ -134,7 +131,7 @@ export default class RequestHandler {
       });
     }
     return new Promise((resolve, reject) => {
-      fetch(`${QUESTION_BANK_API}${action}`, RequestHandler.getHeader('delete', {}))
+      fetch(`${REACT_APP_BASE_URL}${action}`, RequestHandler.getHeader('delete', {}))
         .then(response => ({ promise: response.json(), status: response.status }))
         .then(({ promise, status }) => {
           promise.then((payload) => {
@@ -151,119 +148,7 @@ export default class RequestHandler {
     });
   }
 
-  static profilePost(action, data) {
-    const header = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.profilemgr.v1',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    };
-    if (!action.includes('/login')) {
-      header.headers.Authorization = getItem('token');
-    }
-    return new Promise((resolve, reject) => {
-      fetch(`${PROFILES_API}${action}`, header)
-        .then(response => ({ promise: response.json(), status: response.status }))
-        .then(({ promise, status }) => {
-          promise.then((payload) => {
-            resolve(RequestHandler.isSuccess(payload, status));
-          })
-            .catch((innerError) => {
-              reject(innerError);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  }
-
-  static profileGet(action, data) {
-    const header = {
-      method: 'GET',
-      headers: {
-        Accept: 'application/vnd.profilemgr.v1',
-        'Content-Type': 'application/json',
-      },
-    };
-    if (!action.includes('/login') && !action.includes('/config')) {
-      header.headers.Authorization = getItem('token');
-    }
-    return new Promise((resolve, reject) => {
-      fetch(`${PROFILES_API}${action}`, header)
-        .then(response => ({ promise: response.json(), status: response.status }))
-        .then(({ promise, status }) => {
-          promise.then((payload) => {
-            resolve(RequestHandler.isSuccess(payload, status));
-          })
-            .catch((innerError) => {
-              reject(innerError);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  }
-
-  static profilePut(action, data) {
-    const header = {
-      method: 'Put',
-      headers: {
-        Accept: 'application/vnd.profilemgr.v1',
-        'Content-Type': 'application/json',
-        Authorization: getItem('token'),
-      },
-      body: JSON.stringify(data),
-    };
-    return new Promise((resolve, reject) => {
-      fetch(`${PROFILES_API}${action}`, header)
-        .then(response => ({ promise: response.json(), status: response.status }))
-        .then(({ promise, status }) => {
-          promise.then((payload) => {
-            resolve(RequestHandler.isSuccess(payload, status));
-          })
-            .catch((innerError) => {
-              reject(innerError);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  }
-
-  static profileDelete(action) {
-    const header = {
-      method: 'Delete',
-      headers: {
-        Accept: 'application/vnd.profilemgr.v1',
-        'Content-Type': 'application/json',
-        Authorization: getItem('token'),
-      },
-    };
-    return new Promise((resolve, reject) => {
-      fetch(`${PROFILES_API}${action}`, header)
-        .then(response => ({ promise: response.json(), status: response.status }))
-        .then(({ promise, status }) => {
-          promise.then((payload) => {
-            resolve(RequestHandler.isSuccess(payload, status));
-          })
-            .catch((innerError) => {
-              reject(innerError);
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  }
+  // File handlers
 
   static fileUploadPost(action, payload) {
     if (!RequestHandler.isAuthenticated()) {
@@ -282,4 +167,5 @@ export default class RequestHandler {
     }
     return RequestHandler.put(action, payload, true);
   }
+
 }
