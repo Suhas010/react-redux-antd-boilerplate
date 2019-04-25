@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Layout, Icon } from 'antd';
+import { Layout } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Sidebar from '../sidebar/Sidebar';
 import MainContent from '../mainContent/MainContent';
-import { getConfig, getProfiles } from '../../actions/appActions/AppConfigActions';
 import { setItem } from '../helpers/localStorage';
 import './DashBoardLayout.scss';
 
@@ -16,23 +15,6 @@ class DashBoardLayout extends Component {
     this.state = {
       open: false,
     };
-  }
-
-  componentWillMount() {
-    getConfig().then((data) => {
-      const { difficulty_levels, question_types, genders } = data;
-      setItem('difficultyLevels', JSON.stringify(difficulty_levels));
-      setItem('questionTypes', JSON.stringify(question_types));
-      setItem('genders', JSON.stringify(genders));
-    }).catch((error) => {
-      console.error(error);
-    });
-
-    getProfiles().then((data) => {
-      setItem('profiles', JSON.stringify(data.profiles));
-    }).catch((error) => {
-      console.error(error);
-    });
   }
 
   toggleMenu = () => {
