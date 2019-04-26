@@ -16,10 +16,10 @@ This is a open sourced boiler plate code repo for react, ant and redux stack.
   * ant-design notification and common local storage operations in helper folder
   
  `Note:`<br/>
- `1. This boilerplate/template is meant for basic stack only, without any complexities like node, docker, any UI libraries other than <a href='https://ant.design/' target='_blank'>antd</a> etc`<br/>
+ `1. This boilerplate/template is meant for basic stack only, without any complexities like node, docker, any UI libraries other than` <a href='https://ant.design/' target='_blank'>antd</a>` etc`<br/>
  `2. This is open-source template which is combination of simplified UI components(Button, Input, Toggle, etc...).`<br/>
 `3. If you are beginier with react, then we recommend not to use this boilerplate, rather creating & configuring it on your own will be a good learning lesson.`<br/>
-`4. If you are looking for heavily tested and ready-to-use, component integrated boilerplate then we highly recommend to use <a href='https://github.com/react-boilerplate/react-boilerplate'>https://github.com/react-boilerplate/react-boilerplate</a>`
+`4. If you are looking for heavily tested and ready-to-use, component integrated boilerplate then we highly recommend to use `<a href='https://github.com/react-boilerplate/react-boilerplate'>https://github.com/react-boilerplate/react-boilerplate</a>`
 <br/>
 
 ## Contributors
