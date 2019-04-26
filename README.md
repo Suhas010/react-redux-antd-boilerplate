@@ -24,11 +24,11 @@ This is a open sourced boiler plate code repo for react, ant and redux stack.
 
 ## Contributors
 <br/>
-<div>
+<span style="display: inline-block">
  <a alt='Suhas More' href='https://github.com/Suhas010/'><img width=150 height=150 src="https://avatars1.githubusercontent.com/u/8597576?s=400&v=4">
  </a>
-</div>
-<div style="margin-left:50px">
+</span>
+<span style="display: inline-block; margin-left:20px">
  <a alt='Ajit Fawade' href='https://github.com/ajitfawade'><img width=150 height=150 src="https://avatars0.githubusercontent.com/u/16475300?s=460&v=4">
  </a>
- </div>
+ </span>
